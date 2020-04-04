@@ -22,7 +22,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "prettier": "node_modules/.bin/prettier --config ./.prettierrc.json --write './**/*.{ts,tsx,json,html,scss,md}'"
+        "prettier": "prettier --config ./.prettierrc.json --write './**/*.{ts,tsx,json,html,scss,md}'"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -46,8 +46,7 @@
     },
     "lint-staged": {
         "*.{ts,tsx,json,html,scss,md}": [
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ]
     }
 }
