@@ -1,11 +1,10 @@
 import React from 'react';
+import { NavBar } from '../components';
 
-function App() {
+export const App = () => {
     return (
         <div className="container-fluid">
-            <div className="nav-bar">
-                <h1>Tumblr Drill Down</h1>
-            </div>
+            <NavBar />
 
             <div>
                 <h2>Most common tags</h2>
@@ -34,6 +33,4 @@ function App() {
             </button>
         </div>
     );
-}
-
-export default App;
+};
