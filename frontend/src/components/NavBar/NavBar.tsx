@@ -13,9 +13,9 @@ export const NavBar: React.FC = () => {
                         <Nav.Link href="#home">Home</Nav.Link>
                         <Nav.Link href="#me">Me</Nav.Link>
                         <NavDropdown title="Starred" id="starred-tags-dropdown">
-                            <NavDropdown.Item href="">Tags</NavDropdown.Item>
+                            <NavDropdown.Item href="#tags">Tags</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="">People</NavDropdown.Item>
+                            <NavDropdown.Item href="#people">People</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>
