@@ -1,0 +1,28 @@
+import {Injectable} from '@nestjs/common';
+import * as tumblr from 'tumblr.js'
+import {Configuration} from '../../configuration';
+
+@Injectable()
+export class TumblrService {
+    private client: tumblr.TumblrClient;
+    private tumblrConfig = Configuration.getTumblrConfig();
+
+    constructor() {
+        this.client = tumblr.createClient(this.tumblrConfig)
+    }
+
+    public async getUserInfo(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.userInfo((err, data) => {
+                console.log('getUserInfo');
+                if (err) {
+                    return reject(err)
+                }
+
+                console.log('resolved ···············')
+                resolve(data);
+            })
+        });
+    }
+
+}
