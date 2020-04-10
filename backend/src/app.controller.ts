@@ -8,7 +8,7 @@ export class AppController {
     constructor(private tumblrService: TumblrService) {}
 
     @Get()
-   async hello(): Promise<any> {
+   async getUserInfo(): Promise<any> {
         try {
             return await this.tumblrService.getUserInfo();
         } catch (e) {

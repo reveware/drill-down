@@ -14,12 +14,9 @@ export class TumblrService {
     public async getUserInfo(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.client.userInfo((err, data) => {
-                console.log('getUserInfo');
                 if (err) {
                     return reject(err)
                 }
-
-                console.log('resolved ···············')
                 resolve(data);
             })
         });
