@@ -5,7 +5,7 @@ const logger = new Logger('AppController');
 
 @Controller()
 export class AppController {
-    constructor(private tumblrService: TumblrService) {}
+    constructor(private readonly tumblrService: TumblrService) {}
 
     @Get()
    async getUserInfo(): Promise<any> {
