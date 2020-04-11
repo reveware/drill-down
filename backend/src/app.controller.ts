@@ -12,7 +12,7 @@ export class AppController {
         try {
             return await this.tumblrService.getUserInfo();
         } catch (e) {
-            logger.error('ERROR getting user info ' + e.message)
+            logger.error(`ERROR getting user info: ${e.message}`);
         }
     }
 }

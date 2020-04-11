@@ -23,8 +23,9 @@ export class Configuration {
     };
 
     public static getMongoDBConfig() {
+        const {MONGO_URI} = process.env;
         return {
-            uri: process.env.MONGO_URI,
+            uri: MONGO_URI,
             options: {
                 useNewUrlParser: true,
                 useCreateIndex: true,
@@ -58,7 +59,7 @@ export class Configuration {
                 if (allowedExtensions.has(ext)) {
                     return cb(null, `${folder}/${email}/${Date.now()}-${file.originalname}`);
                 }
-                return cb(new BadRequestException(`Only ${allowedExtensions.values()} are allowed`));
+                return cb(new BadRequestException(`Only [${allowedExtensions.values()}] extensions are allowed`));
             },
         };
     };
