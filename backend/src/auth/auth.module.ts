@@ -15,7 +15,7 @@ const authConfig = Configuration.getAuthConfig();
         JwtModule.register({
             secret: authConfig.jwt_secret,
             signOptions: {
-                expiresIn: 36000
+                expiresIn: authConfig.jwt_expiration_seconds
             }
         })
     ],

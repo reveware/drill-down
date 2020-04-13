@@ -1,25 +1,24 @@
 import {Logger} from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import {UserRole, User} from '../../../types/User';
-
+import {User} from '../../../types';
 
 const logger = new Logger('UserSchema');
 
-// Should be relational with User.d.ts
+// Should be relational with User.types.ts
 const UserDefinition = {
     firstName: {type: String, required: true},
-    lastName: {Type: String, required: true},
+    lastName: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     avatar: {type: String, required: true},
-    age: Number,
-    dateOfBirth: Number,
+    age: {type: Number, required: true},
+    dateOfBirth: {type: Number, required: true},
     tagLine: String,
-    role: UserRole,
+    role: {type: String, required: true},
     posts: {type: Array, required: true},
     friends: {type: Array, required: true},
-    isOnParty: Boolean,
+    isOnParty: {type: Boolean},
     providers: {type: Array, required: true}
 };
 

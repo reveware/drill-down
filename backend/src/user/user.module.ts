@@ -11,7 +11,8 @@ import {Configuration} from '../configuration';
         MulterModule.register({
             storage: multerS3(Configuration.getMulterConfig('users')),
         }),],
-    providers: [UserService]
+    providers: [UserService],
+    exports: [UserService],
 })
 export class UserModule {
 }

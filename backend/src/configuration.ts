@@ -8,7 +8,8 @@ export class Configuration {
     public static getAuthConfig = () => {
         const {JWT_SECRET} = process.env;
         return {
-            jwt_secret: JWT_SECRET
+            jwt_secret: JWT_SECRET,
+            jwt_expiration_seconds: 36000,
         }
     };
 

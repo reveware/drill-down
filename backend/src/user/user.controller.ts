@@ -8,13 +8,13 @@ import {
     HttpStatus,
     Param, HttpException, UseInterceptors, UploadedFile,
 } from '@nestjs/common';
-import {ApiTags, ApiResponse} from '@nestjs/swagger';;
+import {ApiTags, ApiResponse} from '@nestjs/swagger';
 import * as _ from 'lodash';
 
 import {UserService} from './user.service';
 import {FileInterceptor} from '@nestjs/platform-express';
-import {CreateUserDTO} from '../dto/CreateUser.dto';
-import {FindByEmailDTO} from '../dto/FindByEmail';
+import {CreateUserDTO, FindByEmailDTO} from '../dto';
+
 
 @ApiTags('users')
 @Controller('users')
@@ -29,7 +29,7 @@ export class UserController {
     async createUser(@Response() res, @UploadedFile() profilePhoto, @Body() user: CreateUserDTO) {
         try {
             const newUser = await this.userService.createUser(user, profilePhoto);
-            return res.status(HttpStatus.OK).json(newUser);
+            return res.status(HttpStatus.OK).json(newUser as object);
         } catch (e) {
             if (e.code === 11000) {
                 throw new HttpException('User already exists', HttpStatus.CONFLICT);
