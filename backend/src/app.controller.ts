@@ -1,10 +1,10 @@
 import {Controller, Get, Logger} from '@nestjs/common';
 import {TumblrService} from './providers/tumblr/tumblr.service';
 
-const logger = new Logger('AppController');
-
 @Controller()
 export class AppController {
+
+    private logger = new Logger('AppController');
     constructor(private readonly tumblrService: TumblrService) {}
 
     @Get()
@@ -12,7 +12,7 @@ export class AppController {
         try {
             return await this.tumblrService.getUserInfo();
         } catch (e) {
-            logger.error(`ERROR getting user info: ${e.message}`);
+            this.logger.error(`ERROR getting user info: ${e.message}`);
         }
     }
 }

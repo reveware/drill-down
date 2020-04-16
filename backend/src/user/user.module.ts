@@ -5,13 +5,15 @@ import {UserService} from './user.service';
 import {UserSchema} from './User.schema';
 import * as multerS3 from 'multer-s3';
 import {Configuration} from '../configuration';
+import {UserController} from './user.controller';
 
 @Module({
     imports: [MongooseModule.forFeature([{name: 'User', schema: UserSchema}]),
         MulterModule.register({
             storage: multerS3(Configuration.getMulterConfig('users')),
         }),],
-    providers: [UserService],
+    controllers: [UserController],
+    providers: [UserService, UserController],
     exports: [UserService],
 })
 export class UserModule {
