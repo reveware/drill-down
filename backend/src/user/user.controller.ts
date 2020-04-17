@@ -8,12 +8,10 @@ import {
     Param, UseInterceptors, UploadedFile, BadRequestException, NotFoundException,
 } from '@nestjs/common';
 import {ApiTags, ApiResponse} from '@nestjs/swagger';
-import * as _ from 'lodash';
-
-import {UserService} from './user.service';
 import {FileInterceptor} from '@nestjs/platform-express';
+import * as _ from 'lodash';
+import {UserService} from './user.service';
 import {CreateUserDTO, FindByEmailDTO} from '../dto';
-
 
 @ApiTags('users')
 @Controller('users')
@@ -27,6 +25,7 @@ export class UserController {
     @ApiResponse({status: HttpStatus.CONFLICT, description: 'User already exists'})
     @UseInterceptors(FileInterceptor('avatar'))
     async createUser(@Response() res, @UploadedFile() avatar, @Body() user: CreateUserDTO) {
+        avatar = 'photo.url'; // TODO: Remove once AWS S3 is set up
         // FileUploads are not validated in the Pipe
         if (_.isNil(avatar)) {
             throw new BadRequestException(['avatar photo is required'], 'Validation Failed');
