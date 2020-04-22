@@ -1,6 +1,4 @@
-import {Document} from 'mongoose';
-
-export interface User extends Document  {
+export interface User  {
     firstName: string,
     lastName: string,
     email: string,
@@ -14,7 +12,6 @@ export interface User extends Document  {
     friends: string[],
     isOnParty: boolean,
     providers: string[],
-    isValidPassword: (password: string)=> boolean,
 }
 
 export enum UserRole {

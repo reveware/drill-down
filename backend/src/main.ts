@@ -11,6 +11,8 @@ const logger = new Logger('main');
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
+    app.enableCors();
+
     // Add custom validation pipe
     app.useGlobalPipes(new ValidationPipe());
     // Add custom HTTP exception filter

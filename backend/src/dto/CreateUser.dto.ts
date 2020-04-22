@@ -1,7 +1,7 @@
 import {ApiProperty} from '@nestjs/swagger';
 import {IsEmail, IsIn, IsNotEmpty, IsString, Length, IsNumberString} from 'class-validator';
 import * as _ from 'lodash';
-import {UserRole} from '../../../types';
+import {UserRole} from '../../../interfaces';
 
 export class CreateUserDTO {
     @ApiProperty()
