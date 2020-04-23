@@ -1,4 +1,4 @@
-_Please, make sure the code follows the conventions, and styleguide when creating or reviewing pull requests._
+_Please, make sure the code follows the conventions, and styleguide when creating or reviewing PRs._
 
 ## Description
 

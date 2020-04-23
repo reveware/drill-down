@@ -1,29 +1,33 @@
-import {Logger} from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import {User} from '../../../types';
+import { User } from '../../../interfaces';
 
 const logger = new Logger('UserSchema');
 
-// Should be relational with User.types.ts
 const UserDefinition = {
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    avatar: {type: String, required: true},
-    dateOfBirth: {type: Number, required: true},
+    username: { type: String, required: true, unique: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    avatar: { type: String, required: true },
+    dateOfBirth: { type: Number, required: true },
     tagLine: String,
-    role: {type: String, required: true},
-    posts: {type: Array, required: true},
-    friends: {type: Array, required: true},
-    providers: {type: Array, required: true}
+    role: { type: String, required: true },
+    posts: { type: Array, required: true },
+    friends: { type: Array, required: true },
+    providers: { type: Array, required: true },
 };
 
-export const UserSchema =  new mongoose.Schema(UserDefinition, {versionKey: false});
+export interface UserDocument extends User, mongoose.Document {
+    isValidPassword: (password: string) => boolean;
+}
+
+export const UserSchema = new mongoose.Schema(UserDefinition, { versionKey: false });
 
 // Hash password with bcrypt before saving
-UserSchema.pre<User>('save', async function(next) {
+UserSchema.pre<UserDocument>('save', async function(next) {
     // TODO: See if you can bind this function to avoid re-assigning 'this'
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const user = this;
