@@ -1,24 +1,21 @@
+# environment variables
+**/*/*.env
+**/*/*.env.local
+
 # compiled output
 /dist
-/node_modules
+/tmp
+/out-tsc
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# dependencies
+**/*/node_modules
 
-# OS
-.DS_Store
-
-# Tests
-/coverage
-/.nyc_output
+# profiling files
+chrome-profiler-events.json
+speed-measure-plugin.json
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -27,8 +24,23 @@ lerna-debug.log*
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db%
