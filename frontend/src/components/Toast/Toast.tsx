@@ -8,12 +8,24 @@ import { CustomError } from '../../../../interfaces';
 export const Toast: React.FC = () => {
     const { toast } = useSelector((store: StoreState) => store.ui);
 
+    const formatError = (e: CustomError) => {
+        return (
+            <div>
+                <p>{e.name}</p>
+                <ul>
+                    {(e.errors || []).map((e) => (
+                        <li>e</li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+
     useEffect(() => {
         if (toast) {
             if (toast.type === 'ERROR') {
-                const error = toast.message as CustomError;
-
-                toastService.error(error.name);
+                const error = formatError(toast.message as CustomError);
+                toastService.error(error);
             } else {
                 toastService.success(toast.message);
             }
