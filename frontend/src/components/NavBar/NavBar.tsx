@@ -1,11 +1,13 @@
 import React from 'react';
 import { Button, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast } from 'react-toastify';
 
 import './NavBar.scss';
 import { useSelector } from 'react-redux';
-import { StoreState } from '../../store';
+
 import { AppRoutes } from '../../routes';
+import { StoreState } from '../../store';
 
 export const NavBar: React.FC = () => {
     const user = useSelector((store: StoreState) => store.user);
@@ -38,7 +40,13 @@ export const NavBar: React.FC = () => {
                                 <FormControl type="text" placeholder="Search" />
                             </div>
                             <div>
-                                <Button variant="light">Search</Button>
+                                <Button
+                                    variant="light"
+                                    onClick={() => {
+                                        toast.success('Holly Shit, this is cool');
+                                    }}>
+                                    Search
+                                </Button>
                             </div>
                         </Form>
                     </Nav>

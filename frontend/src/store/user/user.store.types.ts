@@ -1,9 +1,4 @@
 import { User } from '../../../../interfaces';
-import { UserActions } from './user.actions';
-
-export interface StoreState {
-    user: UserState;
-}
 
 export interface UserState {
     user: User | null;
@@ -11,14 +6,15 @@ export interface UserState {
     error: Error | null;
 }
 
-interface LoginSuccess {
-    type: typeof UserActions.LOGIN_SUCCESS;
+export enum UserActions {
+    LOGIN = 'LOGIN',
+    LOGOUT = 'LOGOUT',
+    SESSION_EXPIRED = 'SESSION_EXPIRED',
+}
+
+interface Login {
+    type: typeof UserActions.LOGIN;
     payload: User;
 }
 
-interface LoginError {
-    type: typeof UserActions.LOGIN_ERROR;
-    payload: Error;
-}
-
-export type UserActionTypes = LoginSuccess | LoginError;
+export type UserActionTypes = Login;

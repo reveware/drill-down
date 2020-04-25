@@ -1,5 +1,6 @@
 import {Catch, HttpException, ExceptionFilter, ArgumentsHost, Logger, HttpStatus} from '@nestjs/common';
 import { Request, Response } from 'express';
+import {CustomError} from '../../../../interfaces/'
 
 /* https://docs.nestjs.com/exception-filters */
 
@@ -15,17 +16,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const message = exception.response.message ||  exception.message;
         const errors = exception.response && exception.response.error ? exception.response.error || exception.error : [];
 
-        this.logger.error(`HTTP Exception ${status} on route: ${request.method} "${request.url}": ${message}`);
+        const error: CustomError = {
+            name: exception.name,
+            code: status,
+            timestamp: new Date().toISOString(),
+            method: request.method,
+            origin: request.url,
+            message,
+            errors,
+        };
+
+        this.logger.error(`HTTP Exception - code: ${error.code} origin: ${error.origin}: message: ${message}`);
 
         response
             .status(status)
-            .json({
-                statusCode: status,
-                timestamp: new Date().toISOString(),
-                method: request.method,
-                path: request.url,
-                message,
-                errors: errors,
-            } as object);
+            .json(error as object);
     }
 }
