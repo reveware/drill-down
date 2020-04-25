@@ -1,5 +1,4 @@
-import { UserActions } from './user.actions';
-import { UserState, UserActionTypes } from './user.store.types';
+import { UserState, UserActionTypes, UserActions } from './user.store.types';
 
 const initialState: UserState = {
     user: null,
@@ -9,7 +8,7 @@ const initialState: UserState = {
 
 export const userReducer = (state = initialState, action: UserActionTypes): UserState => {
     switch (action.type) {
-        case UserActions.LOGIN_SUCCESS: {
+        case UserActions.LOGIN: {
             return { ...state, user: action.payload };
         }
 
