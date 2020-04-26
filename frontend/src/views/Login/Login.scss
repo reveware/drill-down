@@ -1,0 +1,9 @@
+.login-form-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.login-form-buttons > span > button {
+    min-width: 300px;
+}

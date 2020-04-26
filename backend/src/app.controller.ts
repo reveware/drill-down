@@ -1,12 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import {Controller, Get, Logger} from '@nestjs/common';
+import {TumblrService} from './providers/tumblr/tumblr.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+    private logger = new Logger('AppController');
+    constructor(private readonly tumblrService: TumblrService) {}
+
+    @Get()
+   async getUserInfo(): Promise<any> {
+        try {
+            return await this.tumblrService.getUserInfo();
+        } catch (e) {
+            this.logger.error(`ERROR getting user info: ${e.message}`);
+        }
+    }
 }
