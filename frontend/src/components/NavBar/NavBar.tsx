@@ -13,8 +13,8 @@ export const NavBar: React.FC = () => {
     const user = useSelector((store: StoreState) => store.user);
 
     return (
-        <div className="mt-3 mb-3">
-            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <div className="nav-bar">
+            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Brand href="#home">Drill Down</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse>
