@@ -9,12 +9,13 @@ export const Toast: React.FC = () => {
     const { toast } = useSelector((store: StoreState) => store.ui);
 
     const formatError = (e: CustomError) => {
+        console.log(e);
         return (
             <div>
-                <p>{e.name}</p>
+                <p>{e.message}</p>
                 <ul>
                     {(e.errors || []).map((e) => (
-                        <li>e</li>
+                        <li>{e}</li>
                     ))}
                 </ul>
             </div>

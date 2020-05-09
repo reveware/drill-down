@@ -13,6 +13,15 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+// I like thin handwriting
+h1 {
+    font: caption;
+    font-size: x-large;
+    font-weight: lighter;
+    text-shadow: maroon;
+}
+
+// Subtle but annoying
 .form-hint {
     font-size: x-small;
     color: red;

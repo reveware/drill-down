@@ -1,0 +1,22 @@
+.post-card {
+    flex: 1;
+    width: 100%;
+    max-width: 768px;
+    padding: 2px;
+}
+
+.post-card-tags {
+    width: 100%;
+    font-size: xx-small;
+}
+
+.post-card-detail {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 4px;
+    > span {
+        font-size: small;
+        font-weight: lighter;
+    }
+}
