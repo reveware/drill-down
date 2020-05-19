@@ -5,6 +5,8 @@ import {Configuration} from '../configuration';
 import {UserModule} from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import {JwtStrategy} from './strategies/jwt.strategy';
+import {TumblrStrategy} from './strategies/tumblr.strategy';
 
 const authConfig = Configuration.getAuthConfig();
 
@@ -20,6 +22,6 @@ const authConfig = Configuration.getAuthConfig();
         })
     ],
     controllers: [AuthController],
-    providers: [AuthService]
+    providers: [AuthService, JwtStrategy, TumblrStrategy]
 })
 export class AuthModule {}
