@@ -1,18 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
-import passport from 'passport';
-import * as redis from 'redis';
 import * as session from 'express-session';
+
+import * as redis from 'redis';
 import * as connectRedis from 'connect-redis';
 import { AppModule } from './app.module';
 import { Configuration } from './configuration';
 import { HttpExceptionFilter } from './shared/filters';
 import { ValidationPipe } from './shared/pipes';
 
+const logger = new Logger('server');
+
 const { HTTP_PORT } = Configuration;
-const logger = new Logger('main');
 
 const RedisStore = connectRedis(session);
+const redisConfig = Configuration.getRedisConfig();
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -21,14 +23,12 @@ async function bootstrap() {
 
     app.use(
         session({
-            secret: 'blablabla',
+            secret: redisConfig.redis_secret,
             store: new RedisStore({ client: redis.createClient() }),
             resave: true,
             saveUninitialized: false,
         })
     );
-    app.use(passport.initialize());
-    app.use(passport.session());
 
     // Add custom validation pipe
     app.useGlobalPipes(new ValidationPipe());

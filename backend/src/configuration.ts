@@ -13,16 +13,6 @@ export class Configuration {
         }
     };
 
-    public static getTumblrConfig = () => {
-        const {TUMBLR_CONSUMER_KEY, TUMBLR_CONSUMER_SECRET, TUMBLR_TOKEN, TUMBLR_TOKEN_SECRET} = process.env;
-        return {
-            consumer_key: TUMBLR_CONSUMER_KEY,
-            consumer_secret: TUMBLR_CONSUMER_SECRET,
-            token: TUMBLR_TOKEN,
-            token_secret: TUMBLR_TOKEN_SECRET
-        }
-    };
-
     public static getMongoDBConfig() {
         const {MONGO_URI} = process.env;
         return {
@@ -34,6 +24,24 @@ export class Configuration {
                 useUnifiedTopology: true
             },
         };
+    };
+
+    public static getRedisConfig(){
+
+        return {
+            redis_url: process.env.REDIS_URI,
+            redis_secret: process.env.REDIS_SECRET
+        }
+    }
+
+    public static getTumblrConfig = () => {
+        const {TUMBLR_CONSUMER_KEY, TUMBLR_CONSUMER_SECRET, TUMBLR_TOKEN, TUMBLR_TOKEN_SECRET} = process.env;
+        return {
+            consumer_key: TUMBLR_CONSUMER_KEY,
+            consumer_secret: TUMBLR_CONSUMER_SECRET,
+            token: TUMBLR_TOKEN,
+            token_secret: TUMBLR_TOKEN_SECRET
+        }
     };
 
     private static getAWSCredentials() {
