@@ -6,23 +6,12 @@ import './Login.scss';
 import { AppRoutes } from '../../routes';
 import { useDispatch } from 'react-redux';
 import { LogIn } from '../../store/user';
-import axios from 'axios';
 
 const isValidEmailAddress = (email: string): boolean => {
     const validEmailRegex = new RegExp(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
     return validEmailRegex.test(email);
-};
-
-const handleTumblrLogin = async () => {
-    console.log('tumblr login');
-    try {
-        const { data } = await axios.get('http://localhost:8080/auth/tumblr');
-        console.log(data);
-    } catch (e) {
-        console.log('error', e.message);
-    }
 };
 
 export const Login = () => {
@@ -127,7 +116,6 @@ export const Login = () => {
                     </Form>
 
                     <hr />
-                    <Button onClick={handleTumblrLogin}> TUMBLR LOGIN </Button>
 
                     <p className="text-muted text-center">
                         Not a member? <a href={AppRoutes.REGISTER}>Register</a>
