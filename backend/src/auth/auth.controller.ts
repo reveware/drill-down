@@ -1,11 +1,14 @@
-import {Controller, Post, Body, Response, HttpStatus, UnauthorizedException, Get, UseGuards} from '@nestjs/common';
-import {AuthService} from './auth.service';
-import {LoginAttemptDTO} from '../dto';
-import {AuthResponse} from '../../../interfaces';
-import { TumblrGuard } from './guards/tumblr.guard';
+import { Controller, Post, Body, Response, HttpStatus, UnauthorizedException, Get, UseGuards, Request, Logger, Req } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { LoginAttemptDTO } from '../dto';
+import { AuthResponse } from '../../../interfaces';
+import { AuthGuard } from '@nestjs/passport';
+import { response } from 'express';
 
 @Controller('auth')
 export class AuthController {
+    private logger = new Logger('AuthController');
+
     constructor(private readonly authService: AuthService) {}
 
     @Post()
@@ -17,14 +20,18 @@ export class AuthController {
         throw new UnauthorizedException([result.message]);
     }
 
-
     @Get('tumblr')
-    @UseGuards(TumblrGuard)
-    async tumblr(){
-        console.log('tumblr called');
+    @UseGuards(AuthGuard(['tumblr']))
+    async tumblr(@Request() request, @Response() response) {
+        console.log('tumblr called with user', request.user);
+
+        return response.status(HttpStatus.OK).json({ user: request.user });
     }
+
     @Get('tumblr/callback')
-    async tumblrCallback(@Response() response, @Body() body) {
-        console.log('tumblr callback called');
+    @UseGuards(AuthGuard('tumblr'))
+    async tumblrCallback(@Request() request, @Response() response) {
+        // TODO: Should redirect user (?) how to handle subsequent request to tumblr (?)
+        return response.status(HttpStatus.OK).json({ user: request.user });
     }
 }

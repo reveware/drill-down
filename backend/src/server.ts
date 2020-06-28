@@ -21,10 +21,11 @@ async function bootstrap() {
 
     app.enableCors();
 
+    // Start a server to share session between browsers
     app.use(
         session({
             secret: redisConfig.redis_secret,
-            store: new RedisStore({ client: redis.createClient() }),
+            store: new RedisStore({ client: redis.createClient({ url: redisConfig.redis_url, password: redisConfig.redis_secret }) }),
             resave: true,
             saveUninitialized: false,
         })

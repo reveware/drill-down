@@ -4,5 +4,9 @@ services:
     redis:
         container_name: 'redis'
         image: 'redis:alpine'
+        command: redis-server --requirepass ${REDIS_SECRET}
         ports:
             - '6379:6379'
+        environment:
+             - REDIS_SECRET
+            
