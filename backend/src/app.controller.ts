@@ -1,7 +1,9 @@
-import {Controller, Get, Logger} from '@nestjs/common';
+import {Controller, Get, Logger, UseGuards} from '@nestjs/common';
 import {TumblrService} from './providers/tumblr/tumblr.service';
+import {AuthGuard} from '@nestjs/passport';
 
 @Controller()
+@UseGuards(AuthGuard(['jwt']))
 export class AppController {
 
     private logger = new Logger('AppController');
