@@ -7,10 +7,10 @@ import './NavBar.scss';
 import { useSelector } from 'react-redux';
 
 import { AppRoutes } from '../../routes';
-import { StoreState } from '../../store';
+import { AppState } from '../../store';
 
 export const NavBar: React.FC = () => {
-    const user = useSelector((store: StoreState) => store.user);
+    const user = useSelector((state: AppState) => state.user);
 
     return (
         <div className="nav-bar">
@@ -28,7 +28,7 @@ export const NavBar: React.FC = () => {
                     </Nav>
                     <Nav>
                         <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />} id="basic-nav-dropdown">
-                            {user.user ? (
+                            {user && user.user ? (
                                 <NavDropdown.Item>Logged as {JSON.stringify(user.user.firstName)}</NavDropdown.Item>
                             ) : (
                                 <NavDropdown.Item href={AppRoutes.LOGIN}>Login</NavDropdown.Item>

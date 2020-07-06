@@ -1,20 +1,20 @@
-import {Controller, Get, Logger, UseGuards} from '@nestjs/common';
-import {TumblrService} from './providers/tumblr/tumblr.service';
-import {AuthGuard} from '@nestjs/passport';
+import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AppService } from './app.service';
 
 @Controller()
-@UseGuards(AuthGuard(['jwt']))
+// @UseGuards(AuthGuard(['jwt']))
 export class AppController {
-
     private logger = new Logger('AppController');
-    constructor(private readonly tumblrService: TumblrService) {}
+    constructor(private readonly appService: AppService) {}
 
     @Get()
-   async getUserInfo(): Promise<any> {
+    async rootRequest(): Promise<any> {
+        const identifier = 'rrriki';
         try {
-            return await this.tumblrService.getUserInfo();
+            return await this.appService.crawlTumblrPosts(identifier);
         } catch (e) {
-            this.logger.error(`ERROR getting user info: ${e.message}`);
+            this.logger.error(`ERROR crawling posts for ${identifier}: ${e.message}`);
         }
     }
 }

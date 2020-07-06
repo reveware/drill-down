@@ -1,13 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { userReducer, UserState } from './user';
-import { uiReducer, UiState } from './ui';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { AuthState, UserState, UiState } from './types';
+import { userReducer, authReducer, uiReducer } from './reducers';
 
-const rootReducer = combineReducers({ user: userReducer, ui: uiReducer });
-
-export interface StoreState {
+export interface AppState {
+    auth: AuthState;
     user: UserState;
     ui: UiState;
 }
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+const rootReducer = combineReducers({ user: userReducer, auth: authReducer, ui: uiReducer });
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
