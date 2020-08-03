@@ -6,9 +6,11 @@ const PostDefinition = {
     type: { type: String, required: true },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     body: { type: Object, required: true },
-    stars: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    stars: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
     tags: { type: Array /*mongoose.Schema.Types.ObjectId, ref: 'Tag'*/, required: true },
     description: { type: String },
+    provider: { type: String, required: false },
+    providerId: { type: String, required: false },
 };
 
 export interface PostDocument extends Post, mongoose.Document {}

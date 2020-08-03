@@ -1,3 +1,5 @@
+import { providers } from ".";
+
 export interface Post {
   type: PostTypes;
   author: string;
@@ -5,6 +7,9 @@ export interface Post {
   stars: string[];
   tags: string[];
   description?: string;
+  provider?: providers;
+  providerId?: string;
+  createdAt: number;
 }
 
 export enum PostTypes {
@@ -14,7 +19,6 @@ export enum PostTypes {
   AUDIO = "AUDIO",
   QUOTE = "QUOTE",
 }
-
 
 export interface PhotoPost {
     urls: string[]

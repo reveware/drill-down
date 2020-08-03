@@ -30,6 +30,10 @@ export class UserService {
         return this.userModel.findOne({ email });
     }
 
+    async findUserByUsername(username: string): Promise<UserDocument> {
+        return this.userModel.findOne({ username });
+    }
+
     public static filterSensitiveData(user: User): User {
         user.password = undefined;
         return user;
