@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
-import './Login.scss';
 import { AppRoutes } from '../../routes';
-import { useDispatch } from 'react-redux';
 import { LogIn } from '../../store/user';
-
-const isValidEmailAddress = (email: string): boolean => {
-    const validEmailRegex = new RegExp(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-    return validEmailRegex.test(email);
-};
+import './Login.scss';
+import { isValidEmailAddress } from '../../utils';
 
 export const Login = () => {
     const [email, setEmail] = useState<string>('');
@@ -66,7 +60,7 @@ export const Login = () => {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.keyCode === Key.Enter) {
+        if (e.keyCode === Key.Enter && !isFormDisabled) {
             handleSubmit();
         }
     };

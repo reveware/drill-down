@@ -1,7 +1,7 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {IsEmail, IsIn, IsNotEmpty, IsString, Length, IsNumberString} from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsIn, IsNotEmpty, IsString, Length, IsNumberString, IsNumber } from 'class-validator';
 import * as _ from 'lodash';
-import {UserRole} from '../../../interfaces';
+import { UserRole } from '../../../interfaces';
 
 export class CreateUserDTO {
     @ApiProperty()
@@ -26,7 +26,7 @@ export class CreateUserDTO {
     password: string;
 
     @ApiProperty()
-    @IsNumberString()
+    @IsNumber()
     @IsNotEmpty()
     dateOfBirth: number;
 

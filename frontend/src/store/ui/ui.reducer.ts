@@ -5,9 +5,10 @@ const initialState: UiState = {
 };
 
 export const uiReducer = (state = initialState, action: UiActionTypes): UiState => {
+
     switch (action.type) {
         case UiActions.SHOW_TOAST: {
-            const toast = { type: 'ERROR', message: action.payload } as Toast;
+            const toast = action.payload as Toast;
             state = { toast };
             break;
         }

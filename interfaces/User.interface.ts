@@ -1,10 +1,9 @@
 export interface User  {
-    username: string,
+    avatar: string,
     firstName: string,
     lastName: string,
     email: string,
     password: string,
-    avatar: string,
     age: number,
     dateOfBirth: number,
     tagLine?: string,

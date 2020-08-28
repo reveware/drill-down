@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteProps, Switch } from 'react-router-dom';
-import { Home, Login } from './views';
+import { Home, Login, Register } from './views';
 
 export enum AppRoutes {
     HOME = '/',
@@ -11,6 +11,7 @@ export enum AppRoutes {
 const routes: RouteProps[] = [
     { path: AppRoutes.HOME, exact: true, component: Home },
     { path: AppRoutes.LOGIN, exact: true, component: Login },
+    { path: AppRoutes.REGISTER, exact: true, component: Register },
 ];
 
 export const Routes = () => {

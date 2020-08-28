@@ -1,17 +1,17 @@
 import React from 'react';
 import { Button, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toast } from 'react-toastify';
 
 import './NavBar.scss';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { AppRoutes } from '../../routes';
 import { StoreState } from '../../store';
+import { showToast, ToastTypes } from '../../store/ui';
 
 export const NavBar: React.FC = () => {
     const user = useSelector((store: StoreState) => store.user);
-
+    const dispatch = useDispatch();
     return (
         <div className="nav-bar">
             <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
@@ -43,7 +43,12 @@ export const NavBar: React.FC = () => {
                                 <Button
                                     variant="light"
                                     onClick={() => {
-                                        toast.success('Holly Shit, this is cool');
+                                        dispatch(
+                                            showToast({
+                                                type: ToastTypes.SUCCESS,
+                                                content: { title: 'GAHD DAMN', message: 'This is cool' },
+                                            })
+                                        );
                                     }}>
                                     Search
                                 </Button>

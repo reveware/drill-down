@@ -1,6 +1,6 @@
-import { CustomError } from '../../../../interfaces';
-import { UiActions } from './ui.store.types';
+import { UiActions, Toast } from './ui.store.types';
 
-export const showErrorToast = (payload: CustomError) => {
-    return { type: UiActions.SHOW_TOAST, payload };
+
+export const showToast = (toast: Toast) => {
+    return { type: UiActions.SHOW_TOAST, payload: toast };
 };
