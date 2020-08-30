@@ -4,16 +4,15 @@ import { AppService } from './app.service';
 import { TumblrModule } from './providers/tumblr/tumblr.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import {MongooseModule} from '@nestjs/mongoose';
-import {Configuration} from './configuration';
-
+import { MongooseModule } from '@nestjs/mongoose';
+import { Configuration } from './configuration';
+import { PostModule } from './post/post.module';
 
 const mongoDBConfig = Configuration.getMongoDBConfig();
 
 @Module({
-  imports: [TumblrModule, AuthModule, UserModule,
-  MongooseModule.forRoot(mongoDBConfig.uri, mongoDBConfig.options)],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [AuthModule, UserModule, TumblrModule, PostModule, MongooseModule.forRoot(mongoDBConfig.uri, mongoDBConfig.options)],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

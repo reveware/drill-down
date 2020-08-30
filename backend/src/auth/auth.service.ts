@@ -48,7 +48,7 @@ export class AuthService {
         return this.userService.findUserByEmail(email);
     }
 
-    private generateTokenFromPayload(payload: JwtPayload): string {
+    private generateTokenFromPayload(payload: Partial<JwtPayload>): string {
         const expiresIn = this.authConfig.jwt_expiration_seconds;
         return this.jwtService.sign(payload, { expiresIn });
     }

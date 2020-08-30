@@ -5,7 +5,7 @@ import { Key } from 'ts-keycode-enum';
 import './Login.scss';
 import { AppRoutes } from '../../routes';
 import { useDispatch } from 'react-redux';
-import { LogIn } from '../../store/user';
+import { logIn } from '../../store/actions';
 
 const isValidEmailAddress = (email: string): boolean => {
     const validEmailRegex = new RegExp(
@@ -58,7 +58,7 @@ export const Login = () => {
     };
 
     const handleSubmit = () => {
-        dispatch(LogIn(email, password));
+        dispatch(logIn(email, password));
     };
 
     const handleCancel = () => {

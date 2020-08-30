@@ -1,4 +1,4 @@
-import { UiState, UiActionTypes, UiActions, Toast } from './ui.store.types';
+import { UiState, UiActionTypes, UiActions, Toast } from '../types/ui.store.types';
 
 const initialState: UiState = {
     toast: null,

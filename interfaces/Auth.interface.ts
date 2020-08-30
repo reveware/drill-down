@@ -9,5 +9,7 @@ export interface AuthResponse {
 
 
 export interface JwtPayload {
-  user: Partial<User>
+  user: Partial<User>,
+  iat: number,
+  exp: number
 }
