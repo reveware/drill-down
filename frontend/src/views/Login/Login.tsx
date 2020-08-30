@@ -89,6 +89,12 @@ export const Login = () => {
 
                         <div className="login-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
+                            <span>
+                                <Button variant="secondary" type="button" onClick={handleCancel}>
+                                    Cancel
+                                </Button>
+                            </span>
+
                             <span
                                 onMouseEnter={() => {
                                     setIsMouseOverSubmit(true);
@@ -98,12 +104,6 @@ export const Login = () => {
                                 }}>
                                 <Button variant="primary" className="mr-5" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                     Login
-                                </Button>
-                            </span>
-
-                            <span>
-                                <Button variant="secondary" type="button" onClick={handleCancel}>
-                                    Cancel
                                 </Button>
                             </span>
                         </div>

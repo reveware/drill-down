@@ -43,7 +43,7 @@ export const CreateUser = (user: CreateUserDTO) => {
                     content: { title: 'Woo-hoo', message: "You're user was created!" },
                 };
                 dispatch(showToast(toast));
-                history.push(AppRoutes.HOME);
+                history.push(AppRoutes.LOGIN);
             }
         } catch (e) {
             dispatch(showToast({ type: ToastTypes.ERROR, content: e }));
