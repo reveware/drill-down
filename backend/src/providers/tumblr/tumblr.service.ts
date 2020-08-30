@@ -55,9 +55,7 @@ export class TumblrService {
                     if (post.type == 'photo') {
                         customPosts.push(this.mapToCustomPost(post));
                     } else {
-                        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
                         console.log('ignoring post:', JSON.stringify(post));
-                        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
                     }
                 }
 
