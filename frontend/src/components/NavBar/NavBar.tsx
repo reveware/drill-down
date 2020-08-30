@@ -28,7 +28,7 @@ export const NavBar: React.FC = () => {
                     </Nav>
                     <Nav>
                         <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />} id="basic-nav-dropdown">
-                            {user.user ? (
+                            {user && user.user ? (
                                 <NavDropdown.Item>Logged as {JSON.stringify(user.user.firstName)}</NavDropdown.Item>
                             ) : (
                                 <NavDropdown.Item href={AppRoutes.LOGIN}>Login</NavDropdown.Item>

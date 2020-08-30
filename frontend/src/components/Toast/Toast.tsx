@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { toast as toastService } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { StoreState } from '../../store';
+import { AppState } from '../../store';
 import './Toast.scss';
 import { CustomError } from '../../../../interfaces';
 import { ToastTypes, SuccessMessage } from '../../store/ui';
 
 export const Toast: React.FC = () => {
-    const { toast } = useSelector((store: StoreState) => store.ui);
+    const { toast } = useSelector((state: AppState) => state.ui);
 
     const formatSuccessMessage = (message: SuccessMessage) => {
         return (

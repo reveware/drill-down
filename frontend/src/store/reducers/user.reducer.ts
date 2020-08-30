@@ -1,14 +1,13 @@
-import { UserState, UserActionTypes, UserActions } from './user.store.types';
+import { UserState, UserActionTypes, UserActions } from '../types/user.store.types';
 
 const initialState: UserState = {
     user: null,
-    isSessionExpired: false,
     error: null,
 };
 
 export const userReducer = (state = initialState, action: UserActionTypes): UserState => {
     switch (action.type) {
-        case UserActions.LOGIN: {
+        case UserActions.UPDATE_USER: {
             return { ...state, user: action.payload };
         }
 

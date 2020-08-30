@@ -37,5 +37,5 @@ export class CreateUserDTO {
     @ApiProperty()
     @IsString()
     @IsIn(_.values(UserRole))
-    role: string;
+    role: UserRole;
 }
