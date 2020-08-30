@@ -67,7 +67,7 @@ export const Login = () => {
 
     return (
         <React.Fragment>
-            <Card className="mx-auto w-50">
+            <Card className="mx-auto w-50 neon-border">
                 <Card.Body>
                     <Card.Title>Login</Card.Title>
                     <Form onKeyDown={handleKeyDown}>
@@ -90,7 +90,7 @@ export const Login = () => {
                         <div className="login-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button variant="secondary" type="button" onClick={handleCancel}>
+                                <Button className="mr-5"  variant="secondary" type="button" onClick={handleCancel}>
                                     Cancel
                                 </Button>
                             </span>
@@ -102,7 +102,7 @@ export const Login = () => {
                                 onMouseLeave={() => {
                                     setIsMouseOverSubmit(false);
                                 }}>
-                                <Button variant="primary" className="mr-5" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
+                                <Button variant="primary" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                     Login
                                 </Button>
                             </span>

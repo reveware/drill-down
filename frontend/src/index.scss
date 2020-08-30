@@ -26,3 +26,20 @@ h1 {
     font-size: x-small;
     color: red;
 }
+
+
+.neon-border  {
+    animation-name: neon-border-animation;
+    animation-duration: 12s;
+    animation-iteration-count: infinite;
+
+    @keyframes neon-border-animation {
+        0%   {box-shadow: -13px -13px 13px -13px rgba(random(255), random(255), random(255), 0.25);}
+        100% {box-shadow: -13px -13px 13px -13px rgba(random(255), random(255), random(255), 0.55);}
+
+    }
+}
+
+
+
+

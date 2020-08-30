@@ -15,11 +15,11 @@ export const NavBar: React.FC = () => {
     return (
         <div className="nav-bar">
             <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="#home">Drill Down</Navbar.Brand>
+                <Navbar.Brand href={AppRoutes.HOME}>Drill Down</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link href={AppRoutes.HOME}>Home</Nav.Link>
                         <NavDropdown title="Starred" id="starred-tags-dropdown">
                             <NavDropdown.Item href="#tags">Tags</NavDropdown.Item>
                             <NavDropdown.Divider />
