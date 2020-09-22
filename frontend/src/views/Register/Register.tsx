@@ -6,127 +6,34 @@ import ReactDatePicker from 'react-datepicker';
 import * as _ from 'lodash';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../routes';
-import { CreateUser } from '../../store/user';
-import { isValidEmailAddress } from '../../utils';
+import {isValidImageType} from '../../utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Register.scss';
-import { CreateUserDTO } from '../../types/dtos.types';
-
-type RegisterFormState = {
-    user: CreateUserDTO;
-    errors: {
-        avatar: string | null;
-        firstName: string | null;
-        lastName: string | null;
-        email: string | null;
-        password: string | null;
-        tagLine: string | null;
-        dateOfBirth: string | null;
-    };
-};
+import {createUser} from "../../store/actions";
+import {initialRegisterFormState, registerReducer} from "./register.reducer";
+import moment from 'moment';
 
 export const Register = () => {
-    const initialState: RegisterFormState = {
-        user: {
-            avatar: null,
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            tagLine: '',
-            dateOfBirth: new Date(),
-            role: 'USER',
-        },
-        errors: {
-            avatar: 'An avatar photo is required',
-            firstName: 'First name cannot be empty',
-            lastName: 'Last name cannot be empty',
-            email: 'Email cannot be empty',
-            password: 'Password cannot be empty',
-            tagLine: 'Tag line cannot be empty',
-            dateOfBirth: 'You must select your date of birth',
-        },
-    };
 
-    const reducer = (state: RegisterFormState, action: { type: string; payload: any }) => {
-        switch (action.type) {
-            case 'avatar':
-                const file = action.payload;
-                return { user: { ...state.user, avatar: file }, errors: { ...state.errors, avatar: null } };
-
-            case 'firstName':
-                const firstName = action.payload;
-                if (firstName === '') {
-                    return { ...state, errors: { ...state.errors, firstName: 'First name cannot be empty' } };
-                }
-                return { user: { ...state.user, firstName }, errors: { ...state.errors, firstName: null } };
-
-            case 'lastName':
-                const lastName = action.payload;
-                if (lastName === '') {
-                    return { ...state, errors: { ...state.errors, lastName: 'Last name cannot be empty' } };
-                }
-                return { user: { ...state.user, lastName }, errors: { ...state.errors, lastName: null } };
-
-            case 'email':
-                const email = action.payload;
-                if (email === '') {
-                    return { ...state, errors: { ...state.errors, email: 'Email cannot be empty' } };
-                }
-                if (!isValidEmailAddress(email)) {
-                    return { ...state, errors: { ...state.errors, email: 'Should be a valid e-mail address' } };
-                }
-
-                return { user: { ...state.user, email }, errors: { ...state.errors, email: null } };
-            case 'password':
-                const password = action.payload;
-                if (password === '') {
-                    return { ...state, errors: { ...state.errors, password: 'Password cannot be empty' } };
-                }
-                if (password.length < 9) {
-                    return { ...state, errors: { ...state.errors, password: 'Should be at least 9 characters' } };
-                }
-
-                return { user: { ...state.user, password }, errors: { ...state.errors, password: null } };
-
-            case 'dateOfBirth':
-                const dateOfBirth = action.payload;
-                if (!dateOfBirth) {
-                    return { ...state, errors: { ...state.errors, lastName: 'Date of birth is required' } };
-                }
-                // TODO: Should date be validated in < years > ?
-                return { user: { ...state.user, dateOfBirth }, errors: { ...state.errors, dateOfBirth: null } };
-
-            case 'tagLine':
-                const tagline = action.payload;
-                if (tagline === '') {
-                    return { ...state, errors: { ...state.errors, lastName: 'Tag line cannot be empty' } };
-                }
-                return { user: { ...state.user, tagline }, errors: { ...state.errors, tagLine: null } };
-
-            default:
-                return state;
-        }
-    };
-
-    const [state, updateState] = useReducer(reducer, initialState);
+    const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
 
     const history = useHistory();
     const dispatch = useDispatch();
 
     const handleAvatarPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e);
         const fileList = e.target.files;
 
         if (fileList && fileList.length > 0) {
-            const avatarPhoto = document.getElementById('avatar-photo') as HTMLImageElement;
             const file = fileList[0];
+
             updateState({ type: 'avatar', payload: file });
+
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
                 if (reader.result) {
+                    const avatarPhoto = document.getElementById('avatar-photo') as HTMLImageElement;
                     avatarPhoto.src = reader.result.toString();
                 }
             };
@@ -135,7 +42,20 @@ export const Register = () => {
 
     const handleSubmit = () => {
         const user = state.user;
-        dispatch(CreateUser(user));
+
+        // Avatar file uploads only seem to work with form data
+        const formData = new FormData();
+
+        Object.keys(user).forEach(key => {
+            if(key === 'dateOfBirth'){
+                formData.append(key, moment((user as any)[key]).startOf('day').toISOString())
+            } else {
+                formData.append(key, (user as any)[key]);
+            }
+
+        });
+
+        dispatch(createUser(formData));
     };
 
     const handleCancel = () => {
@@ -143,16 +63,25 @@ export const Register = () => {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.keyCode === Key.Enter) {
+        if (e.keyCode === Key.Enter && !isFormDisabled) {
             handleSubmit();
         }
     };
 
-    const isFormDisabled = _.some(state.errors, (error) => !_.isNull(error)) || _.some(state.user, (value) => _.isEmpty(value));
+    const isSomeFieldEmpty = _.some(state.user, (value, field)=>{
+        if(field === 'avatar') {
+            return !(value && value.type && isValidImageType(value.type));
+        }
+
+        return !value;
+    })
+
+    const isSomeFieldWithErrors = _.some(state.errors, (error) => !_.isNull(error));
+    const isFormDisabled = isSomeFieldEmpty || isSomeFieldWithErrors;
 
     return (
         <React.Fragment>
-            <Card className="mx-auto w-50 neon-border">
+            <Card className="mx-auto w-50 mt-5 mb-5 neon-border">
                 <Card.Body>
                     <Card.Title>Register</Card.Title>
                     <Form onKeyDown={handleKeyDown}>
@@ -176,6 +105,23 @@ export const Register = () => {
                                         {state.errors.avatar}
                                     </Form.Text>
                                 </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="username">
+                                    <Form.Label>Username</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Username"
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            updateState({ type: 'username', payload: e.target.value });
+                                        }}
+                                    />
+                                    <Form.Text className={`form-hint ${isMouseOverSubmit && state.errors.username ? '' : 'invisible'}`}>
+                                        {state.errors.username}
+                                    </Form.Text>
+                                </Form.Group>
                             </Col>
                         </Row>
 

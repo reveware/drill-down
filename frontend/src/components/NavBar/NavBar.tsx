@@ -6,11 +6,12 @@ import './NavBar.scss';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { AppRoutes } from '../../routes';
-import { StoreState } from '../../store';
-import { showToast, ToastTypes } from '../../store/ui';
+import { AppState } from '../../store';
+import {showToast} from "../../store/actions";
+import {ToastTypes} from "../../store/types";
 
 export const NavBar: React.FC = () => {
-    const user = useSelector((store: StoreState) => store.user);
+    const user = useSelector((store: AppState) => store.user);
     const dispatch = useDispatch();
     return (
         <div className="nav-bar">

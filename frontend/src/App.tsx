@@ -11,8 +11,6 @@ import { NavBar, Toast } from './components';
 import { Routes } from './routes';
 import { store } from './store';
 
-console.log('store:', JSON.stringify(store));
-
 library.add(far, fas);
 
 export const history = createBrowserHistory();

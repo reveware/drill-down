@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
 import { UserService } from './user.service';
-import { UserSchema } from './User.schema';
+import { UserSchema } from './user.schema';
 import * as multerS3 from 'multer-s3';
 import { Configuration } from '../configuration';
 import { UserController } from './user.controller';

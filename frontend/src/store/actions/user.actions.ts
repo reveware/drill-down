@@ -1,31 +1,50 @@
-import JwtDecode from 'jwt-decode';
-import { history } from '../../App';
-import { AppService } from '../../services';
-import { JwtPayload, User } from '../../../../interfaces';
-import { AppRoutes } from '../../routes';
-import { updateAuth, showErrorToast } from '.';
-import { UserActions } from '../types';
+import {AppService} from "../../services";
+import {JwtPayload, User} from "../../../../interfaces";
+import {ToastTypes, UserActions} from "../types";
+import {AppRoutes} from "../../routes";
+import {showToast} from "./ui.actions";
+
+import JwtDecode from "jwt-decode";
+import {updateAuth} from "./auth.actions";
+
+import {history} from '../../App';
+
+export const createUser = (user: FormData) => {
+    return async (dispatch: any) => {
+        try {
+            const app = new AppService();
+            const newUser = await app.createUser(user);
+
+            if (newUser) {
+                const toast = {
+                    type: ToastTypes.SUCCESS,
+                    content: { title: 'Woo-hoo', message: "Your user was created!" },
+                };
+                dispatch(showToast(toast));
+                history.push(AppRoutes.LOGIN);
+            }
+        } catch (e) {
+            dispatch(showToast({ type: ToastTypes.ERROR, content: e }));
+        }
+    };
+};
+
 
 export const logIn = (email: string, password: string) => {
     return async (dispatch: any) => {
         try {
             const app = new AppService();
             const { isAuthorized, token, message } = await app.login(email, password);
-            console.log('JWT token:', token);
             if (isAuthorized) {
                 const jwtPayload: JwtPayload = JwtDecode(token);
-                console.log('JWT Payload:', JSON.stringify(jwtPayload));
-
                 dispatch(updateAuth(token));
-
                 dispatch(updateUser(jwtPayload.user as User));
-
                 history.push(AppRoutes.HOME);
                 return;
             }
             throw new Error(message);
         } catch (e) {
-            dispatch(showErrorToast(e));
+            dispatch(showToast({ type: ToastTypes.ERROR, content: e }));
         }
     };
 };

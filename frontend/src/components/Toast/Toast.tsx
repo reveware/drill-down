@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { toast as toastService } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { AppState } from '../../store';
+
 import './Toast.scss';
 import { CustomError } from '../../../../interfaces';
-import { ToastTypes, SuccessMessage } from '../../store/ui';
+import {SuccessMessage, ToastTypes} from "../../store/types";
+import {AppState} from "../../store";
+
 
 export const Toast: React.FC = () => {
     const { toast } = useSelector((state: AppState) => state.ui);
@@ -30,23 +32,16 @@ export const Toast: React.FC = () => {
     };
 
     const formatError = (e: CustomError) => {
-        console.log(e);
+        console.log('formatError', e);
         return (
             <div>
                 <p>{e.message || e.name}</p>
-                {e.errors && e.errors.length > 0 ? (
+                {e.errors && Array.isArray(e.errors) && (
                     <ul>
                         {e.errors.map((e) => (
                             <li>{e}</li>
                         ))}
                     </ul>
-                ) : (
-                    <p>
-                        A very mysterious error, indeed.{' '}
-                        <span role="img" aria-label="tired-face">
-                            😩
-                        </span>
-                    </p>
                 )}
             </div>
         );
@@ -54,7 +49,6 @@ export const Toast: React.FC = () => {
 
     useEffect(() => {
         if (toast) {
-            console.log(toast);
             if (toast.type === ToastTypes.ERROR) {
                 toastService.error(formatError(toast.content as CustomError));
                 return;
@@ -63,6 +57,11 @@ export const Toast: React.FC = () => {
             if (toast.type === ToastTypes.SUCCESS) {
                 toastService.success(formatSuccessMessage(toast.content as SuccessMessage));
                 return;
+            }
+
+            if(toast.type === ToastTypes.CUSTOM) {
+                const component = toast.content;
+                toastService.info(component);
             }
         }
     }, [toast]);

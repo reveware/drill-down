@@ -4,9 +4,10 @@ import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../routes';
-import { LogIn } from '../../store/user';
+
 import './Login.scss';
 import { isValidEmailAddress } from '../../utils';
+import {logIn} from "../../store/actions";
 
 export const Login = () => {
     const [email, setEmail] = useState<string>('');
@@ -52,7 +53,7 @@ export const Login = () => {
     };
 
     const handleSubmit = () => {
-        dispatch(LogIn(email, password));
+        dispatch(logIn(email, password));
     };
 
     const handleCancel = () => {
@@ -67,7 +68,7 @@ export const Login = () => {
 
     return (
         <React.Fragment>
-            <Card className="mx-auto w-50 neon-border">
+            <Card className="mx-auto mt-5 mb-5 w-50 neon-border">
                 <Card.Body>
                     <Card.Title>Login</Card.Title>
                     <Form onKeyDown={handleKeyDown}>

@@ -4,3 +4,8 @@ export const isValidEmailAddress = (email: string): boolean => {
     );
     return validEmailRegex.test(email);
 };
+
+export const isValidImageType = (type: string): boolean => {
+    const imgRegex = new RegExp('image/*')
+    return imgRegex.test(type);
+}

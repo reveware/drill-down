@@ -1,10 +1,12 @@
 import { CustomError } from '../../../../interfaces';
+import React from "react";
 
 export enum UiActions {
     SHOW_TOAST = 'SHOW_TOAST',
 }
 
 export enum ToastTypes {
+    CUSTOM = 'CUSTOM',
     SUCCESS = 'SUCCESS',
     ERROR = 'ERROR',
 }
@@ -21,7 +23,7 @@ export interface SuccessMessage {
 
 export interface Toast {
     type: ToastTypes;
-    content: SuccessMessage | CustomError | React.Component;
+    content: SuccessMessage | CustomError | React.FC;
 }
 
 interface showToast {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { Post } from '..';
 import { Col, Row } from 'react-bootstrap';
 import './PostGrid.scss';
