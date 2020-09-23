@@ -32,7 +32,7 @@ export class CreateUserDTO {
     @ApiProperty()
     @IsNotEmpty()
     @IsDateString()
-    dateOfBirth: Date;
+    dateOfBirth: string;
 
     @ApiProperty()
     @IsString()

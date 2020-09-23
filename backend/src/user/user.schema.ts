@@ -12,7 +12,7 @@ const UserDefinition = {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    dateOfBirth: { type: String, required: true },
     tagLine: String,
     role: { type: String, required: true },
     posts: { type: Array, required: true },

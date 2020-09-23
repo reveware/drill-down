@@ -46,14 +46,22 @@ export const Register = () => {
         // Avatar file uploads only seem to work with form data
         const formData = new FormData();
 
-        Object.keys(user).forEach(key => {
-            if(key === 'dateOfBirth'){
-                formData.append(key, moment((user as any)[key]).startOf('day').toISOString())
-            } else {
-                formData.append(key, (user as any)[key]);
-            }
+       const keys = Object.keys(user);
 
-        });
+       for(const key of keys) {
+           if(key === 'avatar') {
+               // We'll add at the end because multer can't read it.
+               // https://stackoverflow.com/questions/39589022/node-js-multer-and-req-body-empty
+               continue;
+           }
+
+           if(key === 'dateOfBirth') {
+               formData.append(key, moment((user as any)[key]).startOf('day').toISOString())
+           } else {
+               formData.append(key, (user as any)[key]);
+           }
+       }
+        formData.append('avatar', user.avatar);
 
         dispatch(createUser(formData));
     };
