@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 import * as path from 'path';
 import { BadRequestException } from '@nestjs/common';
+import { User } from '../../interfaces';
 
 export class Configuration {
     public static HTTP_PORT = process.env.HTTP_PORT;
@@ -63,11 +64,11 @@ export class Configuration {
             s3,
             bucket,
             key: (req, file, cb) => {
-                const { email } = (req as any).body;
+                const { username } = (req as { body: User }).body;
                 const ext = path.extname(file.originalname);
 
-                if (allowedExtensions.has(ext)) {
-                    return cb(null, `${folder}/${email}/${Date.now()}-${file.originalname}`);
+                if (allowedExtensions.has(ext.toLowerCase())) {
+                    return cb(null, `${folder}/${username}/${Date.now()}-${file.originalname}`);
                 }
                 return cb(new BadRequestException(`Only [${allowedExtensions.values()}] extensions are allowed`));
             },

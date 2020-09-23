@@ -35,7 +35,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = (props) => {
         } else {
             setIsAuthenticated(false);
         }
-    }, [auth]);
+    }, [auth, dispatch]);
 
     if (isAuthenticated === null) {
         return <h1>hmm</h1>;
@@ -45,5 +45,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = (props) => {
         return <Route {...route} />;
     }
 
-    return <Redirect to={AppRoutes.LOGIN}></Redirect>;
+    return <Redirect to={AppRoutes.LOGIN}/>;
 };

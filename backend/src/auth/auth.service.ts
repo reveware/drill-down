@@ -6,19 +6,10 @@ import { LoginAttemptDTO } from '../dto';
 
 import { Configuration } from '../configuration';
 import { JwtPayload, AuthResponse } from '../../../interfaces';
-import { UserDocument } from 'src/user/User.schema';
-
-const isValidEmailAddress = (email: string): boolean => {
-    const validEmailRegex = new RegExp(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-    return validEmailRegex.test(email);
-};
+import { UserDocument } from 'src/user/user.schema';
 
 @Injectable()
 export class AuthService {
-    private logger = new Logger('AuthService');
-
     private authConfig = Configuration.getAuthConfig();
 
     constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteProps, Switch } from 'react-router-dom';
-import { Home, Login } from './views';
+import { Home, Login, Register } from './views';
 import { ProtectedRoute } from './components';
 
 export enum AppRoutes {
@@ -16,6 +16,7 @@ export interface AppRouteProps extends RouteProps {
 
 const routes: AppRouteProps[] = [
     { path: AppRoutes.LOGIN, isProtected: false, exact: true, component: Login },
+    { path: AppRoutes.REGISTER, isProtected: false, exact: true, component: Register },
     { path: AppRoutes.HOME, isProtected: true, exact: true, component: Home },
 ];
 

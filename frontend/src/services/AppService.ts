@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Configuration } from '../configuration';
-import { CustomError, AuthResponse } from '../../../interfaces';
+import { CustomError, AuthResponse, User } from '../../../interfaces';
 
 export class AppService {
     private url = Configuration.SERVER_URL;
@@ -11,6 +11,16 @@ export class AppService {
             return data as AuthResponse;
         } catch (e) {
             throw this.makeError('login', e);
+        }
+    }
+
+    public async createUser(user: FormData): Promise<User> {
+        try {
+
+            const { data } = await axios.post(`${this.url}/users`, user);
+            return data as User;
+        } catch (e) {
+            throw this.makeError('createUser', e);
         }
     }
 

@@ -1,13 +1,14 @@
-import { UiState, UiActionTypes, UiActions, Toast } from '../types/ui.store.types';
+import { UiState, UiActionTypes, UiActions, Toast } from '../types';
 
 const initialState: UiState = {
     toast: null,
 };
 
 export const uiReducer = (state = initialState, action: UiActionTypes): UiState => {
+
     switch (action.type) {
         case UiActions.SHOW_TOAST: {
-            const toast = { type: 'ERROR', message: action.payload } as Toast;
+            const toast = action.payload as Toast;
             state = { toast };
             break;
         }

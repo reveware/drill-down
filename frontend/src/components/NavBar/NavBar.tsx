@@ -1,25 +1,26 @@
 import React from 'react';
 import { Button, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toast } from 'react-toastify';
 
 import './NavBar.scss';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { AppRoutes } from '../../routes';
 import { AppState } from '../../store';
+import {showToast} from "../../store/actions";
+import {ToastTypes} from "../../store/types";
 
 export const NavBar: React.FC = () => {
-    const user = useSelector((state: AppState) => state.user);
-
+    const user = useSelector((store: AppState) => store.user);
+    const dispatch = useDispatch();
     return (
         <div className="nav-bar">
             <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="#home">Drill Down</Navbar.Brand>
+                <Navbar.Brand href={AppRoutes.HOME}>Drill Down</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link href={AppRoutes.HOME}>Home</Nav.Link>
                         <NavDropdown title="Starred" id="starred-tags-dropdown">
                             <NavDropdown.Item href="#tags">Tags</NavDropdown.Item>
                             <NavDropdown.Divider />
@@ -43,7 +44,12 @@ export const NavBar: React.FC = () => {
                                 <Button
                                     variant="light"
                                     onClick={() => {
-                                        toast.success('Holly Shit, this is cool');
+                                        dispatch(
+                                            showToast({
+                                                type: ToastTypes.SUCCESS,
+                                                content: { title: 'GAHD DAMN', message: 'This is cool' },
+                                            })
+                                        );
                                     }}>
                                     Search
                                 </Button>

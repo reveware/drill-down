@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Post } from '..';
 import { Col, Row } from 'react-bootstrap';
 import './PostGrid.scss';
+import '../../index.scss'
 
 interface PostGridProps extends React.HTMLAttributes<HTMLDivElement> {
     id: string;
@@ -12,17 +13,8 @@ interface PostGridProps extends React.HTMLAttributes<HTMLDivElement> {
 export const PostGrid: React.FC<PostGridProps> = (props) => {
     const { title, posts, id, className } = props;
 
-    const setRandomColorBorderLight = () => {
-        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-        const div = document.getElementById(id);
-        if (div) {
-            div.style.boxShadow = `-13px -13px 20px -20px #${randomColor}`;
-        }
-    };
-    useEffect(setRandomColorBorderLight, []);
-
     return (
-        <div id={id} className={`post-grid ${className}`}>
+        <div id={id} className={`post-grid ${className} neon-border`}>
             <h1>{title}</h1>
             <Row>
                 {posts.map((post, i) => {

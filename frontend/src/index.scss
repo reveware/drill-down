@@ -1,6 +1,6 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~react-toastify/dist/ReactToastify.css';
-
+@import "colors";
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
@@ -26,3 +26,37 @@ h1 {
     font-size: x-small;
     color: red;
 }
+
+
+@function pickRandomColor() {
+    $values: map-values($colors);
+    $index: random(length($values));
+    @return nth($values, $index);
+}
+
+
+.neon-border  {
+    animation-name: neon-border-animation;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+
+    $color1: pickRandomColor();
+    $color2: pickRandomColor();
+    $color3: pickRandomColor();
+    $color4: pickRandomColor();
+    $color5: pickRandomColor();
+    $color6: pickRandomColor();
+
+    @keyframes neon-border-animation {
+        0%   {box-shadow: -13px -13px 13px -16px rgba(red($color1), green($color1), blue($color1), 0.5)}
+        20%  {box-shadow: -13px -13px 13px -13px rgba(red($color2), green($color2), blue($color2), 0.3)}
+        40%  {box-shadow: -13px -13px 13px -16px rgba(red($color3), green($color3), blue($color3), 0.5)}
+        60%  {box-shadow: -13px -13px 13px -13px rgba(red($color4), green($color4), blue($color4), 0.3)}
+        80%  {box-shadow: -13px -13px 13px -16px rgba(red($color5), green($color5), blue($color5), 0.5)}
+        100% {box-shadow: -13px -13px 13px -13px rgba(red($color6), green($color6), blue($color6), 0.3)}
+    }
+}
+
+
+
+

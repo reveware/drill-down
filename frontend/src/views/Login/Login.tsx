@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
-import './Login.scss';
 import { AppRoutes } from '../../routes';
-import { useDispatch } from 'react-redux';
-import { logIn } from '../../store/actions';
 
-const isValidEmailAddress = (email: string): boolean => {
-    const validEmailRegex = new RegExp(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-    return validEmailRegex.test(email);
-};
+import './Login.scss';
+import { isValidEmailAddress } from '../../utils';
+import {logIn} from "../../store/actions";
 
 export const Login = () => {
     const [email, setEmail] = useState<string>('');
@@ -66,14 +61,14 @@ export const Login = () => {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.keyCode === Key.Enter) {
+        if (e.keyCode === Key.Enter && !isFormDisabled) {
             handleSubmit();
         }
     };
 
     return (
         <React.Fragment>
-            <Card className="mx-auto w-50">
+            <Card className="mx-auto mt-5 mb-5 w-50 neon-border">
                 <Card.Body>
                     <Card.Title>Login</Card.Title>
                     <Form onKeyDown={handleKeyDown}>
@@ -95,6 +90,12 @@ export const Login = () => {
 
                         <div className="login-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
+                            <span>
+                                <Button className="mr-5"  variant="secondary" type="button" onClick={handleCancel}>
+                                    Cancel
+                                </Button>
+                            </span>
+
                             <span
                                 onMouseEnter={() => {
                                     setIsMouseOverSubmit(true);
@@ -102,14 +103,8 @@ export const Login = () => {
                                 onMouseLeave={() => {
                                     setIsMouseOverSubmit(false);
                                 }}>
-                                <Button variant="primary" className="mr-5" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
+                                <Button variant="primary" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                     Login
-                                </Button>
-                            </span>
-
-                            <span>
-                                <Button variant="secondary" type="button" onClick={handleCancel}>
-                                    Cancel
                                 </Button>
                             </span>
                         </div>

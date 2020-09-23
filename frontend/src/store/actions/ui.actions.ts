@@ -1,7 +1,6 @@
-import { CustomError } from '../../../../interfaces';
-import { UiActions } from '../types';
+import {Toast, UiActions} from "../types";
 
-export const showErrorToast = (payload: CustomError) => {
-    console.log('SHOWING ERROR TOAST:', JSON.stringify(payload));
-    return { type: UiActions.SHOW_TOAST, payload };
+
+export const showToast = (toast: Toast) => {
+    return { type: UiActions.SHOW_TOAST, payload: toast };
 };
