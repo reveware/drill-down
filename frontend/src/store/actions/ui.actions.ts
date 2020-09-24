@@ -1,4 +1,4 @@
-import {Toast, UiActions} from "../types";
+import {Toast, UiActions} from "../../types";
 
 
 export const showToast = (toast: Toast) => {

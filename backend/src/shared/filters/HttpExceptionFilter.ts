@@ -1,6 +1,6 @@
 import {Catch, HttpException, ExceptionFilter, ArgumentsHost, Logger, HttpStatus} from '@nestjs/common';
 import { Request, Response } from 'express';
-import {CustomError} from '../../../../interfaces/'
+import {CustomError} from "@drill-down/interfaces";
 
 /* https://docs.nestjs.com/exception-filters */
 

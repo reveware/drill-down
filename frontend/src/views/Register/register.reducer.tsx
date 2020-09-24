@@ -1,6 +1,6 @@
 import {isValidEmailAddress, isValidImageType} from "../../utils";
 import moment from "moment";
-import {CreateUserDTO} from "../../types/dtos.types";
+import {CreateUserDTO} from "../../dtos/dtos.types";
 
 export type RegisterFormState = {
     user: CreateUserDTO;

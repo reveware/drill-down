@@ -1,7 +1,7 @@
-import { AuthActions, storageKeys } from '../types';
+import { AuthActions, StorageKeys } from '../../types';
 
 export const updateAuth = (token: string) => {
-    sessionStorage.setItem(storageKeys.AUTH_TOKEN, token);
+    sessionStorage.setItem(StorageKeys.AUTH_TOKEN, token);
     return {
         type: AuthActions.UPDATE_AUTH,
         payload: { token },

@@ -1,3 +1,3 @@
-export enum storageKeys {
+export enum StorageKeys {
     AUTH_TOKEN = 'AUTH_TOKEN',
 }

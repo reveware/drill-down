@@ -3,7 +3,7 @@ import { TumblrService } from './providers/tumblr/tumblr.service';
 import moment = require('moment');
 import { PostService } from './post/post.service';
 import * as _ from 'lodash';
-import { Post, User } from '../../interfaces';
+import { Post, User } from "@drill-down/interfaces";
 
 @Injectable()
 export class AppService {
@@ -17,7 +17,7 @@ export class AppService {
             const saveEveryIteration = 10;
             let iteration = 0;
             let pageNumber = 1;
-            let limit = 10;
+            const limit = 10;
 
             while (true) {
                 let offset = limit * (pageNumber - 1);

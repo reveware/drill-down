@@ -1,4 +1,4 @@
-import { CustomError } from '../../../../interfaces';
+import { CustomError } from "@drill-down/interfaces";
 import React from "react";
 
 export enum UiActions {

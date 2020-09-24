@@ -1,9 +1,8 @@
 import { Controller, Post, Body, Response, HttpStatus, UnauthorizedException, Get, UseGuards, Request, Logger, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAttemptDTO } from '../dto';
-import { AuthResponse } from '../../../interfaces';
+import { AuthResponse } from "@drill-down/interfaces";
 import { AuthGuard } from '@nestjs/passport';
-import { response } from 'express';
 
 @Controller('auth')
 export class AuthController {

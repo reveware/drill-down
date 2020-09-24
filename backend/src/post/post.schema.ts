@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Post } from '../../../interfaces';
+import { Post } from "@drill-down/interfaces";
 
 const PostDefinition = {
     // https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose
@@ -11,6 +11,7 @@ const PostDefinition = {
     description: { type: String },
     provider: { type: String, required: false },
     providerId: { type: String, required: false },
+    createdAt: {type: Number, required: true },
 };
 
 export interface PostDocument extends Post, mongoose.Document {}

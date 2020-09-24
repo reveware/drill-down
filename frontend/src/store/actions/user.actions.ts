@@ -1,6 +1,6 @@
 import {AppService} from "../../services";
-import {JwtPayload, User} from "../../../../interfaces";
-import {ToastTypes, UserActions} from "../types";
+import {JwtPayload, User} from "@drill-down/interfaces";
+import {ToastTypes, UserActions} from "../../types";
 import {AppRoutes} from "../../routes";
 import {showToast} from "./ui.actions";
 
@@ -35,6 +35,7 @@ export const logIn = (email: string, password: string) => {
         try {
             const app = new AppService();
             const { isAuthorized, token, message } = await app.login(email, password);
+
             if (isAuthorized) {
                 const jwtPayload: JwtPayload = JwtDecode(token);
                 dispatch(updateAuth(token));

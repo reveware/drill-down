@@ -1,11 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as _ from 'lodash';
 import { UserService } from '../user/user.service';
 import { LoginAttemptDTO } from '../dto';
 
 import { Configuration } from '../configuration';
-import { JwtPayload, AuthResponse } from '../../../interfaces';
+import { JwtPayload, AuthResponse } from "@drill-down/interfaces";
 import { UserDocument } from 'src/user/user.schema';
 
 @Injectable()

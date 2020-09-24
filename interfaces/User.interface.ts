@@ -9,14 +9,12 @@ export interface User  {
     dateOfBirth: number,
     tagLine?: string,
     role: UserRole,
-    posts: string[],
     friends: string[],
     isOnParty: boolean,
     providers: string[],
 }
 
 export enum UserRole {
-    GUEST = 'GUEST',
     USER = 'USER',
     ADMIN = 'ADMIN'
 }

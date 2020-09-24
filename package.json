@@ -1,0 +1,24 @@
+{
+  "name": "@drill-down/root",
+  "version": "1.0.0",
+  "description": "drill down",
+  "repository": "git@github.com:rrriki/drill-down.git",
+  "author": "Ricardo Rincon <ricardo_rm25@hotmail.com>",
+  "license": "MPL-2.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "backend",
+      "frontend",
+      "interfaces"
+    ],
+    "nohoist": [
+      "**/webpack-dev-server",
+      "**/babel**",
+      "**/babel-loader",
+      "**/babel-jest",
+      "**/eslint**",
+      "**/jest"
+    ]
+  }
+}

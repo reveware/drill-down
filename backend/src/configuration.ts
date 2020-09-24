@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import * as path from 'path';
 import { BadRequestException } from '@nestjs/common';
-import { User } from '../../interfaces';
+import { User } from "@drill-down/interfaces";
 
 export class Configuration {
     public static HTTP_PORT = process.env.HTTP_PORT;

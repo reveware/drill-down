@@ -1,4 +1,4 @@
-import { providers } from ".";
+import { Providers } from ".";
 
 export interface Post {
   type: PostTypes;
@@ -7,7 +7,7 @@ export interface Post {
   stars: string[];
   tags: string[];
   description?: string;
-  provider?: providers;
+  provider?: Providers;
   providerId?: string;
   createdAt: number;
 }
