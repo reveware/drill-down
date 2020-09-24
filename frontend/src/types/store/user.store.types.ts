@@ -1,4 +1,4 @@
-import { User } from '../../../../interfaces';
+import { User } from "@drill-down/interfaces";
 
 export interface UserState {
     user: User | null;

@@ -1,4 +1,4 @@
-import { UiState, UiActionTypes, UiActions, Toast } from '../types';
+import { UiState, UiActionTypes, UiActions, Toast } from '../../types';
 
 const initialState: UiState = {
     toast: null,

@@ -3,8 +3,8 @@ import { toast as toastService } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 import './Toast.scss';
-import { CustomError } from '../../../../interfaces';
-import {SuccessMessage, ToastTypes} from "../../store/types";
+import { CustomError } from "@drill-down/interfaces";
+import {SuccessMessage, ToastTypes} from "../../types";
 import {AppState} from "../../store";
 
 

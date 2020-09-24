@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as tumblr from 'tumblr.js';
 import { Configuration } from '../../configuration';
-import { providers, Post, PostTypes } from '../../../../interfaces';
+import { Providers, Post, PostTypes } from "@drill-down/interfaces";
 
 export interface OffsetParams {
     identifier: string;
@@ -55,7 +55,7 @@ export class TumblrService {
                     if (post.type == 'photo') {
                         customPosts.push(this.mapToCustomPost(post));
                     } else {
-                        console.log('ignoring post:', JSON.stringify(post));
+                      //  console.log('ignoring post:', JSON.stringify(post));
                     }
                 }
 
@@ -66,11 +66,11 @@ export class TumblrService {
 
     private mapToCustomPost(tumblrPost): Post {
         const { id, type, tags, timestamp } = tumblrPost;
-
+        console.log('tumblrPost', JSON.stringify(tumblrPost));
         if (type === 'photo') {
             const { photos } = tumblrPost;
             const customPost: Post = {
-                provider: providers.TUMBLR,
+                provider: Providers.TUMBLR,
                 providerId: id,
                 type: PostTypes.PHOTO,
                 author: tumblrPost.blog_name,

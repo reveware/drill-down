@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from '../../../interfaces';
+import { User } from "@drill-down/interfaces";
 
 const logger = new Logger('UserSchema');
 
@@ -15,7 +15,6 @@ const UserDefinition = {
     dateOfBirth: { type: String, required: true },
     tagLine: String,
     role: { type: String, required: true },
-    posts: { type: Array, required: true },
     friends: { type: Array, required: true },
     providers: { type: Array, required: true },
 };

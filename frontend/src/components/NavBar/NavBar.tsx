@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppRoutes } from '../../routes';
 import { AppState } from '../../store';
 import {showToast} from "../../store/actions";
-import {ToastTypes} from "../../store/types";
+import {ToastTypes} from "../../types";
 
 export const NavBar: React.FC = () => {
     const user = useSelector((store: AppState) => store.user);

@@ -4,6 +4,6 @@ export * from './Error.interface';
 export * from './Post.interface';
 
 
-export enum providers {
+export enum Providers {
     TUMBLR = "TUMBLR"
 }

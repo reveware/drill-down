@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsIn, IsNotEmpty, IsString, IsObject, IsArray } from 'class-validator';
 import * as _ from 'lodash';
-import { PostTypes, PhotoPost, QuotePost } from '../../../interfaces';
+import { PostTypes, PhotoPost, QuotePost } from "@drill-down/interfaces";
 
 export class CreatePostDTO {
     @ApiProperty()

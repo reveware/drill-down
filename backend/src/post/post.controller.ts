@@ -36,14 +36,14 @@ export class PostController {
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found, so no Posts' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving Posts' })
     async getUserPosts(@Response() res, @Param() param: FindByUsernameDTO) {
-        const user = await this.userService.findUserByUsername(param.username);
+        const username = param.username;
+        const user = await this.userService.findUserByUsername(username);
 
         if (!user) {
-            throw new HttpException(`username ${param.username} not found, so no Posts.`, HttpStatus.NOT_FOUND);
+            throw new HttpException(`username ${username} not found, so no Posts.`, HttpStatus.NOT_FOUND);
         }
 
         const posts = await this.postService.getPostsByUser(user);
-
-        return res.status(HttpStatus.OK).json(posts);
+        return res.status(HttpStatus.OK).json(_.shuffle(posts));
     }
 }

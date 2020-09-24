@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '../../../interfaces';
+import { User } from "@drill-down/interfaces";
 import { CreateUserDTO } from '../dto';
 import { UserDocument } from './user.schema';
 
@@ -19,10 +19,10 @@ export class UserService {
             return newUser;
         } catch (e) {
             if (e.code === 11000) {
-                throw new HttpException('User already exists', HttpStatus.CONFLICT);
+                throw new HttpException(`User ${user.email} already exists`, HttpStatus.CONFLICT);
             }
 
-            throw new HttpException(`ERROR creating user: ${e.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(`ERROR creating user ${user.email}: ${e.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

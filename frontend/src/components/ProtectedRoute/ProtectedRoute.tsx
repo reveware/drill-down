@@ -5,7 +5,7 @@ import JwtDecode from 'jwt-decode';
 import moment from 'moment';
 import { AppRoutes, AppRouteProps } from '../../routes';
 import { AppState } from '../../store';
-import { JwtPayload, User } from '../../../../interfaces';
+import { JwtPayload, User } from "@drill-down/interfaces";
 import { updateUser } from '../../store/actions';
 
 interface ProtectedRouteProps {
