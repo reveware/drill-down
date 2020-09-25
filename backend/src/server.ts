@@ -8,6 +8,7 @@ import { AppModule } from './app.module';
 import { Configuration } from './configuration';
 import { HttpExceptionFilter } from './shared/filters';
 import { ValidationPipe } from './shared/pipes';
+import {RedisClient} from "redis";
 
 const logger = new Logger('server');
 
@@ -22,10 +23,11 @@ async function bootstrap() {
     app.enableCors();
 
     // Start a server to share session between browsers
+    const redisClient = redis.createClient({ url: redisConfig.redis_url, password: redisConfig.redis_secret }) as any;
     app.use(
         session({
             secret: redisConfig.redis_secret,
-            store: new RedisStore({ client: redis.createClient({ url: redisConfig.redis_url, password: redisConfig.redis_secret }) }),
+            store: new RedisStore({ client: redisClient }),
             resave: true,
             saveUninitialized: false,
         })

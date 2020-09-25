@@ -1,4 +1,14 @@
 .home-view {
     display: flex;
+    flex-direction: column;
+}
+
+.user-posts {
+    display: flex;
     flex-direction: row;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
+
 }
