@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Card, Form, Button } from 'react-bootstrap';
+import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../routes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './Login.scss';
 import { isValidEmailAddress } from '../../utils';
-import {logIn} from "../../store/actions";
+import { logIn } from '../../store/actions';
 
 export const Login = () => {
     const [email, setEmail] = useState<string>('');
@@ -19,6 +20,7 @@ export const Login = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+    const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
 
     useEffect(() => {
         if (email === '') {
@@ -46,6 +48,10 @@ export const Login = () => {
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
+    };
+
+    const handleShowPasswordToggle = () => {
+        setIsShowingPassword(!isShowingPassword);
     };
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,19 +85,26 @@ export const Login = () => {
                                 {emailError}
                             </Form.Text>
                         </Form.Group>
-
                         <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" onChange={handlePasswordChange} />
+                            <InputGroup>
+                            <InputGroup.Prepend>
+                             <InputGroup.Text>
+                             <FontAwesomeIcon onClick={handleShowPasswordToggle} icon={isShowingPassword? "eye-slash" : "eye"} size="lg" />
+                             </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <Form.Control type={isShowingPassword? 'text':'password'} placeholder="Password" onChange={handlePasswordChange} />
+                            </InputGroup>
                             <Form.Text className={`form-hint ${isMouseOverSubmit && passwordError ? '' : 'invisible'}`}>
                                 {passwordError}
                             </Form.Text>
                         </Form.Group>
+                    
 
                         <div className="login-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button className="mr-5"  variant="secondary" type="button" onClick={handleCancel}>
+                                <Button className="mr-5" variant="secondary" type="button" onClick={handleCancel}>
                                     Cancel
                                 </Button>
                             </span>
@@ -109,9 +122,8 @@ export const Login = () => {
                             </span>
                         </div>
                     </Form>
-
+                   
                     <hr />
-
                     <p className="text-muted text-center">
                         Not a member? <a href={AppRoutes.REGISTER}>Register</a>
                     </p>
