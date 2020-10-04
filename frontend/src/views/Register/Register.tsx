@@ -1,22 +1,23 @@
 import React, { useState, useReducer } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Card, Form, Button, Row, Col, Image } from 'react-bootstrap';
+import { Card, Form, Button, Row, Col, Image, InputGroup } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import * as _ from 'lodash';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../routes';
-import {isValidImageType} from '../../utils';
+import { isValidImageType } from '../../utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Register.scss';
-import {createUser} from "../../store/actions";
-import {initialRegisterFormState, registerReducer} from "./register.reducer";
+import { createUser } from '../../store/actions';
+import { initialRegisterFormState, registerReducer } from './register.reducer';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Register = () => {
-
     const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
+    const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -40,27 +41,36 @@ export const Register = () => {
         }
     };
 
+    const handleShowPasswordToggle = () => {
+        setIsShowingPassword(!isShowingPassword);
+    };
+
     const handleSubmit = () => {
         const user = state.user;
 
         // Avatar file uploads only seem to work with form data
         const formData = new FormData();
 
-       const keys = Object.keys(user);
+        const keys = Object.keys(user);
 
-       for(const key of keys) {
-           if(key === 'avatar') {
-               // We'll add at the end because multer can't read it.
-               // https://stackoverflow.com/questions/39589022/node-js-multer-and-req-body-empty
-               continue;
-           }
+        for (const key of keys) {
+            if (key === 'avatar') {
+                // We'll add at the end because multer can't read it.
+                // https://stackoverflow.com/questions/39589022/node-js-multer-and-req-body-empty
+                continue;
+            }
 
-           if(key === 'dateOfBirth') {
-               formData.append(key, moment((user as any)[key]).startOf('day').toISOString())
-           } else {
-               formData.append(key, (user as any)[key]);
-           }
-       }
+            if (key === 'dateOfBirth') {
+                formData.append(
+                    key,
+                    moment((user as any)[key])
+                        .startOf('day')
+                        .toISOString()
+                );
+            } else {
+                formData.append(key, (user as any)[key]);
+            }
+        }
         formData.append('avatar', user.avatar);
 
         dispatch(createUser(formData));
@@ -76,13 +86,13 @@ export const Register = () => {
         }
     };
 
-    const isSomeFieldEmpty = _.some(state.user, (value, field)=>{
-        if(field === 'avatar') {
+    const isSomeFieldEmpty = _.some(state.user, (value, field) => {
+        if (field === 'avatar') {
             return !(value && value.type && isValidImageType(value.type));
         }
 
         return !value;
-    })
+    });
 
     const isSomeFieldWithErrors = _.some(state.errors, (error) => !_.isNull(error));
     const isFormDisabled = isSomeFieldEmpty || isSomeFieldWithErrors;
@@ -182,13 +192,24 @@ export const Register = () => {
 
                         <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    updateState({ type: 'password', payload: e.target.value });
-                                }}
-                            />
+                            <InputGroup>
+                                <Form.Control
+                                    type={isShowingPassword ? 'text' : 'password'}
+                                    placeholder="Password"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        updateState({ type: 'password', payload: e.target.value });
+                                    }}
+                                />
+                                <InputGroup.Append>
+                                    <InputGroup.Text>
+                                        <FontAwesomeIcon
+                                            onClick={handleShowPasswordToggle}
+                                            icon={isShowingPassword ? 'eye-slash' : 'eye'}
+                                            size="lg"
+                                        />
+                                    </InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
                             <Form.Text className={`form-hint ${isMouseOverSubmit && state.errors.password ? '' : 'invisible'}`}>
                                 {state.errors.password}
                             </Form.Text>
@@ -231,7 +252,7 @@ export const Register = () => {
                         <div className="register-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button  className="mr-5" variant="secondary" type="button" onClick={handleCancel}>
+                                <Button className="mr-5" variant="secondary" type="button" onClick={handleCancel}>
                                     Cancel
                                 </Button>
                             </span>

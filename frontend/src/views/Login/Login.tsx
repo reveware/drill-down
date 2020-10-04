@@ -13,14 +13,14 @@ import { logIn } from '../../store/actions';
 export const Login = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
-
     const [emailError, setEmailError] = useState<string | null>();
     const [passwordError, setPasswordError] = useState<string | null>();
 
+    const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
+    const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
+
     const history = useHistory();
     const dispatch = useDispatch();
-    const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
 
     useEffect(() => {
         if (email === '') {
@@ -88,18 +88,25 @@ export const Login = () => {
                         <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
                             <InputGroup>
-                            <InputGroup.Prepend>
-                             <InputGroup.Text>
-                             <FontAwesomeIcon onClick={handleShowPasswordToggle} icon={isShowingPassword? "eye-slash" : "eye"} size="lg" />
-                             </InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <Form.Control type={isShowingPassword? 'text':'password'} placeholder="Password" onChange={handlePasswordChange} />
+                                <Form.Control
+                                    type={isShowingPassword ? 'text' : 'password'}
+                                    placeholder="Password"
+                                    onChange={handlePasswordChange}
+                                />
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>
+                                        <FontAwesomeIcon
+                                            onClick={handleShowPasswordToggle}
+                                            icon={isShowingPassword ? 'eye-slash' : 'eye'}
+                                            size="lg"
+                                        />
+                                    </InputGroup.Text>
+                                </InputGroup.Prepend>
                             </InputGroup>
                             <Form.Text className={`form-hint ${isMouseOverSubmit && passwordError ? '' : 'invisible'}`}>
                                 {passwordError}
                             </Form.Text>
                         </Form.Group>
-                    
 
                         <div className="login-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
@@ -122,7 +129,7 @@ export const Login = () => {
                             </span>
                         </div>
                     </Form>
-                   
+
                     <hr />
                     <p className="text-muted text-center">
                         Not a member? <a href={AppRoutes.REGISTER}>Register</a>
