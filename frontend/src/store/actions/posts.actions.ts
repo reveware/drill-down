@@ -1,4 +1,4 @@
-import {Post} from "@drill-down/interfaces";
+import {Post, PostCountByTag} from "@drill-down/interfaces";
 import {PostsActions, ToastTypes} from "../../types";
 import {showToast} from "./ui.actions";
 import {AppService} from "../../services";
@@ -22,3 +22,23 @@ export const updateUserPosts = (posts: Post[]) => {
         payload: posts,
     };
 };
+
+export const getPostsCountByTag = (username: string)=> {
+    return async (dispatch: any) =>{
+        try {
+            const app = new AppService();
+            const postsCountByTag = await app.getPostsCountByTag(username);
+            dispatch(updatePostsCountByTag(postsCountByTag))
+        }catch (e)
+        {
+            dispatch(showToast({type: ToastTypes.ERROR, content: e}));
+        }
+    }
+}
+
+export const updatePostsCountByTag = (postCountByTag: PostCountByTag[])=>{
+    return {
+        type: PostsActions.UPDATE_POST_COUNT_BY_TAG,
+        payload: postCountByTag
+    }
+}
