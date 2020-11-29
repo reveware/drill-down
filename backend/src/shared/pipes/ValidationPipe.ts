@@ -13,10 +13,13 @@ import * as _ from 'lodash';
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
     async transform(value, {metatype}: ArgumentMetadata) {
+
         if (!metatype || !this.toValidate(metatype)) {
             return value;
         }
+
         const object = plainToClass(metatype, value);
+
         const errors = await validate(object);
 
         if (errors.length > 0) {

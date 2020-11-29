@@ -1,13 +1,13 @@
-import {AppService} from "../../services";
-import {JwtPayload, User} from "@drill-down/interfaces";
-import {ToastTypes, UserActions} from "../../types";
-import {AppRoutes} from "../../routes";
-import {showToast} from "./ui.actions";
+import { AppService } from '../../services';
+import { JwtPayload, User } from '@drill-down/interfaces';
+import { ToastTypes, UserActions } from '../../types';
+import { AppRoutes } from '../../routes';
+import { showToast } from './ui.actions';
 
-import JwtDecode from "jwt-decode";
-import {updateAuth} from "./auth.actions";
+import JwtDecode from 'jwt-decode';
+import { updateAuth } from './auth.actions';
 
-import {history} from '../../App';
+import { history } from '../../App';
 
 export const createUser = (user: FormData) => {
     return async (dispatch: any) => {
@@ -18,7 +18,7 @@ export const createUser = (user: FormData) => {
             if (newUser) {
                 const toast = {
                     type: ToastTypes.SUCCESS,
-                    content: { title: 'Woo-hoo', message: "Your user was created!" },
+                    content: { title: 'Woo-hoo', message: 'Your user was created!' },
                 };
                 dispatch(showToast(toast));
                 history.push(AppRoutes.LOGIN);
@@ -28,7 +28,6 @@ export const createUser = (user: FormData) => {
         }
     };
 };
-
 
 export const logIn = (email: string, password: string) => {
     return async (dispatch: any) => {
@@ -50,7 +49,15 @@ export const logIn = (email: string, password: string) => {
     };
 };
 
-export const updateUser = (user: User) => {
+export const logOut = () => {
+    return async (dispatch: any) => {
+        dispatch(updateAuth(null));
+        dispatch(updateUser(null));
+
+    };
+};
+
+export const updateUser = (user: User | null) => {
     return {
         type: UserActions.UPDATE_USER,
         payload: user,

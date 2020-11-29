@@ -9,7 +9,7 @@ export enum AuthActions {
 interface updateAuth {
     type: AuthActions.UPDATE_AUTH;
     payload: {
-        token: string;
+        token: string | null;
         expires: number;
     };
 }

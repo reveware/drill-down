@@ -7,12 +7,11 @@ export interface UserState {
 
 export enum UserActions {
     UPDATE_USER = 'UPDATE_USER',
-    LOGOUT = 'LOGOUT',
 }
 
 interface Login {
     type: typeof UserActions.UPDATE_USER;
-    payload: User;
+    payload: User | null;
 }
 
 export type UserActionTypes = Login;

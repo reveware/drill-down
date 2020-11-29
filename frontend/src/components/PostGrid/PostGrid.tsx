@@ -2,7 +2,7 @@ import React from 'react';
 import { Post } from '..';
 import { Col, Row } from 'react-bootstrap';
 import './PostGrid.scss';
-import '../../index.scss'
+import '../../index.scss';
 
 interface PostGridProps extends React.HTMLAttributes<HTMLDivElement> {
     id: string;
@@ -12,6 +12,10 @@ interface PostGridProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const PostGrid: React.FC<PostGridProps> = (props) => {
     const { title, posts, id, className } = props;
+
+    if (posts.length === 0) {
+        return null;
+    }
 
     return (
         <div id={id} className={`post-grid ${className} neon-border`}>

@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button, Row, Col, Image, InputGroup } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
@@ -13,14 +13,26 @@ import { createUser } from '../../store/actions';
 import { initialRegisterFormState, registerReducer } from './register.reducer';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AppService } from '../../services';
+import { AppState } from '../../store';
 
 export const Register = () => {
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const { token } = useSelector((state: AppState) => state.auth);
+
+    const appService = new AppService();
+    const isAuthenticated = appService.isAuthValid(token);
+
+    if (isAuthenticated) {
+        history.push(AppRoutes.HOME);
+    }
+
     const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
 
-    const history = useHistory();
-    const dispatch = useDispatch();
 
     const handleAvatarPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;

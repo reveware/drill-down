@@ -29,7 +29,7 @@ export interface QuotePost {
     author: string;
 }
 
-export interface PostCountByTag {
-    text: string,
-    value: number
+export interface CountByTag {
+    tag: string,
+    count: number
 }

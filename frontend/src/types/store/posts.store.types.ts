@@ -1,8 +1,8 @@
-import {Post, PostCountByTag} from "@drill-down/interfaces";
+import { Post, CountByTag } from '@drill-down/interfaces';
 
 export interface PostsState {
     userPosts: Post[];
-    postCountByTag: PostCountByTag[] | undefined;
+    postCountByTag: CountByTag[] | undefined;
 }
 
 export enum PostsActions {
@@ -12,12 +12,13 @@ export enum PostsActions {
 
 interface updateUserPosts {
     type: PostsActions.UPDATE_USER_POSTS;
-    payload: Post[]
+    payload: Post[];
 }
 
 interface updatePostCountByTag {
     type: PostsActions.UPDATE_POST_COUNT_BY_TAG;
-    payload: PostCountByTag[]
+    payload: CountByTag[];
 }
+
 
 export type PostsActionTypes = updateUserPosts | updatePostCountByTag;
