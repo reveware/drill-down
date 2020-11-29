@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AppService } from './app.service';
-import { JWTUser } from './shared/decorators';
+import { JwtUser } from './shared/decorators';
 import { User as UserType } from "@drill-down/interfaces";
 
 @Controller()
@@ -11,7 +11,7 @@ export class AppController {
     constructor(private readonly appService: AppService) {}
 
     @Get()
-    async rootRequest(@JWTUser() user: UserType): Promise<any> {
+    async rootRequest(@JwtUser() user: UserType): Promise<any> {
         try {
             return await this.appService.crawlTumblrPosts(user);
         } catch (e) {

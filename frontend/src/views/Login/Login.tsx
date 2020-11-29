@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import './Login.scss';
+import { AppService } from '../../services';
 import { isValidEmailAddress } from '../../utils';
 import { logIn } from '../../store/actions';
 
+import './Login.scss';
+import { AppState } from '../../store';
+
 export const Login = () => {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const { token } = useSelector((state: AppState) => state.auth);
+
+    const appService = new AppService();
+    const isAuthenticated = appService.isAuthValid(token);
+
+    if (isAuthenticated) {
+        history.push(AppRoutes.HOME);
+    }
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [emailError, setEmailError] = useState<string | null>();
@@ -18,9 +31,6 @@ export const Login = () => {
 
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
-
-    const history = useHistory();
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if (email === '') {
@@ -71,6 +81,8 @@ export const Login = () => {
             handleSubmit();
         }
     };
+
+    // TODO: validate if already logged in to redirect.
 
     return (
         <React.Fragment>

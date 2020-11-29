@@ -2,7 +2,7 @@ import { AuthState, AuthActionTypes, AuthActions } from '../../types/store/auth.
 import { StorageKeys } from '../../types/storage.types';
 
 const initialState: AuthState = {
-    token: sessionStorage.getItem(StorageKeys.AUTH_TOKEN) || null,
+    token: sessionStorage.getItem(StorageKeys.AUTH_TOKEN),
 };
 
 export const authReducer = (state = initialState, action: AuthActionTypes): AuthState => {

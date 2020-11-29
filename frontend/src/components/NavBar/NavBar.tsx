@@ -1,14 +1,12 @@
 import React from 'react';
-import { Button, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import './NavBar.scss';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { Button, Dropdown, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './NavBar.scss';
 import { AppRoutes } from '../../routes';
 import { AppState } from '../../store';
-import {showToast} from "../../store/actions";
-import {ToastTypes} from "../../types";
+import { showToast, logOut } from '../../store/actions';
+import { ToastTypes } from '../../types';
 
 export const NavBar: React.FC = () => {
     const user = useSelector((store: AppState) => store.user);
@@ -30,7 +28,16 @@ export const NavBar: React.FC = () => {
                     <Nav>
                         <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />} id="basic-nav-dropdown">
                             {user && user.user ? (
-                                <NavDropdown.Item>Logged as {JSON.stringify(user.user.firstName)}</NavDropdown.Item>
+                                <React.Fragment>
+                                    <NavDropdown.Item>{`${user.user.firstName} ${user.user.lastName}`}</NavDropdown.Item>
+                                    <Dropdown.Divider />
+                                    <NavDropdown.Item onClick={() => {
+                                        dispatch(logOut())
+                                    }}>
+                                        <FontAwesomeIcon icon="sign-out-alt" size="lg" className="mr-3"></FontAwesomeIcon>
+                                        Log Out
+                                    </NavDropdown.Item>
+                                </React.Fragment>
                             ) : (
                                 <NavDropdown.Item href={AppRoutes.LOGIN}>Login</NavDropdown.Item>
                             )}
