@@ -36,7 +36,7 @@ export class AppService {
                     console.log(`finished crawling, saving ${currentPosts.length} posts to mongo`);
 
                     for (const customPost of currentPosts) {
-                        await this.postService.createPost({ ...customPost, author: (user as any).id });
+                        await this.postService.createPost({ ...customPost, author: user.username });
                     }
 
                     before = _.last(currentPosts).createdAt;

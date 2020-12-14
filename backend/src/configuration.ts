@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 import * as path from 'path';
-import { BadRequestException } from '@nestjs/common';
-import { User } from "@drill-down/interfaces";
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 export class Configuration {
     public static HTTP_PORT = process.env.HTTP_PORT;
@@ -53,24 +52,39 @@ export class Configuration {
         };
     }
 
-    public static getMulterConfig = (folder: string) => {
+    public static getMulterConfig = (folder: string, fileTypes: string[]) => {
         const acl = 'public-read';
         const bucket = 'drill-down';
+
+        // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
         const s3 = new AWS.S3({ credentials: Configuration.getAWSCredentials() });
-        const allowedExtensions = new Set(['.png', '.jpg', '.jpeg', '.gif']);
 
         return {
             acl,
             s3,
             bucket,
             key: (req, file, cb) => {
-                const { username } = (req as { body: User }).body;
-                const ext = path.extname(file.originalname);
+                const { user, body } = req;
 
-                if (allowedExtensions.has(ext.toLowerCase())) {
-                    return cb(null, `${folder}/${username}/${Date.now()}-${file.originalname}`);
+                const username = user ? user.username : body.username;
+
+                if (!username) {
+                    return cb(new UnauthorizedException('Valid user is required to upload files'));
                 }
-                return cb(new BadRequestException(`Only [${allowedExtensions.values()}] extensions are allowed`));
+
+                const allowedFileTypes = new RegExp(`${fileTypes.join('|')}`);
+                const ext = path.extname(file.originalname).toLowerCase();
+
+                const isExtValid = allowedFileTypes.test(ext);
+                const isMimeValid = allowedFileTypes.test(file.mimetype);
+
+                if (isMimeValid && isExtValid) {
+                    const key = `${username}/${folder}/${Date.now()}-${file.originalname}`;
+                    return cb(null, key);
+                }
+                return cb(
+                    new BadRequestException(`Only [${fileTypes.join(',')}] file types are allowed. MIME: ${file.mimetype}, EXT: ${ext}`)
+                );
             },
         };
     };

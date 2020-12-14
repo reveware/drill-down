@@ -3,26 +3,33 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Dropdown, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavBar.scss';
-import { AppRoutes } from '../../routes';
+import { AppRoutes } from '../../Routes';
 import { AppState } from '../../store';
-import { showToast, logOut } from '../../store/actions';
+import { setToast, logOut } from '../../store/actions';
 import { ToastTypes } from '../../types';
+import { Link } from 'react-router-dom';
 
 export const NavBar: React.FC = () => {
     const user = useSelector((store: AppState) => store.user);
     const dispatch = useDispatch();
     return (
         <div className="nav-bar">
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                 <Navbar.Brand href={AppRoutes.HOME}>Drill Down</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse>
                     <Nav className="mr-auto">
-                        <Nav.Link href={AppRoutes.HOME}>Home</Nav.Link>
+                        <Nav.Link as={Link} to={AppRoutes.HOME}>
+                            Home
+                        </Nav.Link>
                         <NavDropdown title="Starred" id="starred-tags-dropdown">
-                            <NavDropdown.Item href="#tags">Tags</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="#tags">
+                                Tags
+                            </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#people">People</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to={'#people'}>
+                                People
+                            </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>
@@ -31,15 +38,18 @@ export const NavBar: React.FC = () => {
                                 <React.Fragment>
                                     <NavDropdown.Item>{`${user.user.firstName} ${user.user.lastName}`}</NavDropdown.Item>
                                     <Dropdown.Divider />
-                                    <NavDropdown.Item onClick={() => {
-                                        dispatch(logOut())
-                                    }}>
+                                    <NavDropdown.Item
+                                        onClick={() => {
+                                            dispatch(logOut());
+                                        }}>
                                         <FontAwesomeIcon icon="sign-out-alt" size="lg" className="mr-3"></FontAwesomeIcon>
                                         Log Out
                                     </NavDropdown.Item>
                                 </React.Fragment>
                             ) : (
-                                <NavDropdown.Item href={AppRoutes.LOGIN}>Login</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to={AppRoutes.LOGIN}>
+                                    Login
+                                </NavDropdown.Item>
                             )}
                         </NavDropdown>
 
@@ -52,7 +62,7 @@ export const NavBar: React.FC = () => {
                                     variant="light"
                                     onClick={() => {
                                         dispatch(
-                                            showToast({
+                                            setToast({
                                                 type: ToastTypes.SUCCESS,
                                                 content: { title: 'GAHD DAMN', message: 'This is cool' },
                                             })

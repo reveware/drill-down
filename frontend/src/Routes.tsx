@@ -1,17 +1,15 @@
 import React from 'react';
-import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
-import { Home, Login, Register, PostForTag } from './views';
 import { useSelector } from 'react-redux';
-import { AppState } from './store';
-import { JwtPayload } from '@drill-down/interfaces';
-import JwtDecode from 'jwt-decode';
-import moment from 'moment';
+import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import { AppService } from './services';
+import { AppState } from './store';
+import { Home, Login, Register, PostForTag, CreatePost } from './views';
 
 export enum AppRoutes {
-    HOME = '/home',
-    LOGIN = '/login',
     REGISTER = '/register',
+    LOGIN = '/login',
+    CREATE_POST = '/post',
+    HOME = '/home',
     POSTS_FOR_TAG = '/tags/:tag',
 }
 
@@ -20,17 +18,16 @@ export interface AppRouteProps extends RouteProps {
     component: React.ComponentType<any>;
 }
 
-const NotAllowed = () => <Redirect to={AppRoutes.LOGIN} />;
-
 const routes: AppRouteProps[] = [
     { path: AppRoutes.LOGIN, isProtected: false, exact: true, component: Login },
     { path: AppRoutes.REGISTER, isProtected: false, exact: true, component: Register },
     { path: AppRoutes.HOME, isProtected: true, exact: true, component: Home },
     { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, exact: true, component: PostForTag },
+    { path: AppRoutes.CREATE_POST, isProtected: true, exact: true, component: CreatePost},
     { path: '*', isProtected: true, component: Home },
 ];
 
-export const Routes = () => {
+export const Routes: React.FC = () => {
     const { token } = useSelector((state: AppState) => state.auth);
     const appService = new AppService();
     const isAuthenticated = appService.isAuthValid(token);
@@ -40,8 +37,9 @@ export const Routes = () => {
             <Switch>
                 {routes.map((route, i) => {
                     if (route.isProtected && !isAuthenticated) {
-                        return <Route key={i} {...route} component={NotAllowed} />;
+                        return <Redirect key={i} to={AppRoutes.LOGIN} />;
                     }
+
                     return <Route key={i} {...route} />;
                 })}
             </Switch>

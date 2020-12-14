@@ -22,11 +22,7 @@ export class PostService {
     }
 
     public async getPosts(filters?: GetPostsFiltersDTO): Promise<PostDocument[]> {
-        return this.postModel.find(filters as object);
-    }
-
-    public async getPostsByUser(user: UserDocument): Promise<PostDocument[]> {
-        return this.postModel.find({ author: user.id });
+        return this.postModel.find(filters as object).sort('-createdAt').populate('author', 'firstName lastName username avatar');
     }
 
     public async getPostsCountByTag(user: UserDocument): Promise<CountByTag[]> {

@@ -5,7 +5,7 @@ import { Card, Form, Button, Row, Col, Image, InputGroup } from 'react-bootstrap
 import ReactDatePicker from 'react-datepicker';
 import * as _ from 'lodash';
 import { Key } from 'ts-keycode-enum';
-import { AppRoutes } from '../../routes';
+import { AppRoutes } from '../../Routes';
 import { isValidImageType } from '../../utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Register.scss';
@@ -13,26 +13,14 @@ import { createUser } from '../../store/actions';
 import { initialRegisterFormState, registerReducer } from './register.reducer';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppService } from '../../services';
-import { AppState } from '../../store';
 
 export const Register = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const { token } = useSelector((state: AppState) => state.auth);
-
-    const appService = new AppService();
-    const isAuthenticated = appService.isAuthValid(token);
-
-    if (isAuthenticated) {
-        history.push(AppRoutes.HOME);
-    }
-
     const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
-
 
     const handleAvatarPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
@@ -264,7 +252,7 @@ export const Register = () => {
                         <div className="register-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button className="mr-5" variant="secondary" type="button" onClick={handleCancel}>
+                                <Button className="mr-5" variant="info" type="button" onClick={handleCancel}>
                                     Cancel
                                 </Button>
                             </span>
@@ -276,7 +264,7 @@ export const Register = () => {
                                 onMouseLeave={() => {
                                     setIsMouseOverSubmit(false);
                                 }}>
-                                <Button variant="primary" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
+                                <Button variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                     Register
                                 </Button>
                             </span>

@@ -1,3 +1,37 @@
+@import "../../colors";
 .tag-list {
     cursor: pointer;
+}
+.tag-pill {
+    padding: 8px;
+}
+.editable-tag-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background: map-get($colors, "white" );
+    border: 1px solid map-get($colors, "light-grey" );
+    border-radius: 2px;
+    padding: 4px;
+}
+
+.editable-tag-list-tags {
+    width: 100%;
+    margin: 0;
+    padding: 0px;
+    display: inline-flex;
+    flex-wrap: wrap;
+
+    > li {
+        list-style-type: none;
+        margin: 4px;
+        .remove-tag-icon {
+            margin-left: 8px;
+        }
+    }
+}
+
+.editable-tag-list-input,
+.editable-tag-list-input > input {
+    border: none;
 }

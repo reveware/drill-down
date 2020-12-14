@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import * as session from 'express-session';
-
 import * as redis from 'redis';
 import * as connectRedis from 'connect-redis';
 import { AppModule } from './app.module';
 import { Configuration } from './configuration';
 import { HttpExceptionFilter } from './shared/filters';
 import { ValidationPipe } from './shared/pipes';
-import {RedisClient} from "redis";
+import { RedisClient } from 'redis';
 
 const logger = new Logger('server');
 

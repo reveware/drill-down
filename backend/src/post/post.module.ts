@@ -5,9 +5,10 @@ import { PostSchema } from './post.schema';
 import { PostController } from './post.controller';
 import { UserModule } from 'src/user/user.module';
 import { TagController } from './tag.controller';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: 'Post', schema: PostSchema }]), UserModule],
+    imports: [MongooseModule.forFeature([{ name: 'Post', schema: PostSchema }]), UserModule, MulterModule],
     controllers: [PostController, TagController],
     providers: [PostService],
     exports: [PostService],

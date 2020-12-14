@@ -6,12 +6,13 @@ export interface PostsState {
 }
 
 export enum PostsActions {
-    UPDATE_USER_POSTS = 'UPDATE_USER_POSTS',
+    SET_USER_POSTS = 'SET_USER_POSTS',
     UPDATE_POST_COUNT_BY_TAG = 'UPDATE_POST_COUNT_BY_TAG',
+    ADD_USER_POST = 'ADD_USER_POST',
 }
 
-interface updateUserPosts {
-    type: PostsActions.UPDATE_USER_POSTS;
+interface setUserPosts {
+    type: PostsActions.SET_USER_POSTS;
     payload: Post[];
 }
 
@@ -20,5 +21,9 @@ interface updatePostCountByTag {
     payload: CountByTag[];
 }
 
+interface addPost {
+    type: PostsActions.ADD_USER_POST;
+    payload: Post
+}
 
-export type PostsActionTypes = updateUserPosts | updatePostCountByTag;
+export type PostsActionTypes = setUserPosts | addPost | updatePostCountByTag;
