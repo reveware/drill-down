@@ -4,6 +4,7 @@ import moment = require('moment');
 import { PostService } from './post/post.service';
 import * as _ from 'lodash';
 import { Post, User } from "@drill-down/interfaces";
+import { UserDocument } from './user/user.schema';
 
 @Injectable()
 export class AppService {
@@ -36,7 +37,7 @@ export class AppService {
                     console.log(`finished crawling, saving ${currentPosts.length} posts to mongo`);
 
                     for (const customPost of currentPosts) {
-                        await this.postService.createPost({ ...customPost, author: user.username });
+                        await this.postService.createPost({ ...customPost, author: (user as UserDocument).id });
                     }
 
                     before = _.last(currentPosts).createdAt;

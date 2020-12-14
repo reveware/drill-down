@@ -22,9 +22,9 @@ export const App: React.FC = () => {
                     <Router history={history}>
                         <NavBar />
                         <Routes />
+                        <Toast />
+                        <PostCardDetailModal />
                     </Router>
-                    <Toast />
-                    <PostCardDetailModal />
                 </div>
             </Provider>
         </Container>
