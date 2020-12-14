@@ -13,9 +13,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
 import { UserService } from './user.service';
 import { CreateUserDTO, FindByEmailDTO } from '../dto';
+import { Configuration } from 'src/configuration';
 
 @ApiTags('users')
 @Controller('users')
@@ -26,7 +28,11 @@ export class UserController {
     @ApiResponse({ status: HttpStatus.OK, description: 'User created successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error creating user' })
     @ApiResponse({ status: HttpStatus.CONFLICT, description: 'User already exists' })
-    @UseInterceptors(FileInterceptor('avatar'))
+    @UseInterceptors(
+        FileInterceptor('avatar', {
+            storage: multerS3(Configuration.getMulterConfig('profile', ['png', 'jpg', 'jpeg']), []),
+        })
+    )
     async createUser(@Response() res, @UploadedFile() avatar, @Body() user: CreateUserDTO) {
         // FileUploads are not validated in the Pipe
         const avatarS3Location = _.get(avatar, 'location');

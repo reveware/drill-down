@@ -1,8 +1,9 @@
-import { CustomError } from "@drill-down/interfaces";
-import React from "react";
+import { CustomError, Post } from '@drill-down/interfaces';
+import React from 'react';
 
 export enum UiActions {
-    SHOW_TOAST = 'SHOW_TOAST',
+    SET_TOAST = 'SET_TOAST',
+    SET_POST_FOR_DETAILS_MODAL = 'SET_POST_FOR_DETAILS_MODAL',
 }
 
 export enum ToastTypes {
@@ -13,6 +14,7 @@ export enum ToastTypes {
 
 export interface UiState {
     toast: Toast | null;
+    postForDetailsModal: Post | null;
 }
 
 export interface SuccessMessage {
@@ -26,9 +28,14 @@ export interface Toast {
     content: SuccessMessage | CustomError | React.FC;
 }
 
-interface showToast {
-    type: typeof UiActions.SHOW_TOAST;
+interface setToast {
+    type: typeof UiActions.SET_TOAST;
     payload: Toast;
 }
 
-export type UiActionTypes = showToast;
+interface setPostForDetailsModal {
+    type: typeof UiActions.SET_POST_FOR_DETAILS_MODAL;
+    payload: Post | null;
+}
+
+export type UiActionTypes = setToast | setPostForDetailsModal;

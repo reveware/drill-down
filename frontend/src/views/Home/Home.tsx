@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { PostGrid, TagCloud } from '../../components';
+import { FloatingActionsMenu, PostCardGrid, TagCloud } from '../../components';
 import './Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { getUserPosts, getPostsCountByTag } from '../../store/actions';
 import { useHistory } from 'react-router-dom';
-import { AppRoutes } from '../../routes';
+import { AppRoutes } from '../../Routes';
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -15,14 +15,14 @@ export const Home = () => {
 
     const reversed = userPosts.slice(0).reverse();
 
-    useEffect(() => {
-        if (user && user.username) {
+    useEffect(() => {        
+        const isStoreValid = !!(userPosts && postCountByTag);
+        if (user && user.username && !isStoreValid) {
             dispatch(getUserPosts(user.username));
             dispatch(getPostsCountByTag(user.username));
         }
     }, []);
 
-    
     const onTagClicked = (tag: string) => {
         history.push(AppRoutes.POSTS_FOR_TAG.replace(':tag', tag));
     };
@@ -32,10 +32,12 @@ export const Home = () => {
             {postCountByTag && <TagCloud postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />}
 
             <div className="user-posts">
-                <PostGrid id="starred-posts" title="Starred" posts={userPosts} />
+                <PostCardGrid id="latest-posts" title="Latest" posts={userPosts} />
 
-                <PostGrid id="common-posts" title="Common" posts={reversed} />
+                <PostCardGrid id="starred-posts" title="Starred" posts={reversed} />
             </div>
+
+            <FloatingActionsMenu />
         </div>
     );
 };

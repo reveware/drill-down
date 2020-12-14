@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PostGrid, PostCardBanner } from '../../components';
+import { PostCardGrid, PostCardBanner } from '../../components';
 import { Post } from '@drill-down/interfaces';
 
 import './PostForTag.scss';
@@ -29,7 +29,7 @@ export const PostForTag: React.FC = () => {
                     <PostCardBanner title={tag} post={posts[0] as Post} />
                 </div>
 
-                <PostGrid id={`posts-for-${tag}`} title="" posts={posts.slice(1, posts.length)} />
+                <PostCardGrid id={`posts-for-${tag}`} title="" posts={posts.slice(1, posts.length)} />
             </div>
         </React.Fragment>
     );

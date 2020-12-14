@@ -1,0 +1,42 @@
+@import '../../colors';
+
+.custom-photos-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.custom-photos-input-button {
+    margin-right: 8px;
+}
+
+.custom-photos-input-previews {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    > div {
+        height: 150px;
+        margin: 8px;
+
+        position: relative;
+
+        > img {
+            height: 100%;
+        }
+
+        .remove-photo-icon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+            background-color: map-get($colors, 'white');
+            border-radius: 50%;
+            border: 1px solid map-get($colors, 'white');
+            width: 16px;
+            height: 16px;
+            color: map-get($colors, 'black');
+        }
+    }
+}

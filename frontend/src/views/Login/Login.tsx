@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
-import { AppRoutes } from '../../routes';
+import { AppRoutes } from '../../Routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppService } from '../../services';
 import { isValidEmailAddress } from '../../utils';
 import { logIn } from '../../store/actions';
 
 import './Login.scss';
-import { AppState } from '../../store';
 
 export const Login = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const { token } = useSelector((state: AppState) => state.auth);
-
-    const appService = new AppService();
-    const isAuthenticated = appService.isAuthValid(token);
-
-    if (isAuthenticated) {
-        history.push(AppRoutes.HOME);
-    }
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -82,8 +72,6 @@ export const Login = () => {
         }
     };
 
-    // TODO: validate if already logged in to redirect.
-
     return (
         <React.Fragment>
             <Card className="mx-auto mt-5 mb-5 w-50 neon-border">
@@ -123,7 +111,7 @@ export const Login = () => {
                         <div className="login-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button className="mr-5" variant="secondary" type="button" onClick={handleCancel}>
+                                <Button className="mr-5" variant="info" type="button" onClick={handleCancel}>
                                     Cancel
                                 </Button>
                             </span>
@@ -135,7 +123,7 @@ export const Login = () => {
                                 onMouseLeave={() => {
                                     setIsMouseOverSubmit(false);
                                 }}>
-                                <Button variant="primary" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
+                                <Button variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                     Login
                                 </Button>
                             </span>

@@ -8,10 +8,15 @@ export const initialState: PostsState = {
 
 export const postsReducer = (state = initialState, action: PostsActionTypes): PostsState => {
     switch (action.type) {
-        case PostsActions.UPDATE_USER_POSTS: {
+        case PostsActions.SET_USER_POSTS: {
             const userPosts = action.payload as Post[];
             state = { ...state, userPosts };
             break;
+        }
+
+        case PostsActions.ADD_USER_POST: {
+            const post = action.payload as Post;
+            state = { ...state, userPosts: [post, ...state.userPosts] };
         }
 
         case PostsActions.UPDATE_POST_COUNT_BY_TAG: {

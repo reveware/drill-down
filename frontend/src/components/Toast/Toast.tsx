@@ -1,15 +1,21 @@
 import React, { useEffect } from 'react';
-import { toast as toastService } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { toast as toastService, ToastContainer } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { CustomError } from '@drill-down/interfaces';
+import { SuccessMessage, ToastTypes } from '../../types';
+import { AppState } from '../../store';
+import { setToast } from '../../store/actions';
 import './Toast.scss';
-import { CustomError } from "@drill-down/interfaces";
-import {SuccessMessage, ToastTypes} from "../../types";
-import {AppState} from "../../store";
 
 
 export const Toast: React.FC = () => {
+    const dispatch = useDispatch();
     const { toast } = useSelector((state: AppState) => state.ui);
+
+    const onToastClosed = () => {
+        dispatch(setToast(null));
+    };
 
     const formatSuccessMessage = (message: SuccessMessage) => {
         return (
@@ -32,7 +38,6 @@ export const Toast: React.FC = () => {
     };
 
     const formatError = (e: CustomError) => {
-        console.log('formatError', e);
         return (
             <div>
                 <p>{e.message || e.name}</p>
@@ -50,21 +55,21 @@ export const Toast: React.FC = () => {
     useEffect(() => {
         if (toast) {
             if (toast.type === ToastTypes.ERROR) {
-                toastService.error(formatError(toast.content as CustomError));
+                toastService.error(formatError(toast.content as CustomError), { onClose: onToastClosed });
                 return;
             }
 
             if (toast.type === ToastTypes.SUCCESS) {
-                toastService.success(formatSuccessMessage(toast.content as SuccessMessage));
+                toastService.success(formatSuccessMessage(toast.content as SuccessMessage), { onClose: onToastClosed });
                 return;
             }
 
-            if(toast.type === ToastTypes.CUSTOM) {
+            if (toast.type === ToastTypes.CUSTOM) {
                 const component = toast.content;
-                toastService.info(component);
+                toastService.info(component, { onClose: onToastClosed });
             }
         }
     }, [toast]);
 
-    return <React.Fragment />;
+    return <ToastContainer className="toast-container" />;
 };

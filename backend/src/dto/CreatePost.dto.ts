@@ -1,23 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsNotEmpty, IsString, IsObject, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsArray } from 'class-validator';
 import * as _ from 'lodash';
-import { PostTypes, PhotoPost, QuotePost } from "@drill-down/interfaces";
 
-export class CreatePostDTO {
+
+export class CreatePhotoPostDTO {
     @ApiProperty()
     @IsString()
-    @IsIn(_.values(PostTypes))
-    type: PostTypes;
-
-    @ApiProperty()
     @IsNotEmpty()
-    @IsObject()
-    body: PhotoPost | QuotePost; // TODO: properly validate post body by type
-
-    @ApiProperty()
-    @IsArray()
-    @IsNotEmpty()
-    tags: string[];
+    tags: string; // comma separated
 
     @ApiProperty()
     @IsString()

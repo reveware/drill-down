@@ -1,8 +1,8 @@
 import { AppService } from '../../services';
 import { JwtPayload, User } from '@drill-down/interfaces';
 import { ToastTypes, UserActions } from '../../types';
-import { AppRoutes } from '../../routes';
-import { showToast } from './ui.actions';
+import { AppRoutes } from '../../Routes';
+import { setToast } from './ui.actions';
 
 import JwtDecode from 'jwt-decode';
 import { updateAuth } from './auth.actions';
@@ -20,11 +20,11 @@ export const createUser = (user: FormData) => {
                     type: ToastTypes.SUCCESS,
                     content: { title: 'Woo-hoo', message: 'Your user was created!' },
                 };
-                dispatch(showToast(toast));
+                dispatch(setToast(toast));
                 history.push(AppRoutes.LOGIN);
             }
         } catch (e) {
-            dispatch(showToast({ type: ToastTypes.ERROR, content: e }));
+            dispatch(setToast({ type: ToastTypes.ERROR, content: e }));
         }
     };
 };
@@ -44,7 +44,7 @@ export const logIn = (email: string, password: string) => {
             }
             throw new Error(message);
         } catch (e) {
-            dispatch(showToast({ type: ToastTypes.ERROR, content: e }));
+            dispatch(setToast({ type: ToastTypes.ERROR, content: e }));
         }
     };
 };

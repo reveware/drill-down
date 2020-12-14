@@ -1,0 +1,60 @@
+.front,
+.back {
+    min-height: 800px;
+
+    width: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    transform: rotateX(0deg);
+}
+
+.front {
+    z-index: 2;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.flipper {
+    width: 100%;
+    position: relative;
+    transition: 0.5s;
+    transform-style: preserve-3d;
+}
+
+.flip {
+    transform: rotateY(180deg);
+}
+
+.header-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer-origin-info {
+    color: gray;
+    display: flex;
+    flex-direction: column;
+    font-size: x-small;
+    flex-grow: 3;
+}
+
+.footer-actions {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.modal-body {
+    min-height: 70vh;
+}

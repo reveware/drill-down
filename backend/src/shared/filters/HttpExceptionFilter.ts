@@ -26,7 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             errors,
         };
 
-        this.logger.error(`HTTP Exception - code: ${error.code} origin: ${error.origin}: message: ${message}`);
+        this.logger.error(`HTTP Exception - code: ${error.code}, method: ${error.method}, origin: ${error.origin}, message: ${message}`);
 
         response
             .status(status)

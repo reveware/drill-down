@@ -1,6 +1,7 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~react-toastify/dist/ReactToastify.css';
-@import "colors";
+@import 'colors';
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
@@ -18,15 +19,30 @@ h1 {
     font: caption;
     font-size: x-large;
     font-weight: lighter;
-    text-shadow: maroon;
+    text-shadow: 1px 1px 1px map-get($colors, 'maroon');
+}
+
+.hidden {
+    display: none;
 }
 
 // Subtle but annoying
 .form-hint {
     font-size: x-small;
-    color: red;
+    color: map-get($colors, 'red');
 }
 
+.pointer {
+    cursor: pointer;
+}
+
+.button-as-link {
+    color: map-get($colors, 'sky-blue' );
+    border: none;
+    text-decoration: underline;
+    background: none;
+    
+}
 
 @function pickRandomColor() {
     $values: map-values($colors);
@@ -34,8 +50,7 @@ h1 {
     @return nth($values, $index);
 }
 
-
-.neon-border  {
+.neon-border {
     animation-name: neon-border-animation;
     animation-duration: 6s;
     animation-iteration-count: infinite;
@@ -48,15 +63,23 @@ h1 {
     $color6: pickRandomColor();
 
     @keyframes neon-border-animation {
-        0%   {box-shadow: -13px -13px 13px -16px rgba(red($color1), green($color1), blue($color1), 0.5)}
-        20%  {box-shadow: -13px -13px 13px -13px rgba(red($color2), green($color2), blue($color2), 0.3)}
-        40%  {box-shadow: -13px -13px 13px -16px rgba(red($color3), green($color3), blue($color3), 0.5)}
-        60%  {box-shadow: -13px -13px 13px -13px rgba(red($color4), green($color4), blue($color4), 0.3)}
-        80%  {box-shadow: -13px -13px 13px -16px rgba(red($color5), green($color5), blue($color5), 0.5)}
-        100% {box-shadow: -13px -13px 13px -13px rgba(red($color6), green($color6), blue($color6), 0.3)}
+        0% {
+            box-shadow: -13px -13px 13px -16px rgba(red($color1), green($color1), blue($color1), 0.5);
+        }
+        20% {
+            box-shadow: -13px -13px 13px -13px rgba(red($color2), green($color2), blue($color2), 0.3);
+        }
+        40% {
+            box-shadow: -13px -13px 13px -16px rgba(red($color3), green($color3), blue($color3), 0.5);
+        }
+        60% {
+            box-shadow: -13px -13px 13px -13px rgba(red($color4), green($color4), blue($color4), 0.3);
+        }
+        80% {
+            box-shadow: -13px -13px 13px -16px rgba(red($color5), green($color5), blue($color5), 0.5);
+        }
+        100% {
+            box-shadow: -13px -13px 13px -13px rgba(red($color6), green($color6), blue($color6), 0.3);
+        }
     }
 }
-
-
-
-

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Configuration } from '../configuration';
-import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload } from '@drill-down/interfaces';
+import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload, PostTypes, PhotoPost } from '@drill-down/interfaces';
 import { StorageKeys } from '../types';
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -67,6 +67,16 @@ export class AppService {
             return data as CountByTag[];
         } catch (e) {
             throw AppService.makeError('getPostsCountByTag', e);
+        }
+    }
+
+    public async createPhotoPost(post: { photos: File[]; tags: string[]; description: string }): Promise<any> {
+        try {
+            const headers = AppService.getHeaders();
+            const { data } = await axios.post(`${this.url}/posts/photo`, post, { headers });
+            return data as Post;
+        } catch (e) {
+            throw AppService.makeError('createPost', e);
         }
     }
 

@@ -5,5 +5,6 @@ export * from './Post.interface';
 
 
 export enum Providers {
+    REVEWARE = "REVEWARE",
     TUMBLR = "TUMBLR"
 }
