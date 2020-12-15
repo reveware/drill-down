@@ -83,6 +83,7 @@ export class TumblrService {
                 },
                 tags,
                 stars: [],
+                comments: [],
                 createdAt: timestamp,
             };
 

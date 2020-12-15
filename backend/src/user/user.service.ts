@@ -13,7 +13,7 @@ export class UserService {
 
     async createUser(user: CreateUserDTO, avatar: string): Promise<UserDocument> {
         try {
-            const newUserModel = await new this.userModel({ ...user, avatar });
+            const newUserModel = new this.userModel({ ...user, avatar });
             const newUser = await newUserModel.save();
             this.logger.log(`New user created for ${user.email}`);
             return newUser;
