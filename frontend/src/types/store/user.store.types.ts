@@ -1,7 +1,7 @@
-import { User } from "@drill-down/interfaces";
+import { Populated, User } from "@drill-down/interfaces";
 
 export interface UserState {
-    user: User | null;
+    user: Populated<User> | undefined;
     error: Error | null;
 }
 
@@ -11,7 +11,7 @@ export enum UserActions {
 
 interface Login {
     type: typeof UserActions.UPDATE_USER;
-    payload: User | null;
+    payload: Populated<User> | undefined;
 }
 
 export type UserActionTypes = Login;

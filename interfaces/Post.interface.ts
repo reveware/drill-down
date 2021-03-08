@@ -1,11 +1,11 @@
-import { Providers } from ".";
+import { MaybePopulated, Providers } from ".";
 
 export interface Post {
   type: PostTypes;
-  author: string | Author;
+  author: MaybePopulated<string, Author>;
   body: PhotoPost | QuotePost;
-  stars: string[];
-  comments: string[] | Comment[];
+  stars: MaybePopulated<string[], Author[]>;
+  comments: MaybePopulated<string[], Comment[]>;
   tags: string[];
   description?: string;
   provider: Providers;
@@ -21,10 +21,11 @@ export interface Author {
 }
 
 export interface Comment {
-  author: string | Author;
+  author: MaybePopulated<string, Author>;
   postId: string;
   message: string;
   replyTo: null | string;
+  createdAt: number;
 }
 
 export enum PostTypes {

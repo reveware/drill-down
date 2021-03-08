@@ -6,9 +6,10 @@ import { createBrowserHistory } from 'history';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { NavBar, PostCardDetailModal, Toast } from './components';
+import { NavBar } from './components';
 import { Routes } from './Routes';
 import { store } from './store';
+import { ToastContainer } from 'react-toastify';
 
 library.add(far, fas);
 
@@ -22,9 +23,8 @@ export const App: React.FC = () => {
                     <Router history={history}>
                         <NavBar />
                         <Routes />
-                        <Toast />
-                        <PostCardDetailModal />
                     </Router>
+                    <ToastContainer className="toast-container" />
                 </div>
             </Provider>
         </Container>

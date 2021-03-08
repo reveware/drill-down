@@ -1,4 +1,4 @@
-@import "../../colors";
+@import '../../colors';
 .tag-list {
     cursor: pointer;
 }
@@ -9,8 +9,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: map-get($colors, "white" );
-    border: 1px solid map-get($colors, "light-grey" );
+    background: map-get($colors, 'white');
+    border: 1px solid map-get($colors, 'light-grey');
     border-radius: 2px;
     padding: 4px;
 }
@@ -32,6 +32,8 @@
 }
 
 .editable-tag-list-input,
-.editable-tag-list-input > input {
+.editable-tag-list-input:focus,
+.editable-tag-list-input:focus-visible {
     border: none;
+    outline: none;
 }

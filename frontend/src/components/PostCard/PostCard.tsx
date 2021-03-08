@@ -1,26 +1,17 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { PhotoPost, Post, PostTypes } from '@drill-down/interfaces';
+import { PhotoPost, Populated, Post, PostTypes } from '@drill-down/interfaces';
 import './PostCard.scss';
 import { TagList } from '../TagList/TagList';
-import { useDispatch } from 'react-redux';
-import { setPostForDetailsModal } from '../../store/actions';
 import { formatUnixTimestamp } from '../../utils';
 
 interface PostCardProps {
-    post: Post;
+    post: Populated<Post>;
+    onViewDetails: (id: string) => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
-    const { post } = props;
-
-    const dispatch = useDispatch();
-
-  
-
-    const onViewDetails = (post: Post) => {
-        dispatch(setPostForDetailsModal(post));
-    };
+    const { post, onViewDetails } = props;
 
     return (
         <React.Fragment>
@@ -32,7 +23,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                             className="post-card-img"
                             src={
                                 (props.post.body as PhotoPost).urls[0] ||
-                                'https://66.media.tumblr.com/ce59da0b36a695b698e5df2976e0f180/tumblr_pedwbdEEbq1wa84xco1_500.jpg'
+                                'https://66.media.tumblr.com/ce59da0b36a695b698e5df2976e0f180/tumblr_pedwbdEEbq1wa84xco1_500.jpg' //TODO: proper placeholder
                             }
                         />
                     ) : (
@@ -47,7 +38,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                                 <button
                                     className="button-as-link"
                                     onClick={() => {
-                                        onViewDetails(post);
+                                        onViewDetails(post._id);
                                     }}>
                                     View
                                 </button>

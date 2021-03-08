@@ -1,5 +1,5 @@
-import {User} from './User.interface';
-
+import { Populated } from ".";
+import { User } from "./User.interface";
 
 export interface AuthResponse {
   isAuthorized: boolean;
@@ -7,9 +7,8 @@ export interface AuthResponse {
   token: string;
 }
 
-
 export interface JwtPayload {
-  user: Partial<User>,
-  iat: number,
-  exp: number
+  user: Populated<User>;
+  iat: number;
+  exp: number;
 }

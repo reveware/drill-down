@@ -4,13 +4,13 @@ import { Button, Dropdown, Form, FormControl, Nav, Navbar, NavDropdown } from 'r
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavBar.scss';
 import { AppRoutes } from '../../Routes';
-import { AppState } from '../../store';
-import { setToast, logOut } from '../../store/actions';
-import { ToastTypes } from '../../types';
 import { Link } from 'react-router-dom';
+import { RootState } from '../../store/store.type';
+import { logOut } from '../../store';
+import { ToastService } from '../../services/ToastService';
 
 export const NavBar: React.FC = () => {
-    const user = useSelector((store: AppState) => store.user);
+    const { user } = useSelector((store: RootState) => store.auth);
     const dispatch = useDispatch();
     return (
         <div className="nav-bar">
@@ -34,13 +34,13 @@ export const NavBar: React.FC = () => {
                     </Nav>
                     <Nav>
                         <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />} id="basic-nav-dropdown">
-                            {user && user.user ? (
+                            {user ? (
                                 <React.Fragment>
-                                    <NavDropdown.Item>{`${user.user.firstName} ${user.user.lastName}`}</NavDropdown.Item>
+                                    <NavDropdown.Item>{`${user.firstName} ${user.lastName}`}</NavDropdown.Item>
                                     <Dropdown.Divider />
                                     <NavDropdown.Item
                                         onClick={() => {
-                                            dispatch(logOut());
+                                            dispatch(logOut(user));
                                         }}>
                                         <FontAwesomeIcon icon="sign-out-alt" size="lg" className="mr-3"></FontAwesomeIcon>
                                         Log Out
@@ -61,12 +61,7 @@ export const NavBar: React.FC = () => {
                                 <Button
                                     variant="light"
                                     onClick={() => {
-                                        dispatch(
-                                            setToast({
-                                                type: ToastTypes.SUCCESS,
-                                                content: { title: 'GAHD DAMN', message: 'This is cool' },
-                                            })
-                                        );
+                                        ToastService.success({ title: 'GAHD DAMN', message: 'This is cool' });
                                     }}>
                                     Search
                                 </Button>

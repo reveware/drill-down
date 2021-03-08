@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../Routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isValidEmailAddress } from '../../utils';
-import { logIn } from '../../store/actions';
+import { logIn, selectLoggedInUser } from '../../store';
 
 import './Login.scss';
 
 export const Login = () => {
-    const history = useHistory();
     const dispatch = useDispatch();
+    const history = useHistory();
+    const user = useSelector(selectLoggedInUser);
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -21,6 +22,12 @@ export const Login = () => {
 
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (user) {
+            history.push(AppRoutes.HOME);
+        }
+    }, [user]);
 
     useEffect(() => {
         if (email === '') {
@@ -59,11 +66,7 @@ export const Login = () => {
     };
 
     const handleSubmit = () => {
-        dispatch(logIn(email, password));
-    };
-
-    const handleCancel = () => {
-        history.push(AppRoutes.HOME);
+        dispatch(logIn({ email, password }));
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -108,25 +111,17 @@ export const Login = () => {
                             </Form.Text>
                         </Form.Group>
 
-                        <div className="login-form-buttons">
-                            {/* Disabled buttons don't emit events, so wrap it around span */}
-                            <span>
-                                <Button className="mr-5" variant="info" type="button" onClick={handleCancel}>
-                                    Cancel
-                                </Button>
-                            </span>
-
-                            <span
-                                onMouseEnter={() => {
-                                    setIsMouseOverSubmit(true);
-                                }}
-                                onMouseLeave={() => {
-                                    setIsMouseOverSubmit(false);
-                                }}>
-                                <Button variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
-                                    Login
-                                </Button>
-                            </span>
+                        {/* Disabled buttons don't emit events, so wrap it around span */}
+                        <div
+                            onMouseEnter={() => {
+                                setIsMouseOverSubmit(true);
+                            }}
+                            onMouseLeave={() => {
+                                setIsMouseOverSubmit(false);
+                            }}>
+                            <Button block variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
+                                Login
+                            </Button>
                         </div>
                     </Form>
 

@@ -5,6 +5,7 @@ export * from './PostCardBanner/PostCardBanner';
 export * from './TagCloud/TagCloud';
 export * from './TagList/TagList';
 export * from './FloatingActionsMenu/FloatingActionsMenu';
-export * from './Toast/Toast';
 export * from './PostCardDetailModal/PostCardDetailModal';
 export * from './CustomPhotosInput/CustomPhotosInput';
+export * from './Comments/CommentsList';
+export * from './Comments/SingleComment';

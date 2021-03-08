@@ -4,23 +4,21 @@ import { PostCardGrid, PostCardBanner } from '../../components';
 import { Post } from '@drill-down/interfaces';
 
 import './PostForTag.scss';
-import { AppService } from '../../services';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPostsForTag, selectPostsForTag } from '../../store';
+import { RootState } from '../../store/store.type';
 export const PostForTag: React.FC = () => {
     const params = useParams<{ tag: string }>();
-    const [posts, setPosts] = useState<Post[]>([]);
-
     const tag = params.tag;
 
-    const getPostsForTag = async (tag: string) => {
-        const appService = new AppService();
-        const posts = await appService.getPostsForTag(tag);
-        setPosts(posts);
-    };
+    const dispatch = useDispatch();
+    const posts = useSelector((state: RootState) => {
+        return selectPostsForTag(state, tag);
+    });
 
     useEffect(() => {
-        getPostsForTag(tag);
+        dispatch(fetchPostsForTag(tag));
     }, [tag]);
-
 
     return (
         <React.Fragment>

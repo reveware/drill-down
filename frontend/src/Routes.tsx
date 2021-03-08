@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import { AppService } from './services';
-import { AppState } from './store';
+import { RootState } from './store/store.type';
 import { Home, Login, Register, PostForTag, CreatePost } from './views';
 
 export enum AppRoutes {
@@ -23,15 +25,19 @@ const routes: AppRouteProps[] = [
     { path: AppRoutes.REGISTER, isProtected: false, exact: true, component: Register },
     { path: AppRoutes.HOME, isProtected: true, exact: true, component: Home },
     { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, exact: true, component: PostForTag },
-    { path: AppRoutes.CREATE_POST, isProtected: true, exact: true, component: CreatePost},
+    { path: AppRoutes.CREATE_POST, isProtected: true, exact: true, component: CreatePost },
     { path: '*', isProtected: true, component: Home },
 ];
 
 export const Routes: React.FC = () => {
-    const { token } = useSelector((state: AppState) => state.auth);
-    const appService = new AppService();
-    const isAuthenticated = appService.isAuthValid(token);
+    const { token } = useSelector((state: RootState) => state.auth);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(AppService.isAuthValid(token));
 
+    useLayoutEffect(() => {
+        setIsAuthenticated(AppService.isAuthValid(token));
+    }, [token]);
+
+    
     return (
         <React.Fragment>
             <Switch>

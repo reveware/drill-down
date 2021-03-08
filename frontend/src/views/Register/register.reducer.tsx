@@ -1,9 +1,19 @@
 import {isValidEmailAddress, isValidImageType} from "../../utils";
 import moment from "moment";
-import {CreateUserDTO} from "../../dtos/dtos.types";
 
+// TODO: use formik
 export type RegisterFormState = {
-    user: CreateUserDTO;
+    user:  {
+        avatar: File | null ;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+        tagLine: string;
+        dateOfBirth: Date | null;
+        role: string;
+    };
     errors: {
         username: string | null;
         avatar: string | null;
@@ -109,7 +119,7 @@ export const registerReducer = (state: RegisterFormState, action: { type: string
         case 'tagLine':
             const tagLine = action.payload;
             if (tagLine === '') {
-                return { ...state, errors: { ...state.errors, lastName: 'Tag line cannot be empty' } };
+                return { ...state, errors: { ...state.errors, tagLine: 'Tag line cannot be empty' } };
             }
             return { user: { ...state.user, tagLine }, errors: { ...state.errors, tagLine: null } };
 

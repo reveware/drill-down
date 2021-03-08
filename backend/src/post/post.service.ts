@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, CountByTag, Comment } from '@drill-down/interfaces';
+import { Post, CountByTag, Comment, Populated } from '@drill-down/interfaces';
 import { PostDocument } from './post.schema';
 import { UserDocument } from 'src/user/user.schema';
 import * as mongoose from 'mongoose';
@@ -12,6 +12,8 @@ import { CommentDocument } from './comment.schema';
 @Injectable()
 export class PostService {
     private logger = new Logger('PostService');
+    private authorProperties = 'firstName lastName username avatar';
+
     constructor(
         @InjectModel('Post') private postModel: Model<PostDocument>,
         @InjectModel('Comment') private commentModel: Model<CommentDocument>
@@ -19,21 +21,20 @@ export class PostService {
         this.commentModel.createCollection();
     }
 
-    public async createPost(post: Post): Promise<PostDocument> {
+    public async createPost(post: Omit<Post, '_id'>): Promise<Populated<Post>> {
         try {
-            const newPost = new this.postModel(post);
-            return await newPost.save();
+            const newPost = await this.postModel.create(post);
+            return _.first(await this.getPosts({ _id: newPost._id }));
         } catch (e) {
             throw new HttpException(`ERROR creating ${post.type} Post: ${e.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public async getPosts(filters?: mongoose.FilterQuery<PostDocument>): Promise<PostDocument[]> {
-        const authorProperties = 'firstName lastName username avatar';
-        return this.postModel
+    public async getPosts(filters?: mongoose.FilterQuery<PostDocument>): Promise<Populated<Post>[]> {
+        const posts = (await this.postModel
             .find(filters)
             .sort('-createdAt')
-            .populate('author', authorProperties)
+            .populate('author', this.authorProperties)
             .populate({
                 path: 'comments',
                 model: 'Comment',
@@ -41,9 +42,11 @@ export class PostService {
                 populate: {
                     path: 'author',
                     model: 'User',
-                    select: authorProperties,
+                    select: this.authorProperties,
                 },
-            });
+            })) as Populated<Post>[];
+
+        return posts;
     }
 
     public async getPostsCountByTag(user: UserDocument): Promise<CountByTag[]> {
@@ -68,7 +71,7 @@ export class PostService {
         });
     }
 
-    public async createComment(postId: string, comment: Comment): Promise<CommentDocument> {
+    public async createComment(postId: string, comment: Omit<Comment, '_id'>): Promise<Populated<Comment>> {
         // Use transaction to avoid orphan comments
         const session = await this.postModel.db.startSession();
         session.startTransaction();
@@ -87,7 +90,7 @@ export class PostService {
 
             await session.commitTransaction();
 
-            return newComment;
+            return (await newComment.populate('author', this.authorProperties).execPopulate()) as Populated<Comment>;
         } catch (e) {
             this.logger.error('ERROR creating comment: ', e.message);
             await session.abortTransaction();

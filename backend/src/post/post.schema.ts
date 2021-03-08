@@ -1,18 +1,17 @@
 import * as mongoose from 'mongoose';
-import { Post } from "@drill-down/interfaces";
+import { Post } from '@drill-down/interfaces';
 
-const PostDefinition = {
-    // https://stackoverflow.com/questions/18001478/referencing-another-schema-in-mongoose
+const PostDefinition: Record<keyof Post, any> = {
     type: { type: String, required: true },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     body: { type: Object, required: true },
     stars: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
-    comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment', required: true}],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment', required: true }],
     tags: { type: Array, required: true },
     description: { type: String },
-    provider: { type: String, required: false },
+    provider: { type: String, required: true },
     providerId: { type: String, required: false },
-    createdAt: {type: Number, required: true },
+    createdAt: { type: Number, required: true },
 };
 
 export interface PostDocument extends Post, mongoose.Document {}

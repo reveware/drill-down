@@ -66,7 +66,7 @@ export class PostController {
             throw new HttpException(`username ${username} not found, so no Posts.`, HttpStatus.NOT_FOUND);
         }
 
-        const posts = await this.postService.getPosts({ author: user.id });
+        const posts = await this.postService.getPosts({ author: user._id });
         return res.status(HttpStatus.OK).json(posts);
     }
 
@@ -96,6 +96,7 @@ export class PostController {
             stars: [],
             createdAt: moment().unix(),
         });
+
         return res.status(HttpStatus.OK).json(newPost);
     }
 
@@ -108,6 +109,7 @@ export class PostController {
         const newComment = await this.postService.createComment(id, {
             author: user.id,
             postId: id,
+            createdAt: moment().unix(),
             ...comment,
         });
 
