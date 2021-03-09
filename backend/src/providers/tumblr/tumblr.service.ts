@@ -69,7 +69,7 @@ export class TumblrService {
         console.log('tumblrPost', JSON.stringify(tumblrPost));
         if (type === 'photo') {
             const { photos } = tumblrPost;
-            const customPost: Post = {
+            const customPost: Partial<Post> = {
                 provider: Providers.TUMBLR,
                 providerId: id,
                 type: PostTypes.PHOTO,
@@ -83,10 +83,11 @@ export class TumblrService {
                 },
                 tags,
                 stars: [],
+                comments: [],
                 createdAt: timestamp,
             };
 
-            return customPost;
+            return customPost as Post;
         } else {
             throw new Error(`Only mapping photo posts for now. ${type} was given`);
         }

@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Button, Row, Col, Image, InputGroup } from 'react-bootstrap';
@@ -9,18 +9,27 @@ import { AppRoutes } from '../../Routes';
 import { isValidImageType } from '../../utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Register.scss';
-import { createUser } from '../../store/actions';
+
 import { initialRegisterFormState, registerReducer } from './register.reducer';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { createUser, selectLoggedInUser } from '../../store';
+import { CreateUser } from '@drill-down/interfaces';
 
 export const Register = () => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const user = useSelector(selectLoggedInUser);
 
     const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (user) {
+            history.push(AppRoutes.HOME);
+        }
+    }, [user]);
 
     const handleAvatarPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
@@ -46,34 +55,11 @@ export const Register = () => {
     };
 
     const handleSubmit = () => {
+        
         const user = state.user;
-
-        // Avatar file uploads only seem to work with form data
-        const formData = new FormData();
-
-        const keys = Object.keys(user);
-
-        for (const key of keys) {
-            if (key === 'avatar') {
-                // We'll add at the end because multer can't read it.
-                // https://stackoverflow.com/questions/39589022/node-js-multer-and-req-body-empty
-                continue;
-            }
-
-            if (key === 'dateOfBirth') {
-                formData.append(
-                    key,
-                    moment((user as any)[key])
-                        .startOf('day')
-                        .toISOString()
-                );
-            } else {
-                formData.append(key, (user as any)[key]);
-            }
-        }
-        formData.append('avatar', user.avatar);
-
-        dispatch(createUser(formData));
+        const dateOfBirth = moment(user.dateOfBirth).startOf('day').toISOString();
+        
+        dispatch(createUser({...user, dateOfBirth} as CreateUser));
     };
 
     const handleCancel = () => {
@@ -107,7 +93,12 @@ export const Register = () => {
                             <Col>
                                 <div className="avatar">
                                     <label htmlFor="avatar-file">
-                                        <Image id="avatar-photo" className="avatar-photo" src="/images/default-avatar.png" roundedCircle />
+                                        <Image
+                                            id="avatar-photo"
+                                            className="avatar-photo thumbnail"
+                                            src="/images/default-avatar.png"
+                                            roundedCircle
+                                        />
                                     </label>
 
                                     <Form.File

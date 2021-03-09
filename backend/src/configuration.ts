@@ -53,17 +53,16 @@ export class Configuration {
     }
 
     public static getMulterConfig = (folder: string, fileTypes: string[]) => {
-        const acl = 'public-read';
-        const bucket = 'drill-down';
-
         // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
         const s3 = new AWS.S3({ credentials: Configuration.getAWSCredentials() });
 
         return {
-            acl,
             s3,
-            bucket,
+            bucket: process.env.AWS_BUCKET_NAME,
+            acl: 'public-read',
+            serverSideEncryption: 'AES256',
             key: (req, file, cb) => {
+
                 const { user, body } = req;
 
                 const username = user ? user.username : body.username;

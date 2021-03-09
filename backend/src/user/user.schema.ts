@@ -1,11 +1,11 @@
 import { Logger } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from "@drill-down/interfaces";
+import { User, UserRole } from '@drill-down/interfaces';
 
 const logger = new Logger('UserSchema');
 
-const UserDefinition = {
+const UserDefinition: Record<keyof User, any> = {
     username: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -15,7 +15,7 @@ const UserDefinition = {
     dateOfBirth: { type: String, required: true },
     tagLine: String,
     role: { type: String, required: true },
-    friends: { type: Array, required: true },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
     providers: { type: Array, required: true },
 };
 
@@ -27,8 +27,6 @@ export const UserSchema = new mongoose.Schema(UserDefinition, { versionKey: fals
 
 // Hash password with bcrypt before saving
 UserSchema.pre<UserDocument>('save', async function(next) {
-    // TODO: See if you can bind this function to avoid re-assigning 'this'
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const user = this;
 
     // Check if the password is being changed, so we don't re-hash

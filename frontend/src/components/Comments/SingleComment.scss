@@ -1,0 +1,54 @@
+@import '../../colors';
+
+.single-comment {
+    border-left: 1px solid map-get($colors, 'light-grey');
+    display: flex;
+    flex-direction: row;
+    padding: 4px;
+    align-items: flex-start;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+
+.comment-avatar {
+    max-width: 50px;
+    max-height: 50px;
+    object-fit: cover;
+    margin-right: 8px;
+    overflow: hidden;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-content: flex-start;
+}
+
+.comment-message {
+    font-size: small;
+    text-overflow: ellipsis;
+    text-align: justify;
+    margin: 0;
+}
+
+.comment-content-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: small;
+}
+
+.comment-author {
+    font-weight: bolder;
+    margin-right: 4px;
+}
+
+.show-hide-replies {
+    font-size: small;
+}
+
+.comment-reply-button {
+    align-self: flex-end;
+    float: right;
+}

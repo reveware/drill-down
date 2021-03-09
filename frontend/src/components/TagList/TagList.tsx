@@ -7,7 +7,7 @@ import { AppRoutes } from '../../Routes';
 
 import './TagList.scss';
 
-interface TagListProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TagListProps extends React.HTMLAttributes<HTMLDivElement> {
     tags: string[];
     editOptions?: {
         onTagAdded: (tag: string, index: number) => any;
@@ -69,9 +69,9 @@ export const TagList: React.FC<TagListProps> = (props): any => {
                                 </Badge>
                             </li>
                         ))}
-                        <li className="editable-tag-list-input">
+                        <li >
                             <OverlayTrigger trigger="click" placement="bottom-start" overlay={SuggestionsPopover} transition={false}>
-                                <input ref={inputRef} type="text" onKeyDown={handleKeyDown} />
+                                <input className="editable-tag-list-input" ref={inputRef} type="text" onKeyDown={handleKeyDown} />
                             </OverlayTrigger>
                         </li>
                     </ul>

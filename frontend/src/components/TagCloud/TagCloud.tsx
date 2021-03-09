@@ -15,6 +15,10 @@ export const TagCloud: React.FC<TagCloudProps> = (props) => {
 
     const words = _.map(postsCountByTags, (postCount) => ({ text: `#${postCount.tag}`, value: postCount.count }));
 
+    if (_.isEmpty(words)) {
+        return null;
+    }
+
     return (
         <div className="tag-cloud">
             <ReactWordcloud

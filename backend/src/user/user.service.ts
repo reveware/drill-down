@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from "@drill-down/interfaces";
-import { CreateUserDTO } from '../dto';
+import { Populated, Unpopulated, User } from '@drill-down/interfaces';
 import { UserDocument } from './user.schema';
 
 @Injectable()
@@ -11,10 +10,9 @@ export class UserService {
 
     constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
-    async createUser(user: CreateUserDTO, avatar: string): Promise<UserDocument> {
+    async createUser(user: Unpopulated<User>): Promise<UserDocument> {
         try {
-            const newUserModel = await new this.userModel({ ...user, avatar });
-            const newUser = await newUserModel.save();
+            const newUser = await this.userModel.create(user);
             this.logger.log(`New user created for ${user.email}`);
             return newUser;
         } catch (e) {
@@ -34,7 +32,7 @@ export class UserService {
         return this.userModel.findOne({ username });
     }
 
-    public static filterSensitiveData(user: User): User {
+    public static filterSensitiveData(user: Populated<User>): Populated<User> {
         user.password = undefined;
         return user;
     }

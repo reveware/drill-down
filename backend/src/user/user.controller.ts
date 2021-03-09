@@ -18,6 +18,7 @@ import * as _ from 'lodash';
 import { UserService } from './user.service';
 import { CreateUserDTO, FindByEmailDTO } from '../dto';
 import { Configuration } from 'src/configuration';
+import { Providers } from '@drill-down/interfaces';
 
 @ApiTags('users')
 @Controller('users')
@@ -34,12 +35,17 @@ export class UserController {
         })
     )
     async createUser(@Response() res, @UploadedFile() avatar, @Body() user: CreateUserDTO) {
-        // FileUploads are not validated in the Pipe
+        // TODO: FileUploads are not validated in the Pipe
         const avatarS3Location = _.get(avatar, 'location');
         if (_.isNil(avatar) || _.isNil(avatarS3Location)) {
             throw new BadRequestException(['avatar photo is required'], 'Validation Failed');
         }
-        const newUser = await this.userService.createUser(user, avatarS3Location);
+        const newUser = await this.userService.createUser({
+            ...user,
+            avatar: avatarS3Location,
+            friends: [],
+            providers: [Providers.REVEWARE],
+        });
         return res.status(HttpStatus.OK).json({ user: UserService.filterSensitiveData(newUser) } as object);
     }
 

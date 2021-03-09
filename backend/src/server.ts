@@ -8,6 +8,7 @@ import { Configuration } from './configuration';
 import { HttpExceptionFilter } from './shared/filters';
 import { ValidationPipe } from './shared/pipes';
 import { RedisClient } from 'redis';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const logger = new Logger('server');
 
@@ -36,6 +37,14 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     // Add custom HTTP exception filter
     app.useGlobalFilters(new HttpExceptionFilter());
+
+    const swaggerOptions = new DocumentBuilder()
+        .setTitle('DrillDown API')
+        .setDescription('These are the definitions for endpoints used by the Drill Down app.')
+        .setVersion('1.0')
+        .build();
+
+    SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerOptions));
 
     await app.listen(HTTP_PORT, () => {
         logger.log(`Server started listening on port ${HTTP_PORT}`);
