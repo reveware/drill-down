@@ -49,7 +49,7 @@
     "devDependencies": {
         "@types/axios": "0.14.0",
         "@types/bootstrap": "5.0.1",
-        "@types/emoji-mart": "^3.0.4",
+        "@types/emoji-mart": "3.0.4",
         "@types/jest": "24.9.1",
         "@types/jquery": "3.5.4",
         "@types/jwt-decode": "2.2.1",

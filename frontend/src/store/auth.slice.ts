@@ -4,7 +4,8 @@ import JwtDecode from 'jwt-decode';
 import { resetState } from '.';
 import { AppService } from '../services';
 import { ToastService } from '../services/ToastService';
-import { StorageKeys } from '../types';
+import { StorageKeys } from './storage.types';
+
 import { RootState } from './store.type';
 
 type AuthState = { user: null | Populated<User>; token: string | null; isLoading: boolean; error: null | CustomError };

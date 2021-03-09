@@ -1,10 +1,11 @@
 import axios, { AxiosError } from 'axios';
 import { Configuration } from '../configuration';
 import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload, Populated, CreateUser, Comment} from '@drill-down/interfaces';
-import { StorageKeys } from '../types';
+
 import * as _ from 'lodash';
 import moment from 'moment';
 import JwtDecode from 'jwt-decode';
+import { StorageKeys } from '../store/storage.types';
 
 export class AppService {
     private url = Configuration.SERVER_URL;

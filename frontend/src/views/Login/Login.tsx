@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../Routes';

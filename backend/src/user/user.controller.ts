@@ -38,7 +38,7 @@ export class UserController {
         // TODO: FileUploads are not validated in the Pipe
         const avatarS3Location = _.get(avatar, 'location');
         if (_.isNil(avatar) || _.isNil(avatarS3Location)) {
-            throw new BadRequestException(['avatar photo is required hmmm'], 'Validation Failed');
+            throw new BadRequestException(['avatar photo is required'], 'Validation Failed');
         }
         const newUser = await this.userService.createUser({
             ...user,
