@@ -18,7 +18,8 @@
       "**/babel-loader",
       "**/babel-jest",
       "**/eslint**",
-      "**/jest"
+      "**/jest",
+      "**/@types/**"
     ]
   }
 }

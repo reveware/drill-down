@@ -1,13 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import * as session from 'express-session';
-import * as redis from 'redis';
+import { RedisClient } from 'redis';
 import * as connectRedis from 'connect-redis';
 import { AppModule } from './app.module';
 import { Configuration } from './configuration';
 import { HttpExceptionFilter } from './shared/filters';
 import { ValidationPipe } from './shared/pipes';
-import { RedisClient } from 'redis';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const logger = new Logger('server');
@@ -23,7 +22,7 @@ async function bootstrap() {
     app.enableCors();
 
     // Start a server to share session between browsers
-    const redisClient = redis.createClient({ url: redisConfig.redis_url, password: redisConfig.redis_secret }) as any;
+    const redisClient = new RedisClient({ url: redisConfig.redis_url, password: redisConfig.redis_secret });
     app.use(
         session({
             secret: redisConfig.redis_secret,

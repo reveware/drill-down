@@ -1,0 +1,37 @@
+FROM node:14.16.0-alpine as builder
+
+WORKDIR /app
+
+
+ADD backend ./backend
+
+ADD interfaces ./interfaces
+
+COPY package*.json .
+
+RUN ls -a
+
+RUN yarn install
+
+
+# TODO: For some reason the nestjs build javascript is requiring stuff which is in typescript this causes errors with the CommonJS syntax
+# make sure it is transpiling correctly, and that its importing from node_modules and not the interfaces package directly
+
+# https://dev.to/t7yang/typescript-yarn-workspace-monorepo-1pao
+# https://stackoverflow.com/questions/57679322/how-to-use-yarn-workspaces-with-typescript-and-out-folders
+
+RUN cd backend && yarn build
+
+
+FROM node:14.16.0-alpine as production
+
+COPY --from=builder /app/backend/dist ./backend/dist
+
+COPY ./backend/package*.json .
+
+EXPOSE 8080
+
+
+
+CMD ["yarn", "run", "start:prod"]
+
