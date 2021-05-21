@@ -1,10 +1,10 @@
 version: '3.4'
 
 services:
-    mongo:
-        hostname: 'mongodb'
-        container_name: 'mongo'
-        image: 'mongo:latest'
+    mongo-01:
+        hostname: mongo-01
+        container_name: mongo-01
+        image: mongo:latest
         expose:
             - 27017
         ports:
@@ -15,11 +15,8 @@ services:
             - MONGO_INITDB_ROOT_PASSWORD
             - MONGO_USERNAME
             - MONGO_PASSWORD
-            - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
         volumes:
-            - mongodb_data_container:/data/db
+            - mongo_01_data_container:/data/db
             - $PWD/.docker/mongo/replica.key:/data/replica.key
             - $PWD/.docker/mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
             
@@ -30,17 +27,47 @@ services:
                 chmod 400 /data/replica.key
                 chown 999:999 /data/replica.key
                 exec docker-entrypoint.sh $$@     
-        command: "mongod --bind_ip_all --replSet replicaSet01 --keyFile /data/replica.key"
+        command: mongod --bind_ip_all --replSet replicaSet --keyFile /data/replica.key
 
-    # redis:
-    #     container_name: 'redis'
-    #     image: 'redis:alpine'
-    #     ports:
-    #         - '6379:6379'
-    #     environment:
-    #          - REDIS_SECRET
-    #     command: redis-server --requirepass ${REDIS_SECRET}
+    mongo-02:
+        hostname: mongo-02
+        container_name: mongo-02
+        image: mongo:latest
+        expose:
+            - 27017
+        ports:
+            - 27018:27017
+        environment:
+            - MONGO_INITDB_DATABASE
+            - MONGO_INITDB_ROOT_USERNAME
+            - MONGO_INITDB_ROOT_PASSWORD
+            - MONGO_USERNAME
+            - MONGO_PASSWORD
+
+        volumes:
+            - mongo_02_data_container:/data/db
+            - $PWD/.docker/mongo/replica.key:/data/replica.key
+            - $PWD/.docker/mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
+            
+        entrypoint:
+            - bash
+            - -c
+            - |
+                chmod 400 /data/replica.key
+                chown 999:999 /data/replica.key
+                exec docker-entrypoint.sh $$@     
+        command: mongod --bind_ip_all --replSet replicaSet --keyFile /data/replica.key
+        
+    redis:
+        container_name: redis
+        image: redis:alpine
+        ports:
+            - 6379:6379
+        environment:
+            - REDIS_SECRET
+        command: redis-server --requirepass ${REDIS_SECRET}
 
 volumes:
-    mongodb_data_container:
+    mongo_01_data_container:
+    mongo_02_data_container:
             
