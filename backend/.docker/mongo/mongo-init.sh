@@ -22,8 +22,8 @@ mongo -- "$MONGO_INITDB_DATABASE" <<-EOJS
     rs.initiate({
         _id: "replicaSet",
         members: [
-            {_id: 0, host: "mongo-01:27017"},
-            {_id: 1, host: "mongo-02:27017"},
+            {_id: 0, host: "localhost:27017"},
+            {_id: 1, host: "localhost:27018"},
         ]
     })
 EOJS
