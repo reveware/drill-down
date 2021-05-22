@@ -26,6 +26,7 @@ If everything is set up, you should be able to start the apps with:
 - `yarn run start:dev` at the root of the `/backend` folder
 - `yarn run start`  at the root of the `/frontend` folder
 
+If you have errors connecting to the database when you start the backend project, you might need to add entries in your `/etc/hosts` file for the replicas hostnames (mongo-01, mongo-02), pointing to your local address (127.0.0.1)
 
 ## Contributing
 
