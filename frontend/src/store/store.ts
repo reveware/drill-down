@@ -1,6 +1,5 @@
 import { configureStore, combineReducers, createAction } from '@reduxjs/toolkit';
 import { authReducer, usersReducer, postsReducer } from '.';
-import { RootState } from './store.type';
 
 const combinedReducers = combineReducers({
     auth: authReducer,

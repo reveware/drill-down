@@ -1,12 +1,12 @@
 import { CustomError, JwtPayload, Populated, User } from '@drill-down/interfaces';
-import { createSelector, createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
+import { createSelector, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import JwtDecode from 'jwt-decode';
 import { resetState } from '.';
 import { AppService } from '../services';
 import { ToastService } from '../services/ToastService';
 import { StorageKeys } from './storage.types';
 
-import { RootState } from './store.type';
+import { AppState } from './store.type';
 
 type AuthState = { user: null | Populated<User>; token: string | null; isLoading: boolean; error: null | CustomError };
 
@@ -69,4 +69,4 @@ const authSlice = createSlice({
 
 export const { reducer: authReducer } = authSlice;
 
-export const selectLoggedInUser = createSelector([(state: RootState) => state.auth.user], (user) => user);
+export const selectLoggedInUser = createSelector([(state: AppState) => state.auth.user], (user) => user);

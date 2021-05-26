@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import { AppService } from './services';
-import { RootState } from './store/store.type';
+import { AppState } from './store/store.type';
 import { Home, Login, Register, PostForTag, CreatePost } from './views';
+import { UserProfile } from './views/UserProfile/UserProfile';
 
 export enum AppRoutes {
     REGISTER = '/register',
@@ -13,6 +14,7 @@ export enum AppRoutes {
     CREATE_POST = '/post',
     HOME = '/home',
     POSTS_FOR_TAG = '/tags/:tag',
+    USER_PROFILE = '/user/:username'
 }
 
 export interface AppRouteProps extends RouteProps {
@@ -26,11 +28,12 @@ const routes: AppRouteProps[] = [
     { path: AppRoutes.HOME, isProtected: true, exact: true, component: Home },
     { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, exact: true, component: PostForTag },
     { path: AppRoutes.CREATE_POST, isProtected: true, exact: true, component: CreatePost },
+    { path: AppRoutes.USER_PROFILE, isProtected: true, exact: true, component: UserProfile },
     { path: '*', isProtected: true, component: Home },
 ];
 
 export const Routes: React.FC = () => {
-    const { token } = useSelector((state: RootState) => state.auth);
+    const { token } = useSelector((state: AppState) => state.auth);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(AppService.isAuthValid(token));
 
     useLayoutEffect(() => {

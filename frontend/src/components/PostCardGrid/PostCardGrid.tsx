@@ -2,7 +2,7 @@ import React from 'react';
 import { PostCard, PostCardDetailModal } from '..';
 import { Col, Row } from 'react-bootstrap';
 import './PostCardGrid.scss';
-import '../../index.scss';
+import '../../styles/index.scss';
 import { useState } from 'react';
 import { Populated, Post } from '@drill-down/interfaces';
 

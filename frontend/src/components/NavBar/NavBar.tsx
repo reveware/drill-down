@@ -5,12 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavBar.scss';
 import { AppRoutes } from '../../Routes';
 import { Link } from 'react-router-dom';
-import { RootState } from '../../store/store.type';
+import { AppState } from '../../store/store.type';
 import { logOut } from '../../store';
 import { ToastService } from '../../services/ToastService';
 
 export const NavBar: React.FC = () => {
-    const { user } = useSelector((store: RootState) => store.auth);
+    const { user } = useSelector((store: AppState) => store.auth);
     const dispatch = useDispatch();
     return (
         <div className="nav-bar">

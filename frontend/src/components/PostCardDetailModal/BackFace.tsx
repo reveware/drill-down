@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostCardDetailModal.scss';
@@ -8,6 +8,8 @@ import { Post, Comment, Populated } from '@drill-down/interfaces';
 import { CommentsList } from '../Comments/CommentsList';
 import { useDispatch } from 'react-redux';
 import { createComment } from '../../store';
+import { history } from '../../App';
+import { AppRoutes } from '../../Routes';
 
 interface BackFaceProps {
     post: Populated<Post>;
@@ -54,16 +56,18 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                                 setReplyingTo(comment);
                             }}
                             onAuthorClick={(author: string) => {
-                                alert('viewing profile: ' + author);
+                              history.push(AppRoutes.USER_PROFILE.replace(':username', author))
                             }}
                         />
 
                         <div className="leave-a-comment">
                             <Formik onSubmit={() => {}} validationSchema={CommentSchema} validateOnMount initialValues={{ message: '' }}>
-                                {({ values, errors, handleChange, handleBlur, isValid, touched, resetForm }) => (
+                                {(props: FormikValues) => {
+                                   const { values, errors, handleChange, handleBlur, isValid, touched, resetForm } = props;
+                                 return (
                                     <Form
                                         noValidate
-                                        onSubmit={(e) => {
+                                        onSubmit={(e: React.FormEvent) => {
                                             e.preventDefault();
                                             e.stopPropagation();
                                         }}>
@@ -95,7 +99,7 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                                             </Button>
                                         </Form.Group>
                                     </Form>
-                                )}
+                                )}}
                             </Formik>
                         </div>
                     </div>
@@ -104,7 +108,7 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                     <div className="footer-origin-info">
                         <span>{`Starred ${post.stars.length} times`}</span>
                     </div>
-                    <FontAwesomeIcon className="pointer" icon="star" size="lg" onClick={handlePostStarred} />
+                    <FontAwesomeIcon className="pointer" icon={['far', "star"]} size="lg" onClick={handlePostStarred} />
                 </div>
             </div>
         </div>

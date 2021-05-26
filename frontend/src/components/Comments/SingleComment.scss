@@ -1,20 +1,21 @@
-@import '../../colors';
+@import '../../styles/colors.scss';
 
 .single-comment {
-    border-left: 1px solid map-get($colors, 'light-grey');
+    border-left: 1px solid $light-grey;
     display: flex;
     flex-direction: row;
     padding: 4px;
     align-items: flex-start;
     justify-content: center;
     justify-content: space-evenly;
-}
+ }
 
 .comment-avatar {
     max-width: 50px;
     max-height: 50px;
     object-fit: cover;
     margin-right: 8px;
+    margin-top: 4px;
     overflow: hidden;
 }
 
@@ -27,9 +28,6 @@
 
 .comment-message {
     font-size: small;
-    text-overflow: ellipsis;
-    text-align: justify;
-    margin: 0;
 }
 
 .comment-content-header {

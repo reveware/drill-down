@@ -23,7 +23,7 @@ import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { GetPostsFiltersDTO, FindByUsernameDTO, CreatePhotoPostDTO, LeaveCommentDTO, FindByObjectId } from '../dto';
+import { GetPostsFiltersDTO, CreatePhotoPostDTO, LeaveCommentDTO, FindByObjectId } from '../dto';
 import { PostService } from './post.service';
 import { UserService } from 'src/user/user.service';
 import { JwtUser } from 'src/shared/decorators';
@@ -58,8 +58,7 @@ export class PostController {
     @ApiResponse({ status: HttpStatus.OK, description: 'User posts retrieved successfully' })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found, so no Posts' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving Posts' })
-    async getUserPosts(@Response() res, @Param() param: FindByUsernameDTO) {
-        const username = param.username;
+    async getUserPosts(@Response() res, @Param('username') username: string) {
         const user = await this.userService.findUserByUsername(username);
 
         if (!user) {

@@ -46,6 +46,12 @@ export class AppService {
         return data;
     }
 
+    public async fetchUserByUsername(username: string): Promise<Populated<User>> {
+        const headers = AppService.getHeaders();
+        const { data } = await axios.get(`${this.url}/users/${username}`, { headers });
+        return data.user;
+    }
+
     public async getUserPosts(username: string): Promise<Populated<Post>[]> {
         const headers = AppService.getHeaders();
         const { data } = await axios.get(`${this.url}/posts/${username}`, { headers });

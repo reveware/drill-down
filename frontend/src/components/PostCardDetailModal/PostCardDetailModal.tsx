@@ -25,6 +25,10 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
         });
 
         modal.modal('show');
+
+        return function cleanup() {
+            handleHide()
+        }
     }, [post]);
 
     useEffect(() => {

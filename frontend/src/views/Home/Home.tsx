@@ -4,7 +4,7 @@ import './Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { AppRoutes } from '../../Routes';
-import { RootState } from '../../store/store.type';
+import { AppState } from '../../store/store.type';
 import { fetchPostsForUser, selectLoggedInUser, selectPostsByCurrentUser } from '../../store';
 import { useState } from 'react';
 import { CountByTag } from '@drill-down/interfaces';
@@ -16,7 +16,7 @@ export const Home = () => {
 
     const user = useSelector(selectLoggedInUser);
 
-    const isLoading = useSelector((state: RootState) => state.posts.isLoading);
+    const isLoading = useSelector((state: AppState) => state.posts.isLoading);
     const userPosts = useSelector(selectPostsByCurrentUser);
 
     const [postCountByTag, setPostCountByTag] = useState<CountByTag[]>([]);

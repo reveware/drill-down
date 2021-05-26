@@ -9,3 +9,4 @@ export * from './PostCardDetailModal/PostCardDetailModal';
 export * from './CustomPhotosInput/CustomPhotosInput';
 export * from './Comments/CommentsList';
 export * from './Comments/SingleComment';
+export * from './TextBox/TextBox';

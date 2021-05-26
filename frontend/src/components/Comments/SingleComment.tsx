@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Image, Collapse } from 'react-bootstrap';
 import { Populated, Comment } from '@drill-down/interfaces';
 import { formatUnixTimestamp } from '../../utils';
-import { CommentsList } from './CommentsList';
 
 import './SingleComment.scss';
 import _ from 'lodash';
+import { TextBox } from '../TextBox/TextBox';
 
 interface SingleCommentProps {
     comment: Populated<Comment>;
@@ -15,20 +15,8 @@ interface SingleCommentProps {
 }
 export const SingleComment: React.FC<SingleCommentProps> = (props) => {
     const { comment, allComments, onLeaveReplyClick, onAuthorClick } = props;
-    const maxLenght = 150;
-    const shouldCollapse = comment.message.length > maxLenght;
-
-    const trimmedMessage = comment.message.substr(0, maxLenght);
-    const remainingMessage = comment.message.substr(maxLenght, comment.message.length);
-
-    const [isShowingTrimmedMessage, setIsShowingTrimmedMessage] = useState<boolean>(false);
-
     const replies = _.filter(allComments, (possibleReply) => possibleReply.replyTo === comment._id);
     const [isShowingReplies, setIsShowingReplies] = useState<boolean>(replies.length <= 3);
-
-
-
-    
 
     return (
         <React.Fragment>
@@ -54,19 +42,12 @@ export const SingleComment: React.FC<SingleCommentProps> = (props) => {
                         </span>
                         <span className="text-muted">{formatUnixTimestamp(comment.createdAt)}</span>
                     </div>
-                    <p className="comment-message">
-                        <span>{trimmedMessage}</span>
-                        <Collapse in={isShowingTrimmedMessage}>
-                            <span>{remainingMessage}</span>
-                        </Collapse>
-                        <span
-                            className={shouldCollapse ? 'link' : 'hidden'}
-                            onClick={() => {
-                                setIsShowingTrimmedMessage(!isShowingTrimmedMessage);
-                            }}>
-                            {isShowingTrimmedMessage ? '...less' : '...more'}
-                        </span>
-                    </p>
+
+                    <TextBox
+                    className={"comment-message"}
+                    text={comment.message} 
+                    maxLength={150} 
+                    />
 
                     <div>
                         {replies.length > 0 && (
@@ -88,20 +69,20 @@ export const SingleComment: React.FC<SingleCommentProps> = (props) => {
                     </div>
 
                     <div className="comment-replies">
-                            <Collapse in={isShowingReplies}>
-                                <div>
-                                    {replies.map((reply) => (
-                                        <SingleComment
-                                            comment={reply}
-                                            allComments={allComments}
-                                            onAuthorClick={onAuthorClick}
-                                            onLeaveReplyClick={onLeaveReplyClick}
-                                        />
-                                    ))}
-                                </div>
-                            </Collapse>
-                        </div>
-
+                        <Collapse in={isShowingReplies}>
+                            <div>
+                                {replies.map((reply) => (
+                                    <SingleComment
+                                        key={reply._id}
+                                        comment={reply}
+                                        allComments={allComments}
+                                        onAuthorClick={onAuthorClick}
+                                        onLeaveReplyClick={onLeaveReplyClick}
+                                    />
+                                ))}
+                            </div>
+                        </Collapse>
+                    </div>
                 </div>
             </div>
         </React.Fragment>

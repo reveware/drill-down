@@ -1,7 +1,9 @@
+@import "../../styles/colors";
+
 .post-card-grid {
     flex: 1;
     margin: 8px;
     padding: 16px;
-    background-color: #fafafa;
-    border: 1px solid lightgray;
+    background-color: $white;
+    border: 1px solid $light-grey;
 }
