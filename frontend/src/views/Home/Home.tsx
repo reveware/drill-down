@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { AppRoutes } from '../../Routes';
 import { AppState } from '../../store/store.type';
-import { fetchPostsForUser, selectLoggedInUser, selectPostsByCurrentUser } from '../../store';
+import { fetchPostsForUser, selectLoggedInUser, selectPostsByUser } from '../../store';
 import { useState } from 'react';
 import { CountByTag } from '@drill-down/interfaces';
 import { AppService } from '../../services';
@@ -17,7 +17,7 @@ export const Home = () => {
     const user = useSelector(selectLoggedInUser);
 
     const isLoading = useSelector((state: AppState) => state.posts.isLoading);
-    const userPosts = useSelector(selectPostsByCurrentUser);
+    const userPosts = useSelector((state: AppState)=> selectPostsByUser(state, user ? user.username : ""));
 
     const [postCountByTag, setPostCountByTag] = useState<CountByTag[]>([]);
 
@@ -54,11 +54,11 @@ export const Home = () => {
 
     return (
         <div className="home-view">
-            <TagCloud postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />
+            <TagCloud className="tag-cloud neon-border" postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />
             <div className="user-posts">
-                <PostCardGrid id="latest-posts" title="Latest" posts={userPosts} />
+                <PostCardGrid className="latests-posts neon-border" title="Latest" posts={userPosts} />
 
-                {<PostCardGrid id="starred-posts" title="Starred" posts={reversed} />}
+                {<PostCardGrid className="starred-posts neon-border" title="Starred" posts={reversed} />}
             </div>
             <FloatingActionsMenu />
         </div>

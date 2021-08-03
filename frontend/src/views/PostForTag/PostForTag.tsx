@@ -27,7 +27,7 @@ export const PostForTag: React.FC = () => {
                     <PostCardBanner title={tag} post={posts[0] as Post} />
                 </div>
 
-                <PostCardGrid id={`posts-for-${tag}`} title="" posts={posts.slice(1, posts.length)} />
+                <PostCardGrid posts={posts.slice(1, posts.length)} />
             </div>
         </React.Fragment>
     );

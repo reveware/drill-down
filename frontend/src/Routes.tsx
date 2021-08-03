@@ -36,16 +36,11 @@ export const Routes: React.FC = () => {
     const { token } = useSelector((state: AppState) => state.auth);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(AppService.isAuthValid(token));
 
-    useLayoutEffect(() => {
-        setIsAuthenticated(AppService.isAuthValid(token));
-    }, [token]);
-
-    
     return (
         <React.Fragment>
             <Switch>
                 {routes.map((route, i) => {
-                    if (route.isProtected && !isAuthenticated) {
+                    if (route.isProtected && !AppService.isAuthValid(token)) {
                         return <Redirect key={i} to={AppRoutes.LOGIN} />;
                     }
 

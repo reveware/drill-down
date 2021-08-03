@@ -1,13 +1,22 @@
 .post-card {
-    flex: 1;
-    width: 100%;
-    max-width: 768px;
-    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px;
+    margin: 0 auto;
+
+}
+
+.post-card-img {
+    object-fit: cover;
+    flex-grow: 1;
 }
 
 .post-card-tags {
     width: 100%;
     font-size: xx-small;
+    flex-wrap: wrap;
+    word-wrap: break-word;
 }
 
 .post-card-detail {
@@ -15,10 +24,9 @@
     flex-direction: row;
     justify-content: space-between;
     margin-top: 4px;
+
     > span {
         font-size: small;
         font-weight: lighter;
     }
 }
-
-

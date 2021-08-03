@@ -1,19 +1,19 @@
 import React from 'react';
 import { PostCard, PostCardDetailModal } from '..';
-import { Col, Row } from 'react-bootstrap';
 import './PostCardGrid.scss';
 import '../../styles/index.scss';
 import { useState } from 'react';
 import { Populated, Post } from '@drill-down/interfaces';
+import { Row, Col } from 'react-bootstrap';
 
 interface PostCardGridProps extends React.HTMLAttributes<HTMLDivElement> {
-    id: string;
-    title: string;
+    title?: string;
     posts: Populated<Post>[];
+    className?: string;
 }
 
 export const PostCardGrid: React.FC<PostCardGridProps> = (props) => {
-    const { title, posts, id, className } = props;
+    const { title, posts, className } = props;
     const [selectedIdForDetails, setSelectedIdForDetails] = useState<string | null>(null);
 
     const onViewDetails = (id: string) => {
@@ -36,7 +36,7 @@ export const PostCardGrid: React.FC<PostCardGridProps> = (props) => {
 
     return (
         <React.Fragment>
-            <div id={id} className={`post-card-grid ${className} neon-border`}>
+            <div className={`post-card-grid ${className} neon-border`}>
                 <h1>{title}</h1>
                 <Row>
                     {posts.map((post, i) => {

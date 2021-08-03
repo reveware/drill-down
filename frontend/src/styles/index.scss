@@ -1,6 +1,6 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~react-toastify/dist/ReactToastify.css';
-@import './colors.scss';
+@import './colors';
 
 
 body {
@@ -9,6 +9,7 @@ body {
         'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #f5f5fc;
 }
 
 code {

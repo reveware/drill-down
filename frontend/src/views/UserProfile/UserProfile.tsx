@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { Button, Card, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { TextBox } from '../../components';
-import { fetchUserById, selectLoggedInUser, selectUserByUsername } from '../../store';
+import { PostCardGrid, TextBox } from '../../components';
+import { fetchPostsForUser, fetchUserById, selectLoggedInUser, selectPostsByUser, selectUserByUsername } from '../../store';
 import { AppState } from '../../store/store.type';
 import './UserProfile.scss';
 
@@ -17,9 +17,11 @@ export const UserProfile: React.FC = () => {
     const currentUser = useSelector(selectLoggedInUser);
     const user = useSelector((state: AppState) => selectUserByUsername(state, username));
     const { isLoading, error } = useSelector((state: AppState) => state.users);
+    const posts = useSelector((state: AppState) => selectPostsByUser(state, username));
 
     useEffect(() => {
         dispatch(fetchUserById(username));
+        dispatch(fetchPostsForUser(username));
     }, []);
 
     if (isLoading) {
@@ -74,6 +76,10 @@ export const UserProfile: React.FC = () => {
                                     </div>
                                 </div>
                             </Card>
+
+                            <div className="user-profile-posts-overview">
+                                <PostCardGrid posts={posts} />
+                            </div>
                         </div>
                     ) : (
                         <div>Hmm, we got nothing on {username} </div>

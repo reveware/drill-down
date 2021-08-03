@@ -1,17 +1,19 @@
 import React from 'react';
 import { CountByTag } from '@drill-down/interfaces';
-import ReactWordcloud from 'react-wordcloud';
-import * as _ from 'lodash';
 
+import * as _ from 'lodash';
+import { Card } from 'react-bootstrap';
 import './TagCloud.scss';
+
 
 interface TagCloudProps {
     postsCountByTags: CountByTag[];
-    onTagClicked: (tag: string) => any;
+    onTagClicked: (tag: string) => void;
+    className?: string;
 }
 
 export const TagCloud: React.FC<TagCloudProps> = (props) => {
-    const { postsCountByTags, onTagClicked } = props;
+    const { postsCountByTags, onTagClicked, className } = props;
 
     const words = _.map(postsCountByTags, (postCount) => ({ text: `#${postCount.tag}`, value: postCount.count }));
 
@@ -20,8 +22,8 @@ export const TagCloud: React.FC<TagCloudProps> = (props) => {
     }
 
     return (
-        <div className="tag-cloud">
-            <ReactWordcloud
+        <Card className={className ?? ""}>
+            {/* <ReactWordcloud
                 words={words}
                 maxWords={80}
                 callbacks={{
@@ -37,7 +39,7 @@ export const TagCloud: React.FC<TagCloudProps> = (props) => {
                     scale: 'sqrt',
                     fontSizes: [10, 50],
                 }}
-            />
-        </div>
+            /> */}
+        </Card>
     );
 };

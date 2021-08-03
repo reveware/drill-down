@@ -13,23 +13,25 @@ import './Register.scss';
 import { initialRegisterFormState, registerReducer } from './register.reducer';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { createUser, selectLoggedInUser } from '../../store';
+import { createUser } from '../../store';
 import { CreateUser } from '@drill-down/interfaces';
+import { AppService } from '../../services';
+import { AppState } from '../../store/store.type';
 
 export const Register = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const user = useSelector(selectLoggedInUser);
+    const { token } = useSelector((state: AppState) => state.auth);
 
     const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
 
     useEffect(() => {
-        if (user) {
+        if (AppService.isAuthValid(token)) {
             history.push(AppRoutes.HOME);
         }
-    }, [user]);
+    }, [token]);
 
     const handleAvatarPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;

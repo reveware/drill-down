@@ -1,11 +1,4 @@
-import {
-    createEntityAdapter,
-    createAsyncThunk,
-    createSlice,
-    EntityState,
-    createSelector,
-    PayloadAction,
-} from '@reduxjs/toolkit';
+import { createEntityAdapter, createAsyncThunk, createSlice, EntityState, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { CustomError, Populated, Post } from '@drill-down/interfaces';
 import { history } from '../App';
 import { AppRoutes } from '../Routes';
@@ -133,13 +126,9 @@ export const { setSelectedPost } = postsSlice.actions;
 
 export const { selectAll: selectAllPosts, selectById: selectPostById } = postsAdapter.getSelectors((state: AppState) => state.posts);
 
-export const selectPostsByCurrentUser = createSelector([selectAllPosts, selectLoggedInUser], (posts, currentUser) => {
-    if (currentUser) {
-        return posts.filter((post) => post.author.username === currentUser.username);
-    }
-
-    return [];
-});
+export const selectPostsByUser = createSelector([selectAllPosts, (state: AppState, username: string) => username], (posts, username) =>
+    posts.filter((post) => post.author.username === username)
+);
 
 export const selectPostsForTag = createSelector([selectAllPosts, (state: AppState, tag: string) => tag], (posts, tag) =>
     posts.filter((post) => post.tags.includes(tag))
