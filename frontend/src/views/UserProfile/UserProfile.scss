@@ -3,6 +3,27 @@
 
 .user-profile {
     position: relative;
+
+    @include mobile { 
+
+        .user-profile-content {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            border: 1px solid red;
+
+            > div {
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .user-profile-content-card {
+                margin-top: 16px;
+            }
+        }
+
+    }
 }
 
 .user-profile-masthead-photo {
@@ -15,84 +36,24 @@
     }
 }
 
-.user-profile-panel {
+.user-profile-content {
     position: absolute;
-    width: 300px;
-    top: 100px;
-    left: 30px;
     display: flex;
-    flex-direction: column;
-
-    .user-profile-photo {
-        height: 300px;
-
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-    }
-
-    .user-profile-details {
-        padding: 8px;
-
-        .user-profile-stats {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            margin-bottom: 8px;
-            margin-top: 8px;
-        }
-
-        .user-profile-actions {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            font-size: small;
-
-            .action-icon {
-                color: $dark-blue;
-                margin-right: 4px;
-            }
-        }
-    }
-
-    @include mobile {
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-        flex-direction: row;
-        justify-content: space-evenly;
-        width: 80%;
-
-        .user-profile-details {
-            display: flex;
-            flex-direction: column;
-            min-width: fit-content;
-
-            .user-profile-stats {
-                margin-bottom: auto;
-            }
-
-            .user-profile-actions {
-                justify-self: self-end;
-                .action-icon {
-                    font-size: x-large;
-                }
-                .icon-label {
-                    display: none;
-                }
-            }
-        }
-    }
+    flex-direction: row;
+    width: 100%;
+    top: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
+.user-profile-content-card {
 
-.user-profile-posts-overview {
-    display: block;
-    border: 1px solid red;
-
-    margin: 0 auto;
+    width: 100%;
+    margin-left: 40px;
+    margin-top: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+    .user-profile-tabs {
+      margin-bottom: 10px;
+    }
 }

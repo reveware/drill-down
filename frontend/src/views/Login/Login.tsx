@@ -114,7 +114,7 @@ export const Login = () => {
                         </Form.Group>
 
                         {/* Disabled buttons don't emit events, so wrap it around span */}
-                        <div
+                        <span
                             onMouseEnter={() => {
                                 setIsMouseOverSubmit(true);
                             }}
@@ -124,7 +124,7 @@ export const Login = () => {
                             <Button block variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                 Login
                             </Button>
-                        </div>
+                        </span>
                     </Form>
 
                     <hr />

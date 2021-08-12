@@ -1,0 +1,77 @@
+@import '../../styles/colors';
+@import '../../styles/media-queries';
+
+.user-overview-card{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+
+    .user-profile-photo {
+        height: 300px;
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .user-profile-details {
+        padding: 8px;
+
+        .user-profile-stats {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+
+        .user-profile-actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: small;
+
+            > div {
+                min-width: max-content;
+                margin-right: 4px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            .action-icon {
+                color: $dark-blue;
+                margin-right: 4px;
+            }
+        }
+    }
+
+    @include mobile {
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 80%;
+
+        .user-profile-details {
+            display: flex;
+            flex-direction: column;
+            min-width: fit-content;
+
+            .user-profile-stats {
+                margin-bottom: auto;
+            }
+
+            .user-profile-actions {
+                justify-self: self-end;
+                .action-icon {
+                    font-size: x-large;
+                }
+                .icon-label {
+                    display: none;
+                }
+            }
+        }
+    }
+}
