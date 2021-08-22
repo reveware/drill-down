@@ -1,7 +1,17 @@
 @import '../../styles/colors';
+
 .tag-list {
+    font-size: xx-small;
+    word-wrap: break-word;
     cursor: pointer;
+    color: $light-grey;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+   -webkit-line-clamp: 2;
+   -webkit-box-orient: vertical;
 }
+
 .tag-pill {
     padding: 8px;
 }

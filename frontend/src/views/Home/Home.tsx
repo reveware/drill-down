@@ -17,7 +17,7 @@ export const Home = () => {
     const user = useSelector(selectLoggedInUser);
 
     const isLoading = useSelector((state: AppState) => state.posts.isLoading);
-    const userPosts = useSelector((state: AppState)=> selectPostsByUser(state, user ? user.username : ""));
+    const userPosts = useSelector((state: AppState) => selectPostsByUser(state, user ? user.username : ''));
 
     const [postCountByTag, setPostCountByTag] = useState<CountByTag[]>([]);
 
@@ -56,9 +56,18 @@ export const Home = () => {
         <div className="home-view">
             <TagCloud className="tag-cloud neon-border" postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />
             <div className="user-posts">
-                <PostCardGrid className="latests-posts neon-border" title="Latest" posts={userPosts} />
+                <PostCardGrid 
+                title="Latest Posts" 
+                className="latest-posts neon-border"
+                posts={userPosts} 
+                postSize="md"
+                />
 
-                {<PostCardGrid className="starred-posts neon-border" title="Starred" posts={reversed} />}
+                <PostCardGrid 
+                title="starred Posts" 
+                className="neon-border" 
+                posts={reversed}
+                 />
             </div>
             <FloatingActionsMenu />
         </div>

@@ -44,12 +44,12 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
         <div className="back">
             <div className="modal-content">
                 <div className="modal-header">
-                    <div className="header-icons">
-                        <FontAwesomeIcon className="pointer" icon="forward" size="lg" onClick={onPostCardFlip} />
+                    <div className="header-actions">
+                        <FontAwesomeIcon className="pointer" icon="forward" size="sm" onClick={onPostCardFlip} />
                     </div>
                 </div>
                 <div className="modal-body">
-                    <div className="back-face-body">
+                    <div className="back-face">
                         <CommentsList
                             comments={post.comments as Populated<Comment>[]}
                             onLeaveReplyClick={(comment: Populated<Comment>) => {
@@ -108,7 +108,7 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                     <div className="footer-origin-info">
                         <span>{`Starred ${post.stars.length} times`}</span>
                     </div>
-                    <FontAwesomeIcon className="pointer" icon={['far', "star"]} size="lg" onClick={handlePostStarred} />
+                    <FontAwesomeIcon className="pointer" icon={['far', "star"]} size="sm" onClick={handlePostStarred} />
                 </div>
             </div>
         </div>

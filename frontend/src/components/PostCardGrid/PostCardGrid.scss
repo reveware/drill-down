@@ -1,39 +1,37 @@
-@import "../../styles/colors";
-@import "../../styles/media-queries";
+@import '../../styles/colors';
+@import '../../styles/media-queries';
 
 .post-card-grid {
-    flex: 1;
-    justify-content: center;
-    padding: 16px;
-    
-    background-color: $white;
-    border: 1px solid $light-grey;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
+    height: inherit;
 
+    h1 {
+        margin-top: 16px;
+        margin-left: 16px;
+    }
 
-.card-grid {
-    border: 2px solid red;
-    display: flex;
-    flex-wrap: wrap;
+    .post-card-grid-content {
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    align-items: center;
+        .grid {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-flow: row wrap;
+            align-items: flex-start;
 
-    > div {
-        width: 100%;
-        @include mobile {
-            flex: 0 1 calc(100% - 1em);
+            .item {
+                display: flex;
+                justify-content: center;
+                flex: 1 1 0;
+                padding: 4px;
+
+                @include mobile {
+                    padding: 1px;
+                }
+            }
         }
-
-        @include tablet {
-            flex: 0 1 calc(50% - 1em);
-        }
-
-        @include desktop {
-            flex: 0 1 calc(25% - 1em);
-        }
-       
     }
 }

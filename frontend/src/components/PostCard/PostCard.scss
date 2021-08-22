@@ -1,32 +1,82 @@
+@import '../../styles/media-queries';
+
 .post-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 4px;
-    margin: 0 auto;
-
-}
-
-.post-card-img {
-    object-fit: cover;
-    flex-grow: 1;
-}
-
-.post-card-tags {
-    width: 100%;
-    font-size: xx-small;
-    flex-wrap: wrap;
-    word-wrap: break-word;
-}
-
-.post-card-detail {
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    margin-top: 4px;
+    padding: 4px;
+    width: 220px;
+    height: 100%;
 
-    > span {
-        font-size: small;
-        font-weight: lighter;
+    .post-card-content {
+        margin-bottom: 4px;
+        min-height: 0;
+        height: 100%;
+        .post-card-img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
     }
+
+    .post-card-detail {
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: xx-small;
+
+        .post-card-meta {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+    }
+
+    &.sm {
+        width: 160px;
+        height: 160px;  
+        .post-card-tags ,    
+        .post-card-meta {
+            font-size: 8px;
+        }
+    }
+
+    &.md {
+        width: 220px;
+        height: 220px;
+    }
+
+    &.lg {
+        width: 320px;
+        height: 420px;
+        .post-card-tags ,    
+        .post-card-meta {
+            font-size: small;
+        }
+    }
+
+    @include mobile {
+        &.sm {
+            width: 99px;
+            height: 140px;
+
+             .post-card-tags { 
+                 display: none;
+             }
+        }
+
+       &.md,.lg {
+        border: 1px solid red;
+        width: auto;
+        flex-grow: 1;
+       }
+
+    }
+
 }
+
+
+
+

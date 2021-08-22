@@ -1,3 +1,5 @@
+import { MaybePopulated, Populated} from "./types";
+
 export interface User {
   username: string;
   avatar: string;
@@ -8,7 +10,7 @@ export interface User {
   dateOfBirth: string;
   tagLine?: string;
   role: UserRole;
-  friends: string[] | User[];
+  friends: MaybePopulated<string[], Populated<User>[]>;
   providers: string[];
 }
 

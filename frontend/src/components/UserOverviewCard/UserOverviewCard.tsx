@@ -1,9 +1,9 @@
 import React from 'react';
 import { User, Populated } from '@drill-down/interfaces';
-import { Card, Image } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PostCardGrid, TextBox } from '../../components';
+import {  TextBox } from '../../components';
 import { selectLoggedInUser } from '../../store';
 import './UserOverviewCard.scss';
 
@@ -47,7 +47,7 @@ export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
                     </div>
                     <div className="pointer">
                         <FontAwesomeIcon className="action-icon" size="lg" icon="bomb" />
-                        <span className="icon-label">Set Time Bomb</span>
+                        <span className="icon-label">Time Bomb</span>
                     </div>
                 </div>
             </div>

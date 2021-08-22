@@ -22,24 +22,9 @@ export const TagCloud: React.FC<TagCloudProps> = (props) => {
     }
 
     return (
+        // TODO: bring back tag cloud
         <Card className={className ?? ""}>
-            {/* <ReactWordcloud
-                words={words}
-                maxWords={80}
-                callbacks={{
-                    onWordClick: (word) => {
-                        onTagClicked(word.text.replace('#', ''));
-                    },
-
-                    getWordTooltip: ({ text, value }) => `${value} posts contain the tag: ${text}`,
-                }}
-                options={{
-                    rotations: 0,
-                    colors: ['#000000', '#ffd700', '#90ee90', '#00ff00', '#800080'],
-                    scale: 'sqrt',
-                    fontSizes: [10, 50],
-                }}
-            /> */}
+            {/*  */}
         </Card>
     );
 };

@@ -10,14 +10,15 @@ import './TagList.scss';
 export interface TagListProps extends React.HTMLAttributes<HTMLDivElement> {
     tags: string[];
     editOptions?: {
-        onTagAdded: (tag: string, index: number) => any;
-        onTagDeleted: (tag: string, index: number) => any;
+        onTagAdded: (tag: string, index: number) => void;
+        onTagDeleted: (tag: string, index: number) => void;
         suggestions: string[];
-        onSuggestionClicked: (suggestion: string, index: number) => any;
+        onSuggestionClicked: (suggestion: string, index: number) => void;
     };
+    className?: string;
 }
-export const TagList: React.FC<TagListProps> = (props): any => {
-    const { tags, editOptions } = props;
+export const TagList: React.FC<TagListProps> = (props) => {
+    const { tags, editOptions, className } = props;
     const history = useHistory();
     const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
@@ -52,7 +53,7 @@ export const TagList: React.FC<TagListProps> = (props): any => {
 
         return (
             <React.Fragment>
-                <div className="editable-tag-list">
+                <div className={`editable-tag-list ${className ?? ''}`}>
                     <ul className="editable-tag-list-tags">
                         {tags.map((tag, i) => (
                             <li key={i}>
@@ -69,7 +70,7 @@ export const TagList: React.FC<TagListProps> = (props): any => {
                                 </Badge>
                             </li>
                         ))}
-                        <li >
+                        <li>
                             <OverlayTrigger trigger="click" placement="bottom-start" overlay={SuggestionsPopover} transition={false}>
                                 <input className="editable-tag-list-input" ref={inputRef} type="text" onKeyDown={handleKeyDown} />
                             </OverlayTrigger>
@@ -81,14 +82,16 @@ export const TagList: React.FC<TagListProps> = (props): any => {
     }
 
     return (
-        <div className="tag-list">
+        <div className={`tag-list ${className ?? ''}`}>
             {tags.map((tag, index) => (
                 <span
                     key={index}
                     onClick={() => {
                         const encodedAsUri = encodeURI(tag);
                         history.push(AppRoutes.POSTS_FOR_TAG.replace(':tag', encodedAsUri));
-                    }}>{`#${tag.toUpperCase()}${index === tags.length - 1 ? '' : ', '}`}</span>
+                    }}>
+                    {`#${tag.toUpperCase()}${index === tags.length - 1 ? '' : ', '}`}
+                </span>
             ))}
         </div>
     );
