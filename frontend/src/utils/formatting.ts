@@ -1,5 +1,5 @@
 import moment from 'moment';
 
 export const formatUnixTimestamp = (timestamp: number): string => {
-    return moment.unix(timestamp).format('LLL');
+    return moment.unix(timestamp).fromNow()
 };

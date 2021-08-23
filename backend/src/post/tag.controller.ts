@@ -2,7 +2,6 @@ import { Controller, Get, HttpException, HttpStatus, Param, Response, UseGuards 
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PostService } from './post.service';
 import { UserService } from '../user/user.service';
-import { FindByUsernameDTO } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('tags')
@@ -15,8 +14,7 @@ export class TagController {
     @ApiResponse({ status: HttpStatus.OK, description: 'Aggregated count for post tags successfully' })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found, so no post count' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving tag count' })
-    async getPostsCountByTag(@Response() res, @Param() param: FindByUsernameDTO) {
-        const username = param.username;
+    async getPostsCountByTag(@Response() res, @Param('username') username: string) {
         const user = await this.userService.findUserByUsername(username);
 
         if (!user) {

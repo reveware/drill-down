@@ -4,8 +4,8 @@ import './Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { AppRoutes } from '../../Routes';
-import { RootState } from '../../store/store.type';
-import { fetchPostsForUser, selectLoggedInUser, selectPostsByCurrentUser } from '../../store';
+import { AppState } from '../../store/store.type';
+import { fetchPostsForUser, selectLoggedInUser, selectPostsByUser } from '../../store';
 import { useState } from 'react';
 import { CountByTag } from '@drill-down/interfaces';
 import { AppService } from '../../services';
@@ -16,8 +16,8 @@ export const Home = () => {
 
     const user = useSelector(selectLoggedInUser);
 
-    const isLoading = useSelector((state: RootState) => state.posts.isLoading);
-    const userPosts = useSelector(selectPostsByCurrentUser);
+    const isLoading = useSelector((state: AppState) => state.posts.isLoading);
+    const userPosts = useSelector((state: AppState) => selectPostsByUser(state, user ? user.username : ''));
 
     const [postCountByTag, setPostCountByTag] = useState<CountByTag[]>([]);
 
@@ -54,11 +54,20 @@ export const Home = () => {
 
     return (
         <div className="home-view">
-            <TagCloud postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />
+            <TagCloud className="tag-cloud neon-border" postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />
             <div className="user-posts">
-                <PostCardGrid id="latest-posts" title="Latest" posts={userPosts} />
+                <PostCardGrid 
+                title="Latest Posts" 
+                className="latest-posts neon-border"
+                posts={userPosts} 
+                postSize="md"
+                />
 
-                {<PostCardGrid id="starred-posts" title="Starred" posts={reversed} />}
+                <PostCardGrid 
+                title="starred Posts" 
+                className="neon-border" 
+                posts={reversed}
+                 />
             </div>
             <FloatingActionsMenu />
         </div>

@@ -33,9 +33,7 @@ async function bootstrap() {
         })
     );
 
-    // Add custom validation pipe
     app.useGlobalPipes(new ValidationPipe());
-    // Add custom HTTP exception filter
     app.useGlobalFilters(new HttpExceptionFilter());
 
     const swaggerOptions = new DocumentBuilder()

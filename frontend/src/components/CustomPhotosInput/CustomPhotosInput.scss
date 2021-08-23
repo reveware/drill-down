@@ -1,4 +1,4 @@
-@import '../../colors';
+@import '../../styles/colors';
 
 .custom-photos-input {
     display: flex;
@@ -31,12 +31,12 @@
             top: 0;
             right: 0;
             z-index: 1;
-            background-color: map-get($colors, 'white');
+            background-color: $white;
             border-radius: 50%;
-            border: 1px solid map-get($colors, 'white');
+            border: 1px solid $white;
             width: 16px;
             height: 16px;
-            color: map-get($colors, 'black');
+            color: $black;
         }
     }
 }

@@ -1,19 +1,11 @@
-import {
-    createEntityAdapter,
-    createAsyncThunk,
-    createSlice,
-    EntityState,
-    createSelector,
-    PayloadAction,
-    isRejectedWithValue,
-} from '@reduxjs/toolkit';
+import { createEntityAdapter, createAsyncThunk, createSlice, EntityState, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { CustomError, Populated, Post } from '@drill-down/interfaces';
 import { history } from '../App';
 import { AppRoutes } from '../Routes';
 import { AppService } from '../services';
 import { ToastService } from '../services/ToastService';
 import { selectLoggedInUser } from './auth.slice';
-import { RootState } from './store.type';
+import { AppState } from './store.type';
 
 type PostsState = EntityState<Populated<Post>> & {
     isLoading: boolean;
@@ -132,16 +124,12 @@ const postsSlice = createSlice({
 export const { reducer: postsReducer } = postsSlice;
 export const { setSelectedPost } = postsSlice.actions;
 
-export const { selectAll: selectAllPosts, selectById: selectPostById } = postsAdapter.getSelectors((state: RootState) => state.posts);
+export const { selectAll: selectAllPosts, selectById: selectPostById } = postsAdapter.getSelectors((state: AppState) => state.posts);
 
-export const selectPostsByCurrentUser = createSelector([selectAllPosts, selectLoggedInUser], (posts, currentUser) => {
-    if (currentUser) {
-        return posts.filter((post) => post.author.username === currentUser.username);
-    }
+export const selectPostsByUser = createSelector([selectAllPosts, (state: AppState, username: string) => username], (posts, username) =>
+    posts.filter((post) => post.author.username === username)
+);
 
-    return [];
-});
-
-export const selectPostsForTag = createSelector([selectAllPosts, (state: RootState, tag: string) => tag], (posts, tag) =>
+export const selectPostsForTag = createSelector([selectAllPosts, (state: AppState, tag: string) => tag], (posts, tag) =>
     posts.filter((post) => post.tags.includes(tag))
 );

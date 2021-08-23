@@ -9,11 +9,13 @@ import { isValidEmailAddress } from '../../utils';
 import { logIn, selectLoggedInUser } from '../../store';
 
 import './Login.scss';
+import { AppState } from '../../store/store.type';
+import { AppService } from '../../services';
 
 export const Login = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const user = useSelector(selectLoggedInUser);
+    const { token } = useSelector((state: AppState) => state.auth);
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -24,10 +26,10 @@ export const Login = () => {
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
 
     useEffect(() => {
-        if (user) {
+        if (AppService.isAuthValid(token)) {
             history.push(AppRoutes.HOME);
         }
-    }, [user]);
+    }, [token]);
 
     useEffect(() => {
         if (email === '') {
@@ -112,7 +114,7 @@ export const Login = () => {
                         </Form.Group>
 
                         {/* Disabled buttons don't emit events, so wrap it around span */}
-                        <div
+                        <span
                             onMouseEnter={() => {
                                 setIsMouseOverSubmit(true);
                             }}
@@ -122,7 +124,7 @@ export const Login = () => {
                             <Button block variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                 Login
                             </Button>
-                        </div>
+                        </span>
                     </Form>
 
                     <hr />

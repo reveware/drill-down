@@ -7,13 +7,15 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-    async transform(value, { metatype }: ArgumentMetadata) {
-        if (!metatype || !this.toValidate(metatype)) {
+    async transform(value, metadata: ArgumentMetadata) {
+        const { metatype } = metadata;
+
+        if (!metatype || !this.shouldValidate(metatype)) {
             return value;
         }
 
         const object = plainToClass(metatype, value);
-        
+
         const errors = await validate(object);
 
         if (errors.length > 0) {
@@ -29,8 +31,8 @@ export class ValidationPipe implements PipeTransform<any> {
         return value;
     }
 
-    private toValidate(metatype): boolean {
-        const types = new Set([String, Boolean, Number, Array, Object]);
-        return !_.find(types, (type) => metatype === type);
+    private shouldValidate(metatype): boolean {
+        const types: Function[] = [String, Boolean, Number, Array, Object];
+        return !types.includes(metatype);
     }
 }

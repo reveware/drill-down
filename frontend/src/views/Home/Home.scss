@@ -1,14 +1,28 @@
+@import "../../styles/media-queries";
+
 .home-view {
     display: flex;
     flex-direction: column;
+}
+.tag-cloud {
+    margin-bottom: 8px;
 }
 
 .user-posts {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 
-    @media screen and (max-width: 768px) {
+   .latest-posts {
+       margin-right: 8px;
+   }
+
+    @include mobile {
         flex-direction: column;
+        .latest-posts {
+            margin-right: 0px;
+            margin-bottom: 8px;
+        }
     }
 
 }

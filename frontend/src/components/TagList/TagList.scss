@@ -1,7 +1,17 @@
-@import '../../colors';
+@import '../../styles/colors';
+
 .tag-list {
+    font-size: xx-small;
+    word-wrap: break-word;
     cursor: pointer;
+    color: $light-grey;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+   -webkit-line-clamp: 2;
+   -webkit-box-orient: vertical;
 }
+
 .tag-pill {
     padding: 8px;
 }
@@ -9,8 +19,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: map-get($colors, 'white');
-    border: 1px solid map-get($colors, 'light-grey');
+    word-wrap: break-word;
+    background: $white;
+    border: 1px solid $light-grey;
     border-radius: 2px;
     padding: 4px;
 }

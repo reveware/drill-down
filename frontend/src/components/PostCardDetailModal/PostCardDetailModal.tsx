@@ -25,6 +25,10 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
         });
 
         modal.modal('show');
+
+        return function cleanup() {
+            handleHide()
+        }
     }, [post]);
 
     useEffect(() => {
@@ -78,7 +82,10 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
                             onEdit={handleEdit}
                             onDelete={handleDelete}
                         />
-                        <BackFace post={post} onPostCardFlip={togglePostCardFlip} />
+                        <BackFace 
+                            post={post} 
+                            onPostCardFlip={togglePostCardFlip} 
+                        />
                     </div>
                 </div>
             </div>

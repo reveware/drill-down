@@ -1,6 +1,7 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~react-toastify/dist/ReactToastify.css';
-@import 'colors';
+@import './colors';
+
 
 body {
     margin: 0;
@@ -8,6 +9,7 @@ body {
         'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #f5f5fc;
 }
 
 code {
@@ -19,7 +21,7 @@ h1 {
     font: caption;
     font-size: x-large;
     font-weight: lighter;
-    text-shadow: 1px 1px 1px map-get($colors, 'maroon');
+    text-shadow: 1px 1px 1px $maroon;
 }
 
 .hidden {
@@ -29,7 +31,7 @@ h1 {
 // Subtle but annoying
 .form-hint {
     font-size: x-small;
-    color: map-get($colors, 'red');
+    color: $red;
 }
 
 .pointer {
@@ -37,13 +39,13 @@ h1 {
 }
 
 .link {
-    color: map-get($colors, 'sky-blue' );
+    color: $sky-blue;
     text-decoration: underline;
     cursor: pointer;
 }
 
 .button-as-link {
-    color: map-get($colors, 'sky-blue' );
+    color: $sky-blue;
     border: none;
     text-decoration: underline;
     background: none;
@@ -57,7 +59,7 @@ h1 {
 
 
 @function pickRandomColor() {
-    $values: map-values($colors);
+    $values: ($red, $sky-blue, $violet, $lime, $pink, $magenta);
     $index: random(length($values));
     @return nth($values, $index);
 }

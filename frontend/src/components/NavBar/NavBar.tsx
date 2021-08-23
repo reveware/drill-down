@@ -5,12 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavBar.scss';
 import { AppRoutes } from '../../Routes';
 import { Link } from 'react-router-dom';
-import { RootState } from '../../store/store.type';
+import { AppState } from '../../store/store.type';
 import { logOut } from '../../store';
 import { ToastService } from '../../services/ToastService';
+import { history } from '../../App';
 
 export const NavBar: React.FC = () => {
-    const { user } = useSelector((store: RootState) => store.auth);
+    const { user } = useSelector((store: AppState) => store.auth);
     const dispatch = useDispatch();
     return (
         <div className="nav-bar">
@@ -36,7 +37,13 @@ export const NavBar: React.FC = () => {
                         <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />} id="basic-nav-dropdown">
                             {user ? (
                                 <React.Fragment>
-                                    <NavDropdown.Item>{`${user.firstName} ${user.lastName}`}</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => {
+                                    
+                                            history.push(AppRoutes.USER_PROFILE.replace(':username', user.username));
+                                        }}>
+
+                                        {`${user.firstName} ${user.lastName}`}
+                                    </NavDropdown.Item>
                                     <Dropdown.Divider />
                                     <NavDropdown.Item
                                         onClick={() => {

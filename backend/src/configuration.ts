@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 import * as path from 'path';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { MongooseModuleOptions } from '@nestjs/mongoose';
 
 export class Configuration {
     public static HTTP_PORT = process.env.HTTP_PORT;
@@ -13,15 +14,17 @@ export class Configuration {
         };
     };
 
-    public static getMongoDBConfig() {
-        const { MONGO_URI } = process.env;
+    public static getMongoDBConfig(): { uri: string; options: MongooseModuleOptions } {
+        const { MONGO_HOST, MONGO_PORT, MONGO_USERNAME, MONGO_PASSWORD, MONGO_INITDB_DATABASE } = process.env;
         return {
-            uri: MONGO_URI,
+            uri: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_INITDB_DATABASE}`,
             options: {
                 useNewUrlParser: true,
                 useCreateIndex: true,
                 useFindAndModify: false,
                 useUnifiedTopology: true,
+                replicaSet: 'replicaSet',
+                readPreference: 'primary',
             },
         };
     }
@@ -62,7 +65,6 @@ export class Configuration {
             acl: 'public-read',
             serverSideEncryption: 'AES256',
             key: (req, file, cb) => {
-
                 const { user, body } = req;
 
                 const username = user ? user.username : body.username;
