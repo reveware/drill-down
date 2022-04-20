@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, CountByTag, Comment, Populated } from '@drill-down/interfaces';
+import { Post, CountByTag, Comment, Populated, User } from '@drill-down/interfaces';
 import { PostDocument } from './post.schema';
 import { UserDocument } from 'src/user/user.schema';
 import * as mongoose from 'mongoose';
@@ -49,7 +49,7 @@ export class PostService {
         return posts;
     }
 
-    public async getPostsCountByTag(user: UserDocument): Promise<CountByTag[]> {
+    public async getPostsCountByTag(user: Populated<User>): Promise<CountByTag[]> {
         return new Promise(async (resolve, reject) => {
             return await this.postModel.aggregate(
                 [

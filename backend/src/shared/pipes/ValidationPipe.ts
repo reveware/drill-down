@@ -21,7 +21,7 @@ export class ValidationPipe implements PipeTransform<any> {
         if (errors.length > 0) {
             let failedConstraints = [];
 
-            await _.forEach(errors, (error) => {
+             _.forEach(errors, (error) => {
                 const { constraints } = error;
                 failedConstraints = _.concat(failedConstraints, _.values(constraints));
             });

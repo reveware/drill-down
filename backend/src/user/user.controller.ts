@@ -44,11 +44,12 @@ export class UserController {
         }
         const newUser = await this.userService.createUser({
             ...user,
+            id: undefined,
             avatar: avatarS3Location,
             friends: [],
             providers: [Providers.REVEWARE],
         });
-        return res.status(HttpStatus.OK).json({ user: UserService.filterSensitiveData(newUser) } as object);
+        return res.status(HttpStatus.OK).json({ user: newUser } as object);
     }
 
     @Get(':usernameOrEmail')
@@ -74,6 +75,6 @@ export class UserController {
             throw new NotFoundException(['User not found']);
         }
 
-        return res.status(HttpStatus.OK).json({ user: UserService.filterSensitiveData(user) } as object);
+        return res.status(HttpStatus.OK).json({ user } as object);
     }
 }

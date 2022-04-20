@@ -16,8 +16,10 @@ export class Configuration {
 
     public static getMongoDBConfig(): { uri: string; options: MongooseModuleOptions } {
         const { MONGO_HOST, MONGO_PORT, MONGO_USERNAME, MONGO_PASSWORD, MONGO_INITDB_DATABASE } = process.env;
+        const uri = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_INITDB_DATABASE}`;
+
         return {
-            uri: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_INITDB_DATABASE}`,
+            uri,
             options: {
                 useNewUrlParser: true,
                 useCreateIndex: true,
@@ -35,6 +37,8 @@ export class Configuration {
             redis_secret: process.env.REDIS_SECRET,
         };
     }
+
+    
 
     public static getTumblrConfig = () => {
         const { TUMBLR_CONSUMER_KEY, TUMBLR_CONSUMER_SECRET, TUMBLR_TOKEN, TUMBLR_TOKEN_SECRET, TUMBLR_CALLBACK_URL } = process.env;

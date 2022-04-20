@@ -5,7 +5,7 @@ import { UserService } from '../user/user.service';
 import { LoginAttemptDTO } from '../dto';
 
 import { Configuration } from '../configuration';
-import { JwtPayload, AuthResponse } from "@drill-down/interfaces";
+import { JwtPayload, AuthResponse, User, Populated } from "@drill-down/interfaces";
 import { UserDocument } from 'src/user/user.schema';
 
 @Injectable()
@@ -15,26 +15,20 @@ export class AuthService {
     constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
     public async validateUserByPassword(loginAttempt: LoginAttemptDTO): Promise<AuthResponse> {
-        const user = await this.userService.findUserByEmail(loginAttempt.email);
+        const user = await this.userService.validateUserByPassword(loginAttempt.email, loginAttempt.password);
 
-        if (_.isNil(user)) {
-            return { isAuthorized: false, message: `User not found for ${loginAttempt.email}`, token: null };
-        }
-
-        if (await user.isValidPassword(loginAttempt.password)) {
+        if (user) {
             return {
                 isAuthorized: true,
                 message: 'Login successful',
-                token: this.generateTokenFromPayload({
-                    user: UserService.filterSensitiveData(user),
-                }),
+                token: this.generateTokenFromPayload({user}),
             };
         }
 
-        return { isAuthorized: false, message: 'Wrong password', token: null };
+        return { isAuthorized: false, message: 'Wrong email or password', token: null };
     }
 
-    public async validateUserByJwt(payload: JwtPayload): Promise<UserDocument> {
+    public async validateUserByJwt(payload: JwtPayload): Promise<Populated<User>> {
         const { email } = payload.user;
         return this.userService.findUserByEmail(email);
     }

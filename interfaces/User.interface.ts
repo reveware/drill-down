@@ -1,6 +1,7 @@
 import { MaybePopulated, Populated} from "./types";
 
 export interface User {
+  id: MaybePopulated<undefined, string>;
   username: string;
   avatar: string;
   firstName: string;

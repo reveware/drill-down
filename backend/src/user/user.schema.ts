@@ -5,7 +5,11 @@ import { User, UserRole } from '@drill-down/interfaces';
 
 const logger = new Logger('UserSchema');
 
-const UserDefinition: Record<keyof User, any> = {
+export interface UserDocument extends Omit<User, "id">, mongoose.Document {
+    isValidPassword: (password: string) => boolean;
+}
+
+export const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -17,16 +21,10 @@ const UserDefinition: Record<keyof User, any> = {
     role: { type: String, required: true },
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
     providers: { type: Array, required: true },
-};
-
-export interface UserDocument extends User, mongoose.Document {
-    isValidPassword: (password: string) => boolean;
-}
-
-export const UserSchema = new mongoose.Schema(UserDefinition, { versionKey: false });
+}, { versionKey: false });
 
 // Hash password with bcrypt before saving
-UserSchema.pre<UserDocument>('save', async function(next) {
+UserSchema.pre<UserDocument>('save', async function (next) {
     const user = this;
 
     // Check if the password is being changed, so we don't re-hash
@@ -44,7 +42,7 @@ UserSchema.pre<UserDocument>('save', async function(next) {
     }
 });
 
-UserSchema.methods.isValidPassword = async function(password) {
+UserSchema.methods.isValidPassword = async function (password) {
     try {
         return await bcrypt.compare(password, this.password);
     } catch (e) {

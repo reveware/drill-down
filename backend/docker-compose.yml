@@ -40,7 +40,6 @@ services:
         environment:
             - REDIS_SECRET
         command: redis-server --requirepass ${REDIS_SECRET}
-
 volumes:
     mongo_storage:
             

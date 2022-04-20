@@ -10,11 +10,11 @@ export class UserService {
 
     constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
-    async createUser(user: Unpopulated<User>): Promise<UserDocument> {
+    public async createUser(user: Unpopulated<User>): Promise<Populated<User>> {
         try {
             const newUser = await this.userModel.create(user);
             this.logger.log(`New user created for ${user.email}`);
-            return newUser;
+            return UserService.filterSensitiveData(newUser);
         } catch (e) {
             if (e.code === 11000) {
                 throw new HttpException(`User ${user.email} already exists`, HttpStatus.CONFLICT);
@@ -24,16 +24,32 @@ export class UserService {
         }
     }
 
-    async findUserByEmail(email: string): Promise<UserDocument> {
-        return this.userModel.findOne({ email });
+    public async findUserByEmail(email: string): Promise<Populated<User>> {
+        const user = await this.userModel.findOne({ email });
+        return UserService.filterSensitiveData(user);
     }
 
-    async findUserByUsername(username: string): Promise<UserDocument> {
-        return this.userModel.findOne({ username });
+    public async findUserByUsername(username: string): Promise<Populated<User>> {
+        const user = await this.userModel.findOne({ username });
+        return UserService.filterSensitiveData(user);
     }
 
-    public static filterSensitiveData(user: Populated<User>): Populated<User> {
-        user.password = undefined;
-        return user;
+    public async validateUserByPassword(email: string, password: string): Promise<Populated<User> | null>{
+        const user = await this.userModel.findOne({ email });
+
+        if(user && user.isValidPassword(password)) {
+            return UserService.filterSensitiveData(user);
+        }
+
+        return null;
     }
+
+    private static filterSensitiveData(user: UserDocument): Populated<User> {
+        if(user) {
+            user.password = undefined;
+        }
+        return user as Populated<User>;
+    }
+
+    
 }
