@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FloatingActionsMenu, PostCardGrid, TagCloud } from '../../components';
+import { FloatingActionsMenu, PostCardGrid, TagCloud, TravelWithUs } from '../../components';
 import './Home.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { fetchPostsForUser, selectLoggedInUser, selectPostsByUser } from '../../
 import { useState } from 'react';
 import { CountByTag } from '@drill-down/interfaces';
 import { AppService } from '../../services';
+import _ from 'lodash';
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -38,6 +39,7 @@ export const Home = () => {
         }
     }, [user, dispatch]);
 
+
     const onTagClicked = (tag: string) => {
         history.push(AppRoutes.POSTS_FOR_TAG.replace(':tag', tag));
     };
@@ -46,8 +48,8 @@ export const Home = () => {
         return <p>Loading</p>;
     }
 
-    if (!userPosts) {
-        return null;
+    if (_.isEmpty(userPosts)) {
+        return <TravelWithUs/>
     }
 
     const reversed = userPosts.slice(0).reverse();
@@ -56,18 +58,9 @@ export const Home = () => {
         <div className="home-view">
             <TagCloud className="tag-cloud neon-border" postsCountByTags={postCountByTag} onTagClicked={onTagClicked} />
             <div className="user-posts">
-                <PostCardGrid 
-                title="Latest Posts" 
-                className="latest-posts neon-border"
-                posts={userPosts} 
-                postSize="md"
-                />
+                <PostCardGrid title="Latest Posts" className="latest-posts neon-border" posts={userPosts} postSize="md" />
 
-                <PostCardGrid 
-                title="starred Posts" 
-                className="neon-border" 
-                posts={reversed}
-                 />
+                <PostCardGrid title="starred Posts" className="neon-border" posts={reversed} />
             </div>
             <FloatingActionsMenu />
         </div>
