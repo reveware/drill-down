@@ -79,7 +79,7 @@ export const Login = () => {
 
     return (
         <React.Fragment>
-            <Card className="mx-auto mt-5 mb-5 w-50 neon-border">
+            <Card className="login-form neon-border">
                 <Card.Body>
                     <Card.Title>Login</Card.Title>
                     <Form onKeyDown={handleKeyDown}>

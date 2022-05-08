@@ -4,32 +4,39 @@ import { Formik, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostCardDetailModal.scss';
-import { Post, Comment, Populated } from '@drill-down/interfaces';
+import { Comment, Populated } from '@drill-down/interfaces';
 import { CommentsList } from '../Comments/CommentsList';
-import { useDispatch } from 'react-redux';
-import { createComment } from '../../store';
+import { useSelector } from 'react-redux';
+import { selectPostById } from '../../store';
 import { history } from '../../App';
 import { AppRoutes } from '../../Routes';
+import { AppState } from '../../store/store.type';
 
 interface BackFaceProps {
-    post: Populated<Post>;
-    onPostCardFlip: () => any;
+    postId: string;
+    onPostCardFlip: () => void;
+    onPostStarred: ()=> void;
+    onCommentCreated: (comment: { message: string; replyTo: string | null; postId: string })=> void;
 }
 
 export const BackFace: React.FC<BackFaceProps> = (props) => {
-    const { post, onPostCardFlip } = props;
-    const dispatch = useDispatch();
-
+    const { postId, onPostCardFlip , onCommentCreated: onCommentSubmitted} = props;
+    const post = useSelector((state: AppState) => selectPostById(state, postId));
     const [replyingTo, setReplyingTo] = useState<Populated<Comment> | null>(null);
+    
+    if (!post) {
+        return null;
+    }
 
     const handleCommentSubmit = (message: string) => {
+        
         const comment = {
             postId: post._id,
             replyTo: replyingTo ? replyingTo._id : null,
             message,
         };
 
-        dispatch(createComment(comment));
+        onCommentSubmitted(comment);
     };
 
     const handlePostStarred = () => {
@@ -40,6 +47,7 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
         message: Yup.string().min(3, 'Must be at least 3 characters long').required(),
     });
 
+    
     return (
         <div className="back">
             <div className="modal-content">
@@ -56,50 +64,51 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                                 setReplyingTo(comment);
                             }}
                             onAuthorClick={(author: string) => {
-                              history.push(AppRoutes.USER_PROFILE.replace(':username', author))
+                                history.push(AppRoutes.USER_PROFILE.replace(':username', author));
                             }}
                         />
 
                         <div className="leave-a-comment">
                             <Formik onSubmit={() => {}} validationSchema={CommentSchema} validateOnMount initialValues={{ message: '' }}>
                                 {(props: FormikValues) => {
-                                   const { values, errors, handleChange, handleBlur, isValid, touched, resetForm } = props;
-                                 return (
-                                    <Form
-                                        noValidate
-                                        onSubmit={(e: React.FormEvent) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                        }}>
-                                        <Form.Group controlId="message">
-                                            <Form.Label>
-                                                {replyingTo ? `Replying to ${replyingTo.author.username}` : 'Leave a comment!'}
-                                            </Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                as="textarea"
-                                                rows={2}
-                                                value={values.message}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                isInvalid={!!errors.message && touched.message}
-                                            />
-                                            <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>
-                                            <Button
-                                                type="text"
-                                                className="mt-1"
-                                                variant="dark"
-                                                block
-                                                onClick={() => {
-                                                    handleCommentSubmit(values.message);
-                                                    resetForm();
-                                                }}
-                                                disabled={!isValid}>
-                                                Leave comment
-                                            </Button>
-                                        </Form.Group>
-                                    </Form>
-                                )}}
+                                    const { values, errors, handleChange, handleBlur, isValid, touched, resetForm } = props;
+                                    return (
+                                        <Form
+                                            noValidate
+                                            onSubmit={(e: React.FormEvent) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                            }}>
+                                            <Form.Group controlId="message">
+                                                <Form.Label>
+                                                    {replyingTo ? `Replying to ${replyingTo.author.username}` : 'Leave a comment!'}
+                                                </Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    as="textarea"
+                                                    rows={2}
+                                                    value={values.message}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    isInvalid={!!errors.message && touched.message}
+                                                />
+                                                <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>
+                                                <Button
+                                                    type="text"
+                                                    className="mt-1"
+                                                    variant="dark"
+                                                    block
+                                                    onClick={() => {
+                                                        handleCommentSubmit(values.message);
+                                                        resetForm();
+                                                    }}
+                                                    disabled={!isValid}>
+                                                    Leave comment
+                                                </Button>
+                                            </Form.Group>
+                                        </Form>
+                                    );
+                                }}
                             </Formik>
                         </div>
                     </div>
@@ -108,7 +117,7 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                     <div className="footer-origin-info">
                         <span>{`Starred ${post.stars.length} times`}</span>
                     </div>
-                    <FontAwesomeIcon className="pointer" icon={['far', "star"]} size="sm" onClick={handlePostStarred} />
+                    <FontAwesomeIcon className="pointer" icon={['far', 'star']} size="sm" onClick={handlePostStarred} />
                 </div>
             </div>
         </div>

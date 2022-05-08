@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Carousel, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatUnixTimestamp } from '../../utils';
-import { PhotoPost, Populated, Post } from '@drill-down/interfaces';
+import { PhotoPost } from '@drill-down/interfaces';
 import './PostCardDetailModal.scss';
 import { history } from '../../App';
 import { AppRoutes } from '../../Routes';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/store.type';
+import { selectPostById } from '../../store';
 
 interface FrontFaceProps {
-    post: Populated<Post>;
+    postId: string;
     onEdit: () => any;
     onDelete: () => any;
     onPostCardFlip: () => any;
@@ -16,8 +19,13 @@ interface FrontFaceProps {
 }
 
 export const FrontFace: React.FC<FrontFaceProps> = (props) => {
-    const { post, onPostCardFlip, onHide, onEdit, onDelete } = props;
+    const { postId, onPostCardFlip, onHide, onEdit, onDelete } = props;
     const [showCaptions, setShowCaptions] = useState<boolean>(true);
+    const post = useSelector((state: AppState) => selectPostById(state, postId));
+
+    if (!post) {
+        return null;
+    }
 
     const { author, description, body, provider, createdAt } = post;
     const { urls: photos } = body as PhotoPost;
@@ -25,7 +33,6 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
     const toggleHideCaptions = () => {
         setShowCaptions(!showCaptions);
     };
-
 
     return (
         <div className="front">
@@ -38,28 +45,22 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
                 </div>
                 <div className="modal-body">
                     <div className="front-face">
-                    <div className="post-content">
-                    <Carousel className="image-carousel" indicators={photos.length > 1} controls={photos.length > 1}>
-                        {photos.map((photo, i) => (
-        <div className="image-carousel-item">
-        <Image
-            src={photo}
-            fluid
-            onMouseDown={toggleHideCaptions}
-            onMouseUp={toggleHideCaptions}
-        />
-        {showCaptions && description && (
-              <p className="captions">{description}</p>
-        )}
-        </div>
-                        ))}
-                    </Carousel>
-                    </div>
+                        <div className="post-content">
+                            <Carousel className="image-carousel" indicators={photos.length > 1} controls={photos.length > 1}>
+                                {photos.map((photo, i) => (
+                                    <div key={i} className="image-carousel-item">
+                                        <Image src={photo} fluid onMouseDown={toggleHideCaptions} onMouseUp={toggleHideCaptions} />
+                                        {showCaptions && description && <p className="captions">{description}</p>}
+                                    </div>
+                                ))}
+                            </Carousel>
+                        </div>
                     </div>
                 </div>
                 <div className="modal-footer">
                     <div className="footer-origin-info">
-                        <span className="pointer"
+                        <span
+                            className="pointer"
                             onClick={() => {
                                 history.push(AppRoutes.USER_PROFILE.replace(':username', author.username));
                             }}>

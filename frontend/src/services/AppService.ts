@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Configuration } from '../configuration';
-import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload, Populated, CreateUser, Comment} from '@drill-down/interfaces';
+import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload, Populated, CreateUser, Comment } from '@drill-down/interfaces';
 
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -8,7 +8,7 @@ import JwtDecode from 'jwt-decode';
 import { StorageKeys } from '../store/storage.types';
 
 export class AppService {
-    private url = Configuration.SERVER_URL;
+    private static url = Configuration.SERVER_URL;
 
     public static isAuthValid(token: string | null): boolean {
         if (token) {
@@ -23,12 +23,12 @@ export class AppService {
         return false;
     }
 
-    public async login(loginAttempt: { email: string; password: string }): Promise<AuthResponse> {
+    public static async login(loginAttempt: { email: string; password: string }): Promise<AuthResponse> {
         const { data } = await axios.post(`${this.url}/auth`, loginAttempt);
         return data as AuthResponse;
     }
 
-    public async createUser(user: CreateUser): Promise<Populated<User>> {
+    public static async createUser(user: CreateUser): Promise<Populated<User>> {
         const headers = AppService.getHeaders();
         const formData = new FormData();
         formData.append('username', user.username);
@@ -46,19 +46,20 @@ export class AppService {
         return data;
     }
 
-    public async fetchUserByUsername(username: string): Promise<Populated<User>> {
+    public static async fetchUserByUsername(username: string): Promise<Populated<User>> {
         const headers = AppService.getHeaders();
         const { data } = await axios.get(`${this.url}/users/${username}`, { headers });
         return data.user;
     }
 
-    public async getUserPosts(username: string): Promise<Populated<Post>[]> {
+    public static async getUserPosts(username: string): Promise<Populated<Post>[]> {
         const headers = AppService.getHeaders();
-        const { data } = await axios.get(`${this.url}/posts/${username}`, { headers });
+        const params = { author: username };
+        const { data } = await axios.get(`${this.url}/posts/`, { headers, params });
         return data;
     }
 
-    public async getPostsForTag(tag: string): Promise<Populated<Post>[]> {
+    public static async getPostsForTag(tag: string): Promise<Populated<Post>[]> {
         try {
             const headers = AppService.getHeaders();
             const { data } = await axios.get(`${this.url}/posts`, { headers, params: { tags: tag } });
@@ -68,7 +69,7 @@ export class AppService {
         }
     }
 
-    public async getPostsCountByTag(username: string): Promise<CountByTag[]> {
+    public static async getPostsCountByTag(username: string): Promise<CountByTag[]> {
         try {
             const headers = AppService.getHeaders();
             const { data } = await axios.get(`${this.url}/tags/${username}/count`, { headers });
@@ -78,7 +79,7 @@ export class AppService {
         }
     }
 
-    public async createPhotoPost(post: { photos: File[]; tags: string[]; description: string }): Promise<Populated<Post>> {
+    public static async createPhotoPost(post: { photos: File[]; tags: string[]; description: string }): Promise<Populated<Post>> {
         const headers = AppService.getHeaders();
         // manually build multi-part form
         const formData = new FormData();
@@ -91,10 +92,15 @@ export class AppService {
         return data;
     }
 
-    public async createComment(comment: { message: string; replyTo: string | null; postId: string }): Promise<Populated<Comment>> {
+    public static async deletePost(postId: string): Promise<void> {
+        const headers = AppService.getHeaders();
+        await axios.delete(`${this.url}/posts/${postId}`, { headers });
+    }
+
+    public static async createComment(comment: { message: string; replyTo: string | null; postId: string }): Promise<Populated<Comment>> {
         try {
             const headers = AppService.getHeaders();
-            const { data } = await axios.put(`${this.url}/posts/comment/${comment.postId}`, comment, { headers });
+            const { data } = await axios.put(`${this.url}/posts/${comment.postId}/comments`, comment, { headers });
             return data as Populated<Comment>;
         } catch (e) {
             throw AppService.makeError('createComment', e);

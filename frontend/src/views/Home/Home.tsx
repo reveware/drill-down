@@ -24,8 +24,7 @@ export const Home = () => {
 
     const getPostsCountByTag = async (username: string) => {
         try {
-            const appService = new AppService();
-            const counts = await appService.getPostsCountByTag(username);
+            const counts = await AppService.getPostsCountByTag(username);
             setPostCountByTag(counts);
         } catch (e) {
             console.log('Error getting post count by tag:', e.message);
@@ -34,7 +33,7 @@ export const Home = () => {
 
     useEffect(() => {
         if (user) {
-            dispatch(fetchPostsForUser(user.username));
+            dispatch(fetchPostsForUser(user.id));
             getPostsCountByTag(user.username);
         }
     }, [user, dispatch]);

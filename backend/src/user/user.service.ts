@@ -10,6 +10,11 @@ export class UserService {
 
     constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
+    public static isValidFriendship(user: Populated<User>, stranger: string): boolean{
+        const friends = new Set(user.friends as  unknown as string[]);
+        return friends.has(stranger);
+    }
+
     public async createUser(user: Unpopulated<User>): Promise<Populated<User>> {
         try {
             const newUser = await this.userModel.create(user);

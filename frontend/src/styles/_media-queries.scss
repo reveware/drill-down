@@ -7,16 +7,32 @@ $desktop-width: 992px;
     }
 }
 
-
 @mixin tablet {
     @media (min-width:  #{$tablet-width}) and (max-width:  #{$desktop-width}) {
         @content;
     }
 }
 
-
 @mixin desktop {
     @media (min-width: #{$desktop-width}) {
         @content;
+    }
+}
+
+@mixin media($keys...) {
+    @each $key in $keys {
+        @if ($key == mobile) {
+            @include mobile() {
+                @content;
+            }
+        } @else if ($key == tablet) {
+            @include tablet {
+                @content;
+            }
+        } @else if ($key == desktop) {
+            @include desktop {
+                @content;
+            }
+        }
     }
 }
