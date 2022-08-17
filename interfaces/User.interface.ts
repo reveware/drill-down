@@ -11,9 +11,12 @@ export interface User {
   dateOfBirth: string;
   tagLine?: string;
   role: UserRole;
-  friends: MaybePopulated<string[], Populated<User>[]>;
+  friends: Array<Friend>;
+  starredPosts: string[]
   providers: string[];
 }
+
+export type Friend = MaybePopulated<string, User>
 
 export enum UserRole {
   USER = "USER",

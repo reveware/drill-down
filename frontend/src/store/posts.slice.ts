@@ -71,6 +71,7 @@ export const createComment = createAsyncThunk(
 export const deletePost = createAsyncThunk('post/deletePost', async (id: string, { rejectWithValue }) => {
     try {
         await AppService.deletePost(id);
+        ToastService.success({title: 'Post deleted!', message: 'You will never see it again'});
         return id;
     } catch (e) {
         const customError = AppService.makeError('deletePost', e);

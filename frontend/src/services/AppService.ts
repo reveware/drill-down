@@ -83,10 +83,11 @@ export class AppService {
         const headers = AppService.getHeaders();
         // manually build multi-part form
         const formData = new FormData();
+        post.description && formData.append('description', post.description);
         post.photos.forEach((file: File) => {
             formData.append('photos', file, file.name);
         });
-        formData.append('description', post.description);
+        
         formData.append('tags', post.tags.join(','));
         const { data } = await axios.post(`${this.url}/posts/photo`, formData, { headers });
         return data;

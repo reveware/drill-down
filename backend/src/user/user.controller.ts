@@ -11,16 +11,19 @@ import {
     BadRequestException,
     NotFoundException,
     UseGuards,
+    Put,
+    Delete,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
 import { UserService } from './user.service';
-import { CreateUserDTO, FindByObjectId } from '../dto';
+import { CreateUserDTO } from '../dto';
 import { Configuration } from 'src/configuration';
-import { Providers } from '@drill-down/interfaces';
+import { Populated, Providers, User } from '@drill-down/interfaces';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtUser } from 'src/shared/decorators';
 
 @ApiTags('users')
 @Controller('users')
@@ -47,6 +50,7 @@ export class UserController {
             id: undefined,
             avatar: avatarS3Location,
             friends: [],
+            starredPosts: [],
             providers: [Providers.REVEWARE],
         });
         return res.status(HttpStatus.OK).json({ user: newUser } as object);
@@ -76,5 +80,23 @@ export class UserController {
         }
 
         return res.status(HttpStatus.OK).json({ user } as object);
+    }
+
+    @Put('starredPosts/:postId')
+    @UseGuards(AuthGuard(['jwt']))
+    @ApiResponse({ status: HttpStatus.OK, description: 'Post starred successfuly' })
+    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error starring post' })
+    async starPost(@Response() res, @JwtUser() user: Populated<User>, @Param('postId') postId) {
+        await this.userService.starPost(user, postId);
+        return res.status(HttpStatus.OK).json({});
+    }
+
+    @Delete('starredPosts/:postId')
+    @UseGuards(AuthGuard(['jwt']))
+    @ApiResponse({ status: HttpStatus.OK, description: 'Post unstarred successfuly' })
+    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error unstarring post' })
+    async unstarPost(@Response() res, @JwtUser() user: Populated<User>, @Param('postId') postId) {
+        this.userService.unstarPost(user, postId);
+        return res.status(HttpStatus.OK).json({});
     }
 }

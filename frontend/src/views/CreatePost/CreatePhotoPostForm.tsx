@@ -13,7 +13,7 @@ export const CreatePhotoPostForm: React.FC<{ tagListProps: TagListProps }> = (pr
 
     const PhotoPostSchema = Yup.object().shape({
         photos: Yup.array().required().min(1, 'At least one photo is required'),
-        description: Yup.string().min(10, 'Must be at least 10 characters long'),
+        description: Yup.string().optional(),
         tags: Yup.array(),
     });
 
@@ -25,7 +25,7 @@ export const CreatePhotoPostForm: React.FC<{ tagListProps: TagListProps }> = (pr
     return (
         <Formik
             validationSchema={PhotoPostSchema}
-            initialValues={{ photos: [], description: '', tags: [] }}
+            initialValues={{ photos: [], description: undefined, tags: [] }}
             initialErrors={{ photos: 'Please, select at least 1 photo' }}
             onSubmit={(e) => {
                 handleSubmit(e);

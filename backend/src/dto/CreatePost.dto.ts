@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import * as _ from 'lodash';
 
 export class CreatePhotoPostDTO {
@@ -9,7 +9,6 @@ export class CreatePhotoPostDTO {
     tags: string; // comma separated
 
     @ApiProperty()
-    @IsString()
-    @MinLength(10)
+    @IsOptional()
     description: string;
 }

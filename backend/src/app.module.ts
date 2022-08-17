@@ -11,7 +11,7 @@ import { PostModule } from './post/post.module';
 const mongoDBConfig = Configuration.getMongoDBConfig();
 
 @Module({
-    imports: [AuthModule, UserModule, TumblrModule, PostModule, MongooseModule.forRoot(mongoDBConfig.uri, mongoDBConfig.options)],
+    imports: [AuthModule, UserModule, PostModule, TumblrModule, MongooseModule.forRoot(mongoDBConfig.uri, mongoDBConfig.options)],
     controllers: [AppController],
     providers: [AppService],
 })

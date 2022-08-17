@@ -1,9 +1,8 @@
 import { Injectable,  Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, CountByTag, Comment, Populated, User, PostTypes, Providers } from '@drill-down/interfaces';
 import { PostDocument } from './post.schema';
-import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
 import { CreatePhotoPostDTO, GetPostsFiltersDTO } from 'src/dto';
 import { CommentDocument } from './comment.schema';
@@ -16,8 +15,8 @@ export class PostService {
     private authorProperties = 'firstName lastName username avatar';
 
     constructor(
-        @InjectModel('Post') private postModel: Model<PostDocument>,
-        @InjectModel('Comment') private commentModel: Model<CommentDocument>
+        @InjectModel('Post') private postModel: mongoose.Model<PostDocument>,
+        @InjectModel('Comment') private commentModel: mongoose.Model<CommentDocument>
     ) {
         this.commentModel.createCollection();
     }
@@ -44,8 +43,12 @@ export class PostService {
                 if (allowedFilters.has(key)) {
                     const search = `${value}`.split(',').map((item) => item.trim());
                     if(key == 'author') {
-                        search.forEach((author)=> {
-                            if(!UserService.isValidFriendship(user, author)) {
+                        search.forEach((author)=> {                    
+                            const isMySelf = mongoose.Types.ObjectId(user._id).equals(author);
+                            
+                            const isMyFriend = UserService.isValidFriendship(user, author);
+
+                            if(!isMySelf || !isMyFriend) {
                                 throw new ForbiddenException(`not allowed to see ${author} posts`);
                             }
                         });
@@ -183,5 +186,4 @@ export class PostService {
             await session.endSession();
         }
     }
-
 }
