@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import { SingleComment } from './SingleComment';
 
 import './CommentsList.scss';
-import { useEffect } from 'react';
 
 interface CommentsListProps {
     comments: Populated<Comment>[];
@@ -16,7 +15,7 @@ export const CommentsList: React.FC<CommentsListProps> = (props) => {
 
 
     const firstLevelComments = _.filter(comments, (comment) => _.isNil(comment.replyTo));
-
+    
     return (
         <div id="comments-list" className="comments-list">
             {firstLevelComments.map((comment, i) => {

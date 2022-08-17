@@ -1,7 +1,9 @@
 import * as mongoose from 'mongoose';
 import { Post } from '@drill-down/interfaces';
 
-const PostDefinition: Record<keyof Post, any> = {
+export interface PostDocument extends Post, mongoose.Document {}
+
+export const PostSchema = new mongoose.Schema({
     type: { type: String, required: true },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     body: { type: Object, required: true },
@@ -12,8 +14,4 @@ const PostDefinition: Record<keyof Post, any> = {
     provider: { type: String, required: true },
     providerId: { type: String, required: false },
     createdAt: { type: Number, required: true },
-};
-
-export interface PostDocument extends Post, mongoose.Document {}
-
-export const PostSchema = new mongoose.Schema(PostDefinition, { versionKey: false });
+}, { versionKey: false });

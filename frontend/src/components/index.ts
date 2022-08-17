@@ -12,3 +12,4 @@ export * from './Comments/SingleComment';
 export * from './TextBox/TextBox';
 export * from './UserOverviewCard/UserOverviewCard';
 export * from './UserList/UserList';
+export * from './TravelWithUs/TravelWithUs';

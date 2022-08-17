@@ -14,8 +14,8 @@ export const logIn = createAsyncThunk(
     'auth/login',
     async (loginAttempt: { email: string; password: string }, { rejectWithValue }) => {
         try {
-            const app = new AppService();
-            const { isAuthorized, token, message } = await app.login(loginAttempt);
+    
+            const { isAuthorized, token, message } = await AppService.login(loginAttempt);
 
             if (isAuthorized) {
                 const decodedToken = JwtDecode<JwtPayload>(token);

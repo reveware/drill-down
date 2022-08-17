@@ -4,7 +4,6 @@ import { history } from '../App';
 import { AppRoutes } from '../Routes';
 import { AppService } from '../services';
 import { ToastService } from '../services/ToastService';
-import { selectLoggedInUser } from './auth.slice';
 import { AppState } from './store.type';
 
 type PostsState = EntityState<Populated<Post>> & {
@@ -26,8 +25,7 @@ const initialState: PostsState = postsAdapter.getInitialState({
 
 export const fetchPostsForUser = createAsyncThunk('posts/fetchPostsForUser', async (username: string, { rejectWithValue }) => {
     try {
-        const app = new AppService();
-        return await app.getUserPosts(username);
+        return await AppService.getUserPosts(username);
     } catch (e) {
         return rejectWithValue(AppService.makeError('getPostsForUser', e));
     }
@@ -35,8 +33,7 @@ export const fetchPostsForUser = createAsyncThunk('posts/fetchPostsForUser', asy
 
 export const fetchPostsForTag = createAsyncThunk('posts/fetchPostsWithTag', async (tag: string, { rejectWithValue }) => {
     try {
-        const app = new AppService();
-        return await app.getPostsForTag(tag);
+        return await AppService.getPostsForTag(tag);
     } catch (e) {
         return rejectWithValue(AppService.makeError('fetchPostsWithTag', e));
     }
@@ -44,10 +41,9 @@ export const fetchPostsForTag = createAsyncThunk('posts/fetchPostsWithTag', asyn
 
 export const createPhotoPost = createAsyncThunk(
     'posts/createPhotoPost',
-    async (post: { photos: File[]; description: string; tags: string[] }, { rejectWithValue, dispatch }) => {
+    async (post: { photos: File[]; description: string; tags: string[] }, { rejectWithValue }) => {
         try {
-            const app = new AppService();
-            const newPost = await app.createPhotoPost(post);
+            const newPost = await AppService.createPhotoPost(post);
             history.push(AppRoutes.HOME);
             return newPost;
         } catch (e) {
@@ -60,10 +56,9 @@ export const createPhotoPost = createAsyncThunk(
 
 export const createComment = createAsyncThunk(
     'posts/createComment',
-    async (comment: { message: string; replyTo: string | null; postId: string }, { rejectWithValue, dispatch }) => {
+    async (comment: { message: string; replyTo: string | null; postId: string }, { rejectWithValue }) => {
         try {
-            const app = new AppService();
-            const newComment = await app.createComment(comment);
+            const newComment = await AppService.createComment(comment);
             return newComment;
         } catch (e) {
             const customError = AppService.makeError('createComment', e);
@@ -72,6 +67,18 @@ export const createComment = createAsyncThunk(
         }
     }
 );
+
+export const deletePost = createAsyncThunk('post/deletePost', async (id: string, { rejectWithValue }) => {
+    try {
+        await AppService.deletePost(id);
+        ToastService.success({title: 'Post deleted!', message: 'You will never see it again'});
+        return id;
+    } catch (e) {
+        const customError = AppService.makeError('deletePost', e);
+        ToastService.error(customError);
+        return rejectWithValue(customError);
+    }
+});
 
 const postsSlice = createSlice({
     name: 'posts',
@@ -117,6 +124,11 @@ const postsSlice = createSlice({
                 const updatedPostId = action.payload.postId;
                 const updatedPost = state.entities[updatedPostId];
                 updatedPost?.comments.push(action.payload);
+            })
+
+            .addCase(deletePost.fulfilled, (state, action) => {
+                const deletePostId = action.payload;
+                postsAdapter.removeOne(state, deletePostId);
             });
     },
 });

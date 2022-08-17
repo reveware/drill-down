@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PostService } from './post.service';
 import { UserService } from '../user/user.service';
 import { AuthGuard } from '@nestjs/passport';
-
+// TODO: Move to a new Tag Module
 @ApiTags('tags')
 @Controller('tags')
 @UseGuards(AuthGuard(['jwt']))

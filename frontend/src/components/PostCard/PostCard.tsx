@@ -13,17 +13,15 @@ interface PostCardProps {
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
     const { post, onViewDetails, size } = props;
-
     return (
-        <Card className={`post-card ${size ?? ''}`}>
+        <Card id={`post-card-${post._id}`} className={`post-card ${size ?? ''}`}>
             <div className="post-card-content" onClick={() => {onViewDetails(post)}}>
                 {post.type === PostTypes.PHOTO ? (
                     <Card.Img
                         variant="top"
                         className="post-card-img"
                         src={
-                            (props.post.body as PhotoPost).urls[0] ||
-                            'https://66.media.tumblr.com/ce59da0b36a695b698e5df2976e0f180/tumblr_pedwbdEEbq1wa84xco1_500.jpg' //TODO: proper placeholder
+                            (props.post.body as PhotoPost).urls[0]
                         }
                     />
                 ) : (

@@ -58,9 +58,9 @@ export const CustomPhotosInput: React.FC<CustomPhotosInputProps> = (props) => {
 
     return (
         <React.Fragment>
-            <div className="custom-photos-input">
+            <div className="custom-photos-input" onClick={handleInputClick} >
                 <input ref={inputRef} type="file" accept="image/*" onChange={handlePhotosInputChange} multiple className="hidden" />
-                <FontAwesomeIcon className="custom-photos-input-button pointer" size="lg" icon="images" onClick={handleInputClick} />
+                <FontAwesomeIcon className="custom-photos-input-button pointer" size="lg" icon="images" />
 
                 <div className="custom-photos-input-previews">
                     {photoPreviews.length === 0 ? (

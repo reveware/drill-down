@@ -8,6 +8,8 @@ import { FrontFace } from './FrontFace';
 import { BackFace } from './BackFace';
 import { Populated, Post } from '@drill-down/interfaces';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createComment, deletePost } from '../../store';
 
 interface PostCardDetailModalProps {
     post: Populated<Post>;
@@ -16,7 +18,8 @@ interface PostCardDetailModalProps {
 export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) => {
     const { post, onHide } = props;
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
-    
+    const dispatch = useDispatch();
+
     // Since we're opening the modal manually, we need to do it before the render
     useLayoutEffect(() => {
         const modal = $('#post-card-detail-modal') as any;
@@ -27,8 +30,8 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
         modal.modal('show');
 
         return function cleanup() {
-            handleHide()
-        }
+            handleHide();
+        };
     }, [post]);
 
     useEffect(() => {
@@ -48,12 +51,18 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
         onHide();
     };
 
+    const handleCommentCreated = (comment: { postId: string; message: string; replyTo: string | null }): void => {
+        dispatch(createComment(comment));
+    };
+
+    const handlePostStarred = () => {};
+
     const handleEdit = () => {
         // TODO:
     };
 
     const handleDelete = () => {
-        // TODO:
+        dispatch(deletePost(post._id));
     };
 
     const togglePostCardFlip = () => {
@@ -76,15 +85,17 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
                 <div className="modal-dialog" role="document">
                     <div className="flipper">
                         <FrontFace
-                            post={post}
+                            postId={post._id}
                             onHide={handleHide}
                             onPostCardFlip={togglePostCardFlip}
                             onEdit={handleEdit}
                             onDelete={handleDelete}
                         />
-                        <BackFace 
-                            post={post} 
-                            onPostCardFlip={togglePostCardFlip} 
+                        <BackFace
+                            postId={post._id}
+                            onPostCardFlip={togglePostCardFlip}
+                            onCommentCreated={handleCommentCreated}
+                            onPostStarred={handlePostStarred}
                         />
                     </div>
                 </div>
