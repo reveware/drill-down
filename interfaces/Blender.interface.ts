@@ -1,5 +1,4 @@
 
-
 export namespace Blender  {
     export interface Camera {
         lens: {
@@ -9,7 +8,6 @@ export namespace Blender  {
                 distance: number;
                 focalTarget: object;
             }
-            image: string;
         }
     }
 
@@ -42,4 +40,8 @@ export namespace Blender  {
 
     }
     
+    export interface Asset {
+        name: string;
+        fileType: string;
+    }
 }
