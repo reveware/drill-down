@@ -63,6 +63,7 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
 
     const handleDelete = () => {
         dispatch(deletePost(post._id));
+        handleHide();
     };
 
     const togglePostCardFlip = () => {

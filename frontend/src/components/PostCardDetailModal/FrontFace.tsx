@@ -34,6 +34,7 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
         setShowCaptions(!showCaptions);
     };
 
+    const hasMultiplePhotos = photos.length > 1
     return (
         <div className="front">
             <div className="modal-content">
@@ -46,12 +47,12 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
                 <div className="modal-body">
                     <div className="front-face">
                         <div className="post-content">
-                            <Carousel className="image-carousel" indicators={photos.length > 1} controls={photos.length > 1}>
+                            <Carousel className="image-carousel" indicators={false} controls={hasMultiplePhotos}>
                                 {photos.map((photo, i) => (
-                                    <div key={i} className="image-carousel-item">
+                                    <Carousel.Item key={i} className="image-carousel-item">
                                         <Image src={photo} fluid onMouseDown={toggleHideCaptions} onMouseUp={toggleHideCaptions} />
                                         {showCaptions && description && <p className="captions">{description}</p>}
-                                    </div>
+                                    </Carousel.Item>
                                 ))}
                             </Carousel>
                         </div>

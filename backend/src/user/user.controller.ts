@@ -99,4 +99,21 @@ export class UserController {
         this.userService.unstarPost(user, postId);
         return res.status(HttpStatus.OK).json({});
     }
+
+    
+    @Get(':username/tags/count')
+    @ApiResponse({ status: HttpStatus.OK, description: 'Aggregated count for post tags successfully' })
+    @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found, so no post count' })
+    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving tag count' })
+    async findUserPotsCountByTag(@Response() res, @Param('username') username: string) {
+    
+
+        const postsCountByTag = await this.userService.getPostsCountByTag(username);
+
+        if(_.isNull(postsCountByTag)) {
+            throw new NotFoundException(`username ${username} not found, so no Posts.`);
+        }
+        
+        return res.status(HttpStatus.OK).json(postsCountByTag);
+    }
 }
