@@ -21,7 +21,6 @@ export class AppService {
 
             while (true) {
                 let offset = limit * (pageNumber - 1);
-                offset = offset == 0 ? 0 : offset + 1;
 
                 const options = { identifier: 'rrriki', offset, limit, before };
                 const { total, posts } = await this.tumblrService.getBlogPostsByOffset(options);
@@ -32,8 +31,9 @@ export class AppService {
                 pageNumber++;
 
                 if (posts.length === 0 || iteration === iterationToSaveOn) {
+                    iteration = 0;
                     const photoPosts = posts.filter((post): post is TumblrPhotoPost => post.type === 'photo');
-
+                    console.log(`saving ${photoPosts.length} photo posts from ${total} total posts`);
                     for (const photoPost of photoPosts) {
                         const urls = photoPost.photos.map((photo) => photo.original_size.url);
                         await this.postService.createPhotoPost(
@@ -49,7 +49,6 @@ export class AppService {
 
                     before = _.last(currentPosts)?.timestamp;
                     currentPosts = [];
-                    break;
                 }
 
                 await AppService.sleep(3);

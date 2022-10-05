@@ -72,7 +72,7 @@ export class AppService {
     public static async getPostsCountByTag(username: string): Promise<CountByTag[]> {
         try {
             const headers = AppService.getHeaders();
-            const { data } = await axios.get(`${this.url}/tags/${username}/count`, { headers });
+            const { data } = await axios.get(`${this.url}/users/${username}/tags/count`, { headers });
             return data as CountByTag[];
         } catch (e) {
             throw AppService.makeError('getPostsCountByTag', e);

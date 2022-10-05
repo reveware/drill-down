@@ -47,12 +47,12 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
                 <div className="modal-body">
                     <div className="front-face">
                         <div className="post-content">
-                            <Carousel className="image-carousel" indicators={hasMultiplePhotos} controls={hasMultiplePhotos}>
+                            <Carousel className="image-carousel" indicators={false} controls={hasMultiplePhotos}>
                                 {photos.map((photo, i) => (
-                                    <div key={i} className="image-carousel-item">
+                                    <Carousel.Item key={i} className="image-carousel-item">
                                         <Image src={photo} fluid onMouseDown={toggleHideCaptions} onMouseUp={toggleHideCaptions} />
                                         {showCaptions && description && <p className="captions">{description}</p>}
-                                    </div>
+                                    </Carousel.Item>
                                 ))}
                             </Carousel>
                         </div>

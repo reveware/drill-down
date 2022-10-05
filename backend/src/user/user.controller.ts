@@ -101,7 +101,7 @@ export class UserController {
     }
 
     
-    @Get(':username/count')
+    @Get(':username/tags/count')
     @ApiResponse({ status: HttpStatus.OK, description: 'Aggregated count for post tags successfully' })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found, so no post count' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving tag count' })
