@@ -1,0 +1,38 @@
+{
+  "name": "@drill-down/root",
+  "version": "1.0.0",
+  "description": "drill down",
+  "repository": "git@github.com:rrriki/drill-down.git",
+  "author": "Ricardo Rincon <ricardo_rm25@hotmail.com>",
+  "license": "MPL-2.0",
+  "private": true,
+  "scripts": {
+    "start:backend": "yarn --cwd ./backend start:dev",
+    "start:frontend": "yarn --cwd ./frontend start",
+    "clean": "rm -rf node_modules && rm -rf backend/node_modules && rm -rf frontend/node_modules"
+  },
+  "workspaces": {
+    "packages": [
+      "backend",
+      "frontend",
+      "interfaces"
+    ],
+    "nohoist": [
+      "**/webpack-dev-server",
+      "**/babel*",
+      "**/eslint**",
+      "**/jest",
+      "**/*react*",
+      "**/*redux*"
+    ]
+  },
+  "dependencies": {
+    "typescript": "4.8.4",
+    "axios": "0.21.0",
+    "lodash": "4.17.20",
+    "moment": "2.27.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "4.14.160"
+  }
+}
