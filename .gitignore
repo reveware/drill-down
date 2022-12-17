@@ -3,12 +3,18 @@
 **/*/*.env.local
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+**/*/dist
+**/*/tmp
+**/*/out-tsc
+**/*/build
+
+# Terraform directories
+.terraform
+**/*/.terraform
+**./*/*.tfstate
+**/*/*.tfstate.*
 
 # dependencies
-node_modules
 **/*/node_modules
 
 # profiling files

@@ -1,9 +1,0 @@
-{
-  "name": "@drill-down/interfaces",
-  "description": "Interfaces",
-  "version": "1.0.0",
-  "author": "Ricardo Rincón",
-  "private": true,
-  "license": "MPL-2.0",
-  "main": "index.ts"
-}
