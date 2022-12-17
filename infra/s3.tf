@@ -1,9 +1,5 @@
 resource "aws_s3_bucket" "users_bucket" {
-  bucket = "users-bucket"
-  tags = {
-    Project = locals.project_name
-    Environment = locals.workspace
-  }
+  bucket = "${local.project_name}-${local.environment}-users-bucket"
 }
 
 resource "aws_s3_bucket_acl" "users_bucket_acl" {
@@ -13,11 +9,7 @@ resource "aws_s3_bucket_acl" "users_bucket_acl" {
 
 
 resource "aws_s3_bucket" "assets_bucket" {
-  bucket = "assets-bucket"
-  tags = {
-    Project = locals.project_name
-    Environment = locals.workspace
-  }
+  bucket = "${local.project_name}-${local.environment}-assets-bucket"
 }
 
 resource "aws_s3_bucket_acl" "assets_bucket_acl" {

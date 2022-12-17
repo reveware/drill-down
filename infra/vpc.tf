@@ -9,8 +9,4 @@ module "vpc" {
     public_subnets = var.aws_vpc_public_subnets
     enable_nat_gateway = false
     enable_vpn_gateway = false
-    tags = {
-      Project = locals.project_name
-      Environment = locals.workspace
-    }
 }

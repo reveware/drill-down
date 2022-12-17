@@ -20,7 +20,12 @@ After that, you'll need to set up the environment variables.
 
 You can see the `.template` files to get an idea of the variables need, or ask a maintainer. 
 
-Now you can run most of the infra needed locally (mongo, redis) using `docker-compose up` in the `/backend` but you probably will need to create AWS resources like the S3 bucket used to store the media, for this you can use terraform and updating the `~/aws/credentials` file with the account(s) you want to use.
+Now you can run most of the infra needed locally (mongo, redis) using `docker-compose up` in the `/backend` but you probably will need to create AWS resources like the S3 bucket used to store the media, for this you can use terraform, update the tf_vars in `./infra/env_vars` and make sure they match your `~/aws/credentials` file with the account(s) you want to use.
+
+then apply using those variables with:
+```
+    terraform apply -var-file=env_vars/development.tfvars  
+```
 
 You will probably need to add add entries in your `/etc/hosts` file for the docker replicas hostnames (mongo), pointing to your local address (127.0.0.1) to avoid errors connecting to the database.
 

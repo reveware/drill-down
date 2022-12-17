@@ -1,3 +1,4 @@
+aws_profile = "drill-down-dev"
 aws_account_id = "404828645950"
 aws_region = "us-east-1"
 aws_availability_zones = ["us-east-1a", "us-east-1b"]
