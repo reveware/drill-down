@@ -7,8 +7,8 @@
   "license": "MPL-2.0",
   "private": true,
   "scripts": {
-    "start:backend": "yarn --cwd ./backend start:dev",
-    "start:frontend": "yarn --cwd ./frontend start",
+    "start:backend": "yarn --cwd ./backend start",
+    "start:frontend": "yarn --cwd ./frontend start:dev",
     "clean": "rm -rf node_modules && rm -rf backend/node_modules && rm -rf frontend/node_modules"
   },
   "workspaces": {
