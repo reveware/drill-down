@@ -1,8 +1,20 @@
 @import '../../styles/media-queries';
 
+
+.login {
+    display: flex;
+    height: 100vh;
+}
+
 .login-form {
     margin: auto;
-    margin-top: 16px;
-    margin-bottom: 16px;
     max-width: 500px;
 }
+
+.login-button {
+    margin-top: 16px;
+    button {
+        width: 100%;
+    };
+    
+} 

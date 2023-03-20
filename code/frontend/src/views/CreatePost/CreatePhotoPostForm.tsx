@@ -65,8 +65,8 @@ export const CreatePhotoPostForm: React.FC<{ tagListProps: TagListProps }> = (pr
                             <TagList tags={tagListProps.tags} editOptions={tagListProps.editOptions} />
                         </Form.Group>
 
-                        <div onMouseEnter={() => setIsMouseOverSubmit(() => true)} onMouseLeave={() => setIsMouseOverSubmit(() => false)}>
-                            <Button type="button" variant="dark" size="lg" onClick={submitForm} disabled={!isValid}>
+                        <div className="create-photo-post-button" onMouseEnter={() => setIsMouseOverSubmit(() => true)} onMouseLeave={() => setIsMouseOverSubmit(() => false)}>
+                            <Button type="button" variant="dark"  onClick={submitForm} disabled={!isValid}>
                                 Create Photo Post
                             </Button>
                         </div>

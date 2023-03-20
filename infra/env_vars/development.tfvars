@@ -1,4 +1,4 @@
-aws_profile = "drill-down-dev"
+aws_profile = "default"
 aws_region = "us-east-1"
 aws_availability_zones = ["us-east-1a", "us-east-1b"]
 aws_vpc_cidr = "192.168.0.0/22" // 1024 addresses, for 4 subnets = 256 addresses each

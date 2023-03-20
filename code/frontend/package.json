@@ -6,7 +6,7 @@
     "private": true,
     "license": "MPL-2.0",
     "scripts": {
-        "start": "yarn run start:develop",
+        "start": "yarn run start:dev",
         "start:dev": "env-cmd -f .env.development react-scripts start",
         "start:prod": "env-cmd -f .env.production react-scripts start",
         "build:dev": "env-cmd -f .env.development react-scripts build",

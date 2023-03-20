@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
   ])
   cpu                      = 256
   memory                   = 512
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn       = aws_iam_role.backend_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
 }

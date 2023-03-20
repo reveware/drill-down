@@ -6,7 +6,7 @@ import { PostDocument } from './post.schema';
 import * as _ from 'lodash';
 import { CreatePhotoPostDTO, GetPostsFiltersDTO } from 'src/dto';
 import { CommentDocument } from './comment.schema';
-import moment from 'moment';
+import * as moment from 'moment';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -76,6 +76,8 @@ export class PostService {
         photos: string[],
         provider?: Providers
     ): Promise<Populated<Post>> {
+        this.logger.log('creating photo post', JSON.stringify({post}));
+
         const newPost = await this.postModel.create({
             type: PostTypes.PHOTO,
             author: user.id,
@@ -181,7 +183,7 @@ export class PostService {
 
             return (await newComment.populate('author', this.authorProperties).execPopulate()) as Populated<Comment>;
         } catch (e) {
-            this.logger.error('ERROR creating comment: ', e.message);
+            this.logger.error('error creating comment: ', e.message);
             await session.abortTransaction();
             throw e;
         } finally {

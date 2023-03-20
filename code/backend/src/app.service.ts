@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TumblrService } from './providers/tumblr/tumblr.service';
-import moment from 'moment';
+import * as moment from 'moment';
 import { PostService } from './post/post.service';
 import * as _ from 'lodash';
 import { Populated, Providers, TumblrPhotoPost, TumblrPost, User } from '@drill-down/interfaces';

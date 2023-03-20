@@ -78,7 +78,7 @@ export const Login = () => {
     };
 
     return (
-        <React.Fragment>
+        <div className="login">
             <Card className="login-form neon-border">
                 <Card.Body>
                     <Card.Title>Login</Card.Title>
@@ -98,22 +98,22 @@ export const Login = () => {
                                     placeholder="Password"
                                     onChange={handlePasswordChange}
                                 />
-                   
-                                    <InputGroup.Text>
-                                        <FontAwesomeIcon
-                                            onClick={handleShowPasswordToggle}
-                                            icon={isShowingPassword ? 'eye-slash' : 'eye'}
-                                            size="lg"
-                                        />
-                                    </InputGroup.Text>
-                    
+
+                                <InputGroup.Text>
+                                    <FontAwesomeIcon
+                                        onClick={handleShowPasswordToggle}
+                                        icon={isShowingPassword ? 'eye-slash' : 'eye'}
+                                        size="lg"
+                                    />
+                                </InputGroup.Text>
                             </InputGroup>
                             <Form.Text className={`form-hint ${isMouseOverSubmit && passwordError ? '' : 'invisible'}`}>
                                 {passwordError}
                             </Form.Text>
                         </Form.Group>
 
-                        {/* Disabled buttons don't emit events, so wrap it around span */}
+                        <div className='login-button'>
+                            {/* Disabled buttons don't emit events, so wrap it around span */}
                         <span
                             onMouseEnter={() => {
                                 setIsMouseOverSubmit(true);
@@ -121,10 +121,11 @@ export const Login = () => {
                             onMouseLeave={() => {
                                 setIsMouseOverSubmit(false);
                             }}>
-                            <Button size="lg" variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
+                            <Button variant="dark" type="button" disabled={isFormDisabled} onClick={handleSubmit}>
                                 Login
                             </Button>
                         </span>
+                        </div>
                     </Form>
 
                     <hr />
@@ -133,6 +134,6 @@ export const Login = () => {
                     </p>
                 </Card.Body>
             </Card>
-        </React.Fragment>
+        </div>
     );
 };
