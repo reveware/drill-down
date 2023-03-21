@@ -18,7 +18,7 @@ They also will get unique non-fungible collectibles (Assets) as incentive for in
 ### How does drill-down work?
 
 **Posting and Building Scenes**
-Users can create post in order to build their blog-like profile, while doing so, the system generates unique `Assets` for them, either by extracting information from said posts via image recognition, post-publishing surveys, or simply using tags to create an overall `THEME` for that user, and those themes are mapped to either pre-built 3D renders, or to 3D "rooms" from a live server of an online POV shooter world, filled with prop objects based on those themes.
+Users can create post in order to build their blog-like profile, while doing so, the system generates unique `Assets` for them, either by extracting information from said posts via tags, image recognition, post-publishing surveys, to create an overall `THEME` for that user, those themes are mapped to either pre-built 3D renders, or to 3D "rooms" that are used in a live server for an online POV shooter world, filled with prop objects based on those themes.
 
 Users will be able to visit another user's `SCENE` (based on privacy preferences), by visiting their profile and seeing their `ROOM`. If privacy preference allow it, the room is also available for "time-travelling" by any other user. 
 
