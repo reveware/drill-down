@@ -3,7 +3,7 @@ import { TumblrService } from './providers/tumblr/tumblr.service';
 import * as moment from 'moment';
 import { PostService } from './post/post.service';
 import * as _ from 'lodash';
-import { Populated, Providers, TumblrPhotoPost, TumblrPost, User } from '@drill-down/interfaces';
+import { Populated, Provider, TumblrPhotoPost, TumblrPost, User } from '@drill-down/common';
 
 @Injectable()
 export class AppService {
@@ -69,7 +69,7 @@ export class AppService {
                     tags: photoPost.tags.join(','),
                 },
                 urls,
-                Providers.TUMBLR
+                Provider.TUMBLR
             );
         }
     }

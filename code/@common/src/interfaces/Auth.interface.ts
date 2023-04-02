@@ -1,4 +1,4 @@
-import { User, Populated } from ".";
+import { Populated, User } from ".";
 
 export interface AuthResponse {
   isAuthorized: boolean;

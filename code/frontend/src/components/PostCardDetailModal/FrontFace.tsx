@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Carousel, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatUnixTimestamp } from '../../utils';
-import { PhotoPost } from '@drill-down/interfaces';
+import { PhotoPost } from '@drill-down/common';
 import './PostCardDetailModal.scss';
 import { history } from '../../App';
 import { AppRoutes } from '../../Routes';

@@ -25,7 +25,7 @@ import express from 'express';
 import { GetPostsFiltersDTO, CreatePhotoPostDTO, LeaveCommentDTO, FindByObjectId } from '../dto';
 import { PostService } from './post.service';
 import { JwtUser } from 'src/shared/decorators';
-import { User, Populated } from '@drill-down/interfaces';
+import { User, Populated } from '@drill-down/common';
 
 import { Configuration } from 'src/configuration';
 

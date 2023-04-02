@@ -1,0 +1,26 @@
+@import '../../styles/media-queries';
+.tag-cloud {
+    margin-top: 16px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 400px;
+    width: 400px;
+
+    .cloud {
+        margin-top: -64px;
+    }
+
+    .cloud-tag {
+        &:hover {
+            cursor: pointer;
+        }
+
+    
+    }
+
+    @include mobile {
+        display: none;
+    }
+}

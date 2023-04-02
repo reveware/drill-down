@@ -1,7 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Card, Form, Button, Row, Col, Image, InputGroup } from 'react-bootstrap';
+import { Card, Form, Button, Row, Col, InputGroup } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import * as _ from 'lodash';
 import { Key } from 'ts-keycode-enum';
@@ -14,24 +14,28 @@ import { initialRegisterFormState, registerReducer } from './register.reducer';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createUser } from '../../store';
-import { CreateUser } from '@drill-down/interfaces';
+import { CreateUser } from '@drill-down/common';
 import { AppService } from '../../services';
 import { AppState } from '../../store/store.type';
+import { Avatar } from 'src/components';
 
 export const Register = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const { token } = useSelector((state: AppState) => state.auth);
-
+    const DEFAULT_AVATAR_PATH = "/images/male-avatar.png";
     const [state, updateState] = useReducer(registerReducer, initialRegisterFormState);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
+    const [avatarSource, setAvatarSource] = useState<string>(DEFAULT_AVATAR_PATH)
 
     useEffect(() => {
         if (AppService.isAuthValid(token)) {
             history.push(AppRoutes.HOME);
         }
     }, [token]);
+
+
 
     const handleAvatarPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
@@ -45,8 +49,7 @@ export const Register = () => {
             reader.readAsDataURL(file);
             reader.onload = () => {
                 if (reader.result) {
-                    const avatarPhoto = document.getElementById('avatar-photo') as HTMLImageElement;
-                    avatarPhoto.src = reader.result.toString();
+                    setAvatarSource(reader.result.toString())
                 }
             };
         }
@@ -93,14 +96,9 @@ export const Register = () => {
                     <Form onKeyDown={handleKeyDown}>
                         <Row>
                             <Col>
-                                <div className="avatar">
-                                    <label htmlFor="avatar-file">
-                                        <Image
-                                            id="avatar-photo"
-                                            className="avatar-photo thumbnail"
-                                            src="/images/default-avatar.png"
-                                            roundedCircle
-                                        />
+                                <div className="register-avatar">
+                                    <label className="register-avatar-photo" htmlFor="avatar-file">
+                                      <Avatar id="avatar-photo" source={avatarSource} style="square" border={false}/>
                                     </label>
                                     <Form.Group>
                                     <Form.Label>Avatar</Form.Label>
@@ -112,7 +110,7 @@ export const Register = () => {
                                         className="avatar-file"
                                         onChange={handleAvatarPhotoChange}
                                     />
-                                            </Form.Group>
+                                    </Form.Group>
                                     <Form.Text
                                         className={`text-center form-hint ${isMouseOverSubmit && state.errors.avatar ? '' : 'invisible'}`}>
                                         {state.errors.avatar}
@@ -246,7 +244,7 @@ export const Register = () => {
                         <div className="register-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button variant="info" type="button" onClick={handleCancel}>
+                                <Button variant="secondary" type="button" onClick={handleCancel}>
                                     Cancel
                                 </Button>
                             </span>

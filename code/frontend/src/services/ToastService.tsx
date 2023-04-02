@@ -1,4 +1,4 @@
-import { CustomError } from '@drill-down/interfaces';
+import { CustomError } from '@drill-down/common';
 import React from 'react';
 import { toast, ToastOptions } from 'react-toastify';
 

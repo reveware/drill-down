@@ -3,7 +3,7 @@ import { PostCard, PostCardDetailModal } from '..';
 import './PostCardGrid.scss';
 import '../../styles/index.scss';
 import { useState } from 'react';
-import { Populated, Post } from '@drill-down/interfaces';
+import { Populated, Post } from '@drill-down/common';
 import { Card } from 'react-bootstrap';
 
 interface PostCardGridProps extends React.HTMLAttributes<HTMLDivElement> {

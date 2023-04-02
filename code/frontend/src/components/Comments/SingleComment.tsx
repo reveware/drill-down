@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, Collapse } from 'react-bootstrap';
-import { Populated, Comment } from '@drill-down/interfaces';
+import { Populated, Comment } from '@drill-down/common';
 import { formatUnixTimestamp } from '../../utils';
 
 import './SingleComment.scss';

@@ -17,6 +17,7 @@
         "downlevelIteration": true,
         "useUnknownInCatchVariables": false
     },
+
     "references": [
       { "path": "./interfaces" },
       { "path": "./frontend" },

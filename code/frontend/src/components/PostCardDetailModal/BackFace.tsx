@@ -4,7 +4,7 @@ import { Formik, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostCardDetailModal.scss';
-import { Comment, Populated } from '@drill-down/interfaces';
+import { Comment, Populated } from '@drill-down/common';
 import { CommentsList } from '../Comments/CommentsList';
 import { useSelector } from 'react-redux';
 import { selectPostById } from '../../store';
@@ -115,7 +115,8 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                 </div>
                 <div className="modal-footer">
                     <div className="footer-origin-info">
-                        <span>{`Starred ${post.stars.length} times`}</span>
+                        
+                        <span>{`Starred ${post.likes.length} times`}</span>
                     </div>
                     <FontAwesomeIcon className="pointer" icon={['far', 'star']} size="sm" onClick={handlePostStarred} />
                 </div>

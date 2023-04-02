@@ -2,9 +2,7 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "baseUrl": "./",
-        "outDir": "./build",
-        "incremental": true
+        "outDir": "./build"
     },
-    "include": ["src"],
-    "references": [{ "path": "../interfaces" }]
+    "include": ["src"]
 }

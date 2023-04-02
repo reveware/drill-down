@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { PostCardGrid, PostCardBanner } from '../../components';
-import { Post } from '@drill-down/interfaces';
+import { Post } from '@drill-down/common';
 
 import './PostForTag.scss';
 import { useDispatch, useSelector } from 'react-redux';

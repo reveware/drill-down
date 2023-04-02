@@ -1,4 +1,4 @@
-import { Blender, User } from '@drill-down/interfaces';
+import { Blender, User } from '@drill-down/common';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

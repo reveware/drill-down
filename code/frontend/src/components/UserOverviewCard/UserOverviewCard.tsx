@@ -1,24 +1,32 @@
 import React from 'react';
-import { User, Populated } from '@drill-down/interfaces';
+import { User, Populated } from '@drill-down/common';
 import { Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  TextBox } from '../../components';
+import { Avatar, TextBox } from '../../components';
 import { selectLoggedInUser } from '../../store';
 import './UserOverviewCard.scss';
+import { history } from '../../App';
+import { AppRoutes } from 'src/Routes';
 
 interface UserOverviewCardProps {
     user: Populated<User>;
 }
 export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
     const currentUser = useSelector(selectLoggedInUser);
-    const {user} = props;
+    const { user } = props;
 
+    const isMySelf = user._id === currentUser?._id;
+
+    const handleChatClick = () => {
+        history.push(AppRoutes.CHAT);
+    };
     return (
         <Card className="user-overview-card">
-            <div className="user-profile-photo">
-                <img src={user.avatar} />
+            <div className="overview-avatar">
+                <Avatar style="circle" source={user.avatar} />
             </div>
+
             <div className="user-profile-details">
                 <div>
                     <h2>{user.username}</h2>
@@ -32,18 +40,24 @@ export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
                 </div>
                 <div className="user-profile-stats">
                     <span>Friends: {user.friends.length}</span>
-                    <span>Likes: {(user as any).likes} </span> {/*TODO: add likes to model */}
+                    <span>Likes: {user.likes.length} </span>
                 </div>
 
+                <hr />
+
                 <div className="user-profile-actions">
-                    <div className="pointer">
-                        <FontAwesomeIcon className="action-icon" size="lg" icon="user-friends" />
-                        <span className="icon-label">Befriend</span>
-                    </div>
+                    {!isMySelf && (
+                        <div className="pointer">
+                            <FontAwesomeIcon className="action-icon" size="lg" icon="user-friends" />
+                            <span className="icon-label">Befriend</span>
+                        </div>
+                    )}
 
                     <div className="pointer">
                         <FontAwesomeIcon className="action-icon" size="lg" icon="comment-alt" />
-                        <span className="icon-label">Message</span>
+                        <span className="icon-label" onClick={handleChatClick}>
+                            Message
+                        </span>
                     </div>
                     <div className="pointer">
                         <FontAwesomeIcon className="action-icon" size="lg" icon="bomb" />

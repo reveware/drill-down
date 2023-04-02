@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ToTheMoonSVG } from '../../assets/svg';
-import { AppRoutes } from '../../Routes';
-import { selectLoggedInUser } from '../../store';
-import './TravelWithUs.scss';
+import { ToTheMoonSVG } from '../../../assets/svg';
+import { AppRoutes } from '../../../Routes';
+import { selectLoggedInUser } from '../../../store';
+import './NoContent.scss';
 
-export const TravelWithUs: React.FC = () => {
+
+export const NoContent: React.FC = () => {
     const user = useSelector(selectLoggedInUser);
     return (
         <div className="travel-with-us">

@@ -2,18 +2,18 @@
 @import '../../styles/media-queries';
 
 .user-overview-card{
-    width: 400px;
+    padding: 8px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
 
-    .user-profile-photo {
-        height: 300px;
+    min-width: 350px;
 
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
+    .overview-avatar {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        width: 60%;
+        align-self: center;
     }
 
     .user-profile-details {
@@ -29,9 +29,9 @@
 
         .user-profile-actions {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             flex-wrap: wrap;
-            justify-content: space-between;
+            
             font-size: small;
 
             > div {
@@ -50,31 +50,5 @@
         }
     }
 
-    
 
-    @include mobile {
-        flex-direction: row;
-        justify-content: space-evenly;
-        width: 80%;
-
-        .user-profile-details {
-            display: flex;
-            flex-direction: column;
-            min-width: fit-content;
-
-            .user-profile-stats {
-                margin-bottom: auto;
-            }
-
-            .user-profile-actions {
-                justify-self: self-end;
-                .action-icon {
-                    font-size: x-large;
-                }
-                .icon-label {
-                    display: none;
-                }
-            }
-        }
-    }
 }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Key } from 'ts-keycode-enum';
 import { AppRoutes } from '../../Routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isValidEmailAddress } from '../../utils';
-import { logIn, selectLoggedInUser } from '../../store';
+import { logIn } from '../../store';
 
 import './Login.scss';
 import { AppState } from '../../store/store.type';

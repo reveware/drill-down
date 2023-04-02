@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PhotoPost, Post } from '@drill-down/interfaces';
+import { PhotoPost, Post } from '@drill-down/common';
 import { Card } from 'react-bootstrap';
 import moment from 'moment';
 import './PostCardBanner.scss';

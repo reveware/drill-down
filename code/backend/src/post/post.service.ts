@@ -1,7 +1,7 @@
 import { Injectable,  Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, CountByTag, Comment, Populated, User, PostTypes, Providers, Unpopulated } from '@drill-down/interfaces';
+import { Post, CountByTag, Comment, Populated, User, PostTypes, Provider, Unpopulated } from '@drill-down/common';
 import { PostDocument } from './post.schema';
 import * as _ from 'lodash';
 import { CreatePhotoPostDTO, GetPostsFiltersDTO } from 'src/dto';
@@ -12,7 +12,7 @@ import { UserService } from 'src/user/user.service';
 @Injectable()
 export class PostService {
     private logger = new Logger('PostService');
-    private authorProperties = 'firstName lastName username avatar';
+    
 
     constructor(
         @InjectModel('Post') private postModel: mongoose.Model<PostDocument>,
@@ -43,13 +43,12 @@ export class PostService {
                 if (allowedFilters.has(key)) {
                     const search = `${value}`.split(',').map((item) => item.trim());
                     if(key == 'author') {
-                        search.forEach((author)=> {                    
-                            const isMySelf = mongoose.Types.ObjectId(user._id).equals(author);
-                            
+                        search.forEach((author)=> {                      
+                            const isMySelf = user.username === author;
                             const isMyFriend = UserService.isValidFriendship(user, author);
 
-                            if(!isMySelf || !isMyFriend) {
-                                throw new ForbiddenException(`not allowed to see ${author} posts`);
+                            if(!isMySelf && !isMyFriend) {
+                                throw new ForbiddenException(`Not allowed to see ${author} posts`);
                             }
                         });
                         
@@ -74,9 +73,8 @@ export class PostService {
         user: Populated<User>,
         post: CreatePhotoPostDTO,
         photos: string[],
-        provider?: Providers
+        provider?: Provider
     ): Promise<Populated<Post>> {
-        this.logger.log('creating photo post', JSON.stringify({post}));
 
         const newPost = await this.postModel.create({
             type: PostTypes.PHOTO,
@@ -86,9 +84,9 @@ export class PostService {
             },
             tags: (post.tags || '').split(','),
             description: post.description,
-            provider: provider ?? Providers.REVEWARE,
+            provider: provider ?? Provider.REVEWARE,
             comments: [],
-            stars: [],
+            likes: [],
             createdAt: moment().unix(),
         });
         
@@ -121,11 +119,12 @@ export class PostService {
     }
 
     public async getPosts(user: Populated<User>, params?: GetPostsFiltersDTO): Promise<Populated<Post>[]> {
-        const query = PostService.getMongooseFilterQuery(user, params);       
+        const query = PostService.getMongooseFilterQuery(user, params);     
+        console.log('mongoose query', {query})  
         const posts = (await this.postModel
             .find(query)
             .sort('-createdAt')
-            .populate('author', this.authorProperties)
+            .populate('author', UserService.AUTHOR_PROPERTIES)
             .populate({
                 path: 'comments',
                 model: 'Comment',
@@ -133,7 +132,7 @@ export class PostService {
                 populate: {
                     path: 'author',
                     model: 'User',
-                    select: this.authorProperties,
+                    select: UserService.AUTHOR_PROPERTIES,
                 },
             })) as Populated<Post>[];
 
@@ -181,7 +180,7 @@ export class PostService {
 
             await session.commitTransaction();
 
-            return (await newComment.populate('author', this.authorProperties).execPopulate()) as Populated<Comment>;
+            return (await newComment.populate('author', UserService.AUTHOR_PROPERTIES).execPopulate()) as Populated<Comment>;
         } catch (e) {
             this.logger.error('error creating comment: ', e.message);
             await session.abortTransaction();

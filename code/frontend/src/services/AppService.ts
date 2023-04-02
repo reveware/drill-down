@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Configuration } from '../configuration';
-import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload, Populated, CreateUser, Comment } from '@drill-down/interfaces';
+import { CustomError, AuthResponse, User, Post, CountByTag, JwtPayload, Populated, CreateUser, Comment } from '@drill-down/common';
 
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -56,6 +56,7 @@ export class AppService {
         const headers = AppService.getHeaders();
         const params = { author: username };
         const { data } = await axios.get(`${this.url}/posts/`, { headers, params });
+        console.log('server returned posts', {data});
         return data;
     }
 

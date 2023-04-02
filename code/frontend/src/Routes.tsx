@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
-import { useLayoutEffect } from 'react';
-import { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import { AppService } from './services';
 import { AppState } from './store/store.type';
-import { Home, Login, Register, PostForTag, CreatePost } from './views';
+import { Home, Login, Register, PostForTag, CreatePost, Chat } from './views';
 import { UserProfile } from './views/UserProfile/UserProfile';
 
 export enum AppRoutes {
@@ -14,7 +12,8 @@ export enum AppRoutes {
     CREATE_POST = '/post',
     HOME = '/home',
     POSTS_FOR_TAG = '/tags/:tag',
-    USER_PROFILE = '/user/:username'
+    USER_PROFILE = '/user/:username',
+    CHAT = '/chat'
 }
 
 export interface AppRouteProps extends RouteProps {
@@ -29,12 +28,12 @@ const routes: AppRouteProps[] = [
     { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, exact: true, component: PostForTag },
     { path: AppRoutes.CREATE_POST, isProtected: true, exact: true, component: CreatePost },
     { path: AppRoutes.USER_PROFILE, isProtected: true, exact: true, component: UserProfile },
+    { path: AppRoutes.CHAT, isProtected: true, exact: true, component: Chat },
     { path: '*', isProtected: true, component: Home },
 ];
 
 export const Routes: React.FC = () => {
     const { token } = useSelector((state: AppState) => state.auth);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(AppService.isAuthValid(token));
 
     return (
         <React.Fragment>

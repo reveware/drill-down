@@ -1,15 +1,14 @@
-import { MaybePopulated, Providers } from ".";
+import { MaybePopulated, Provider } from ".";
 
 export interface Post {
   type: PostTypes;
   author: MaybePopulated<string, Author>;
   body: PhotoPost | QuotePost;
-  stars: MaybePopulated<string[], Author[]>;
+  likes: MaybePopulated<string[], Author[]>;
   comments: MaybePopulated<string[], Comment[]>;
   tags: string[];
   description?: string;
-  provider: Providers;
-  providerId?: string;
+  provider: Provider;
   createdAt: number;
 }
 

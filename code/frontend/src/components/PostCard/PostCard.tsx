@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { PhotoPost, Populated, Post, PostTypes } from '@drill-down/interfaces';
+import {PhotoPost, Populated, Post, PostTypes} from '@drill-down/common';
 import './PostCard.scss';
 import { TagList } from '../TagList/TagList';
 import { formatUnixTimestamp } from '../../utils';
@@ -13,6 +13,8 @@ interface PostCardProps {
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
     const { post, onViewDetails, size } = props;
+
+
     return (
         <Card id={`post-card-${post._id}`} className={`post-card ${size ?? ''}`}>
             <div className="post-card-content" onClick={() => {onViewDetails(post)}}>

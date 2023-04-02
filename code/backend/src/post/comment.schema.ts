@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Comment } from '@drill-down/interfaces';
+import { Comment } from '@drill-down/common';
 
 
 export interface CommentDocument extends Comment, mongoose.Document {}

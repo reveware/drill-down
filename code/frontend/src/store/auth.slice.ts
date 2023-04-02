@@ -1,4 +1,4 @@
-import { CustomError, JwtPayload, Populated, User } from '@drill-down/interfaces';
+import { CustomError, JwtPayload, Populated, User } from '@drill-down/common';
 import { createSelector, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import JwtDecode from 'jwt-decode';
 import { resetState } from '.';

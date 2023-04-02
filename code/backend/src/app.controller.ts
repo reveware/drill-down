@@ -2,7 +2,7 @@ import { Controller, Get, HttpStatus, Logger, Response, UseGuards } from '@nestj
 import { AuthGuard } from '@nestjs/passport';
 import { AppService } from './app.service';
 import { JwtUser } from './shared/decorators';
-import { Populated, User } from '@drill-down/interfaces';
+import { Populated, User } from '@drill-down/common';
 import express from 'express';
 @Controller()
 @UseGuards(AuthGuard(['jwt']))

@@ -1,5 +1,5 @@
 import { createEntityAdapter, createAsyncThunk, createSlice, EntityState, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { CustomError, Populated, Post } from '@drill-down/interfaces';
+import { CustomError, Populated, Post } from '@drill-down/common';
 import { history } from '../App';
 import { AppRoutes } from '../Routes';
 import { AppService } from '../services';
@@ -101,6 +101,7 @@ const postsSlice = createSlice({
             })
 
             .addCase(fetchPostsForUser.fulfilled, (state, action) => {
+                console.log('called fulfilled for posts', {action})
                 state.isLoading = false;
                 postsAdapter.upsertMany(state, action.payload);
             })

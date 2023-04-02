@@ -2,7 +2,7 @@ import express from 'express';
 import * as AWS from 'aws-sdk';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
-import { User } from '@drill-down/interfaces';
+import { User } from '@drill-down/common';
 import * as path from 'path';
 
 export class Configuration {

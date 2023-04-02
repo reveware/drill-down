@@ -21,7 +21,7 @@ import * as _ from 'lodash';
 import { UserService } from './user.service';
 import { CreateUserDTO } from '../dto';
 import { Configuration } from 'src/configuration';
-import { Populated, Providers, User } from '@drill-down/interfaces';
+import { Populated, Provider, User, VALID_EMAIL_REGEX } from '@drill-down/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtUser } from 'src/shared/decorators';
 import express from 'express';
@@ -53,8 +53,9 @@ export class UserController {
             id: undefined,
             avatar: avatarS3Location,
             friends: [],
-            starredPosts: [],
-            providers: [Providers.REVEWARE],
+            likes: [],
+            posts: [],
+            providers: [Provider.REVEWARE],
         });
         return res.status(HttpStatus.OK).json({ user: newUser } as object);
     }
@@ -65,12 +66,8 @@ export class UserController {
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error fetching user' })
     async findUserByUsernameOrEmail(@Response() res: express.Response, @Param('usernameOrEmail') usernameOrEmail: string) {
         let user = null;
-        // TODO: move to @common to share with frontend
-        const validEmailRegex = new RegExp(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
 
-        const isValidEmail = validEmailRegex.test(usernameOrEmail);
+        const isValidEmail = VALID_EMAIL_REGEX.test(usernameOrEmail);
 
         if (isValidEmail) {
             user = await this.userService.findUserByEmail(usernameOrEmail);

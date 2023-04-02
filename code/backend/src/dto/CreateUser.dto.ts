@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsIn, IsNotEmpty, IsString, Length, IsDateString, IsOptional } from 'class-validator';
 import * as _ from 'lodash';
-import { CreateUser, UserRole } from "@drill-down/interfaces";
+import { CreateUser, UserRole } from "@drill-down/common";
 
 export class CreateUserDTO implements CreateUser {
     @ApiProperty() 

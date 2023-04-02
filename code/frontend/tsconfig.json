@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "outDir": "./build",
     "lib": [
       "dom",
@@ -17,9 +17,7 @@
   "include": [
     "src"
   ],
-  "references": [
-    {
-      "path": "../interfaces"
-    }
-  ]
+  "paths": {
+    "@drill-down/common": ["./node_modules/@drill-down/common"]
+  }
 }

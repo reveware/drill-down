@@ -11,5 +11,7 @@ export * from './Comments/CommentsList';
 export * from './Comments/SingleComment';
 export * from './TextBox/TextBox';
 export * from './UserOverviewCard/UserOverviewCard';
+export * from './Avatar/Avatar';
 export * from './UserList/UserList';
-export * from './TravelWithUs/TravelWithUs';
+export * from './UserRoom/UserRoom';
+export * from './FeedbackComponents';

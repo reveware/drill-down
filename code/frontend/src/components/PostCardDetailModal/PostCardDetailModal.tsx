@@ -6,7 +6,7 @@ import $ from 'jquery';
 import 'bootstrap';
 import { FrontFace } from './FrontFace';
 import { BackFace } from './BackFace';
-import { Populated, Post } from '@drill-down/interfaces';
+import { Populated, Post } from '@drill-down/common';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createComment, deletePost } from '../../store';
@@ -15,6 +15,7 @@ interface PostCardDetailModalProps {
     post: Populated<Post>;
     onHide: () => any;
 }
+
 export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) => {
     const { post, onHide } = props;
     const [isFlipped, setIsFlipped] = useState<boolean>(false);

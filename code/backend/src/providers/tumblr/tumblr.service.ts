@@ -1,4 +1,4 @@
-import { TumblrOffsetParams, TumblrPost } from '@drill-down/interfaces';
+import { TumblrOffsetParams, TumblrPost } from '@drill-down/common';
 import { Injectable, Logger } from '@nestjs/common';
 import * as tumblr from 'tumblr.js';
 import { Configuration } from '../../configuration';

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { CountByTag, Populated, Unpopulated, User } from '@drill-down/interfaces';
+import { CountByTag, Populated, Unpopulated, User } from '@drill-down/common';
 import { UserDocument } from './user.schema';
 import { PostService } from 'src/post/post.service';
 import * as _ from 'lodash';
@@ -11,12 +11,13 @@ import { ModuleRef } from '@nestjs/core';
 export class UserService implements OnModuleInit {
     private logger = new Logger('UserService');
     private postService!: PostService;
+    public static AUTHOR_PROPERTIES = 'firstName lastName username avatar';
 
     constructor(@InjectModel('User') private userModel: mongoose.Model<UserDocument>, private postModuleRef: ModuleRef) {}
 
     public onModuleInit() {
         // https://docs.nestjs.com/fundamentals/module-ref
-        // This allows injecting PostService even with Circular Dependency 
+        // This allows injecting PostService even with Circular Dependency
         this.postService = this.postModuleRef.get(PostService, { strict: false });
     }
 
@@ -39,24 +40,24 @@ export class UserService implements OnModuleInit {
         }
     }
 
-
     public async findAllUsers(): Promise<Array<Unpopulated<User>>> {
-        const users = await this.userModel.find({})
+        const users = await this.userModel.find({}).populate('friends', UserService.AUTHOR_PROPERTIES);
         return users.map((user) => UserService.filterSensitiveData(user) as Unpopulated<User>);
-     
     }
 
     public async findUserByEmail(email: string): Promise<Populated<User>> {
-        return await this.userModel.findOne({ email }).then(UserService.filterSensitiveData) as Populated<User>;
-        
+        return (await this.userModel
+            .findOne({ email })
+            .populate('friends', UserService.AUTHOR_PROPERTIES)
+            .then(UserService.filterSensitiveData)) as Populated<User>;
     }
 
     public async findUserByUsername(username: string): Promise<Populated<User>> {
-        return await this.userModel.findOne({ username }).then(UserService.filterSensitiveData) as Populated<User>;
+        return (await this.userModel.findOne({ username }).then(UserService.filterSensitiveData)) as Populated<User>;
     }
 
     public async validateUserByPassword(email: string, password: string): Promise<Populated<User> | null> {
-        const user = await this.userModel.findOne({ email });
+        const user = await this.userModel.findOne({ email }).populate('friends', UserService.AUTHOR_PROPERTIES);
 
         if (user && user.isValidPassword(password)) {
             return UserService.filterSensitiveData(user) as Populated<User>;
@@ -79,18 +80,18 @@ export class UserService implements OnModuleInit {
         await this.userModel.update({ _id: user._id }, { $pull: { starredPosts: mongoose.Types.ObjectId(postId) } });
     }
 
-    private static filterSensitiveData(user: UserDocument | null): UserDocument | null{
-        if(user) {
-            user.password = undefined as unknown as string;
+    private static filterSensitiveData(user: UserDocument | null): UserDocument | null {
+        if (user) {
+            user.password = (undefined as unknown) as string;
         }
-        
+
         return user;
     }
 
-    public async getPostsCountByTag(username: string): Promise<CountByTag[] | null>{
+    public async getPostsCountByTag(username: string): Promise<CountByTag[] | null> {
         const user = await this.findUserByUsername(username);
-        if(!user) {
-            return null
+        if (!user) {
+            return null;
         }
         return this.postService.getPostsCountByTag(user);
     }

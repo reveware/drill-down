@@ -1,65 +1,184 @@
 
+  
+
 # Drill Down
 
-This is a pet project, that looks to emulate the typical interactions from a social network, meaning having users, who can add friends, create, tag and comment posts, and some sort of messaging. And It will add some new type of user interactions, such as `Time Bombs`* 
+  
 
-This should eventually serve as a framework to drive the `POV` for the FPS unity project. 
+This is a pet project, that looks to emulate the typical interactions from a social network, meaning having users, who can add friends, create, tag and comment posts, and some sort of messaging. And It will add some new type of user interactions, such as `Time Bombs`*
 
+  
+
+This should eventually serve as a framework to drive the `POV` for the FPS unity project.
+
+  
+
+you can find more information about the idea under `/docs` and there is pressing need to change from mongo to RDS.
+
+  
+  
 
 ## Running locally
 
-> To run you will need to have the following versions and apps
-> Docker >= v.23.0.1 | #33 . ? . 1 + 23 = 33 ? 2 + 1 = 3x3 
-> Node >= 14.20.1 
-> NPM >= 9.6.2
-> Yarn >= 1.22.19 
+  
 
+To run you will need to have the following apps and versions
 
-This project is a monorepo leveraged on [yarn workspaces](https://yarnpkg.com/features/workspaces), so after cloning it you'll need to install the dependencies using 
+  
+
+**Web**
+
+```
+Docker >= v.23.0.1 | #33 . ? . 1 + 23 = 33 ? 2 + 1 = 3x3
+Node >= 14.20.1
+NPM >= 9.6.2
+Yarn >= 1.22.19
+```
+
+  
+
+**Render Pipeline**
+
+```
+Blender >= 3.5.0
+```
+
+  
+---
+
+This project is a node monorepo leveraged on [yarn workspaces](https://yarnpkg.com/features/workspaces), and it's intended in running in a Unix environment. After cloning it you'll need to install the dependencies using:
+
+  
 
 ```bash
-cd code
+cd  drill-down/code
 yarn install
 ```
 
+  
+
 After that, you'll need to set up the environment variables.
--  for the backend leave a `.env` file at the root of the `code/backend` folder
-- for the frontend leave a `.env.local` at the root of the `code/frontend` folder
 
-You can see the `.template` files to get an idea of the variables need, or ask a maintainer. 
+  
 
-At the moment, you can run most of the infra needed locally (mongo, redis) using `docker-compose up` in the `code/backend` but you  will probably also need to create AWS resources (Ex.the S3 bucket used to store the media). For this you can use terraform, just make sure to update the tf_vars in `./infra/env_vars` and make sure they match your `~/aws/credentials` file with the account(s) you want to use.
+- for the backend create a `.env` file at the root of the `code/backend` folder
 
-then apply using those variables with:
-```bash
-    terraform apply -var-file=env_vars/development.tfvars  
-```
+- for the frontend create a `.env.local` at the root of the `code/frontend` folder
+
+  
+
+You can see the `.template` files in each package to see the variables need, or ask a maintainer.
+
 
 You will probably need to add add entries in your `/etc/hosts` file for the docker replicas hostnames (mongo), pointing to your local address (127.0.0.1) to avoid errors connecting to the database.
 
+  
+  
+
+At the moment, you can run most of the infra needed (mongo, redis) locally using `docker-compose up` in the `code/backend` but you will probably also need to create AWS resources (Ex.the S3 bucket used to store the media). For this you can use terraform, just make sure to update the tf_vars in the `./infra/env_vars` folder and make sure they match your `~/aws/credentials` file with the account(s) you want to use. Avoid commiting this file.
+
+  
+
+then use those variables to to create the resources on AWS:
+
+  
+
+```bash
+
+terraform apply  -var-file=env_vars/development.tfvars
+
+```
+
+  
+
 If everything is set up, you should be able to start the apps from the root folder (you will need at least two terminals):
 
+  
+  
 
 - `yarn run start:backend` at the root of the `code/backend` folder
-- `yarn run start:frontend`  at the root of the `code/frontend` folder
+
+- `yarn run start:frontend` at the root of the `code/frontend` folder
+
+  
 
 or you can also run them both on each subfolder with:
 
+  
+  
 
 - `yarn run start` at the root of the `/backend` folder
-- `yarn run start`  at the root of the `/frontend` folder
+
+- `yarn run start` at the root of the `/frontend` folder
+
+  
+
+You should be able to visit localhost at ports (300 and 8080 by default) to use visit the website and use those services.
+
+  
+
+You can also test the "Render Pipeline" to print using the python script for Blender. As for now, it's just a hardcoded script that will be used to describe the project scene.
+
+```
+python /code/backend/make.py
+```
+
+  
+
+## Scene description
+
+There's a great value for designers to understand the prop definition. and being able to output the desired result. This json could describe either a single object, or prop, detailed as needed. It can also be an animation, using a Timeline of this object interact with other props win a given "scene".
 
 
+> I, as a designer would render
+  
 
+```typescript
+type  props = {
+	position: Array<number>;
+	materials: Array<Material>;
+	color: string;
+}
+
+type scene {
+	ext: boolean;
+	name: string;
+	description: string;
+	attributes: {
+		location: Location
+		environment: Environment
+		time: Time
+		props: Array<Props>
+		spectators: [POV]
+	}
+}
+
+type pov {
+	location: Location
+	lens: Lens
+	Time?: Time
+}
+```
+ 
+For this a series of prompts should be made to users, using triggers and a Conversation API, like Watson.
 
 ## Contributing
 
+  
+
 Ideas and suggestions are welcome.
+
+  
 
 You can submit a pull request on [GitHub](https://github.com/rrriki/drill-down), or if you're thinking about a major changes, you can open an issue first to discuss it.
 
+  
+
 You can request access to the [Trello board](https://trello.com/b/OTwMAWjI/drill-down) where we keep track of the work.
 
+  
+  
 
 ## License
+
 [MPL 2.0](https://choosealicense.com/licenses/mpl-2.0/)

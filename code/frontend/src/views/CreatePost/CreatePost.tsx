@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Card, Tab, Tabs } from 'react-bootstrap';
-import { PostTypes } from '@drill-down/interfaces';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import Card from 'react-bootstrap/Card';
+import { PostTypes } from '@drill-down/common';
 import * as _ from 'lodash';
 import { CreatePhotoPostForm } from './CreatePhotoPostForm';
 import './CreatePost.scss';
 
 export const CreatePost: React.FC = () => {
+
     const suggestions: any = []; // TODO: bring suggestions back   _.map(postsCountByTag, (count) => count.tag).slice(0, 30);
 
     const [tags, setTags] = useState<string[]>([]);

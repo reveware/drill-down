@@ -9,13 +9,16 @@
   "scripts": {
     "start:backend": "yarn --cwd ./backend start",
     "start:frontend": "yarn --cwd ./frontend start:dev",
-    "clean": "rm -rf node_modules && rm -rf backend/node_modules && rm -rf frontend/node_modules"
+    "preinstall": "yarn --cwd ./@common build",
+    "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+    "clean:build": "find . -name 'build' -type d -prune -exec rm -rf '{}' +",
+    "clean": "rm yarn.lock && npm run clean:node_modules && npm run clean:build"
   },
   "workspaces": {
     "packages": [
+      "@common",
       "backend",
-      "frontend",
-      "interfaces"
+      "frontend"
     ],
     "nohoist": [
       "**/webpack-dev-server",
@@ -33,6 +36,7 @@
     "moment": "2.27.0"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.0",
     "@types/lodash": "4.14.160"
   }
 }

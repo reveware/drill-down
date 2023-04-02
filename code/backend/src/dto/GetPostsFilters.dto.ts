@@ -1,4 +1,4 @@
-import { Providers } from '@drill-down/interfaces';
+import { Provider } from '@drill-down/common';
 import { IsString, IsOptional, IsEnum } from 'class-validator';
 
 export class GetPostsFiltersDTO {
@@ -16,6 +16,6 @@ export class GetPostsFiltersDTO {
     author?: string;
 
     @IsOptional()
-    @IsEnum(Providers)
-    provider?: Providers;
+    @IsEnum(Provider)
+    provider?: Provider;
 }

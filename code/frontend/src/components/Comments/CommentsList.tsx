@@ -1,5 +1,5 @@
 import React from 'react';
-import { Comment, Populated } from '@drill-down/interfaces';
+import { Comment, Populated } from '@drill-down/common';
 import * as _ from 'lodash';
 import { SingleComment } from './SingleComment';
 

@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import {Blender, User} from '@drill-down/interfaces'
+import {Blender, User} from '@drill-down/common'
 import { logPerformance } from 'src/shared/decorators/logPerformance';
 import * as _ from 'lodash';
 import { AssetsService } from './assets.service';

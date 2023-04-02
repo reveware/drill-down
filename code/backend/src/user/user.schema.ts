@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from '@drill-down/interfaces';
+import { User } from '@drill-down/common';
 
 const logger = new Logger('UserSchema');
 
@@ -20,7 +20,7 @@ export const UserSchema = new mongoose.Schema({
     tagLine: String,
     role: { type: String, required: true },
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
-    starredPosts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true}],
+    likes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true}],
     providers: { type: Array, required: true },
 }, { versionKey: false });
 

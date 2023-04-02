@@ -5,7 +5,7 @@ import { UserService } from '../user/user.service';
 import { LoginAttemptDTO } from '../dto';
 
 import { Configuration } from '../configuration';
-import { JwtPayload, AuthResponse, User, Populated } from "@drill-down/interfaces";
+import { JwtPayload, AuthResponse, User, Populated } from "@drill-down/common";
 import { UserDocument } from 'src/user/user.schema';
 
 @Injectable()

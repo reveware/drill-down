@@ -4,18 +4,18 @@
     margin: auto;
     max-width: 500px;
 
-    .avatar {
+    .register-avatar {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         margin: 8px;
+
+        .register-avatar-photo {
+            width: 50%;
+        }
     }
 
-    .avatar-photo {
-        width: 150px;
-        height: 150px;
-    }
 
     .avatar-file {
         display: none;
