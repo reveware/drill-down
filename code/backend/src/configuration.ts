@@ -1,9 +1,9 @@
 import express from 'express';
-import { S3Client } from '@aws-sdk/client-s3';
+import * as AWS from 'aws-sdk';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
-import { User } from '@drill-down/interfaces';
-import path from 'path';
+import * as path from 'path';
+import { User } from '@prisma/client';
 
 export class Configuration {
     public static HTTP_PORT = (process.env.HTTP_PORT || 8080);
@@ -69,20 +69,20 @@ export class Configuration {
 
     public static getMulterConfig = (folder: string, fileTypes: string[]) => {
         // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
-        const s3 = new S3Client({ credentials: Configuration.getAWSCredentials() });
+        const s3 = new AWS.S3({ credentials: Configuration.getAWSCredentials() });
         const usersBucketName = process.env.AWS_BUCKET_NAME;
 
         if (!usersBucketName) {
             throw new Error("missing user's bucket");
         }
         return {
-            s3,
+            s3: s3 as any,
             bucket: usersBucketName,
             serverSideEncryption: 'AES256',
             key: (req: express.Request & {user: User}, file: Express.Multer.File, cb: (e: any, key?: string)=> void) => {
                 const { user, body } = req;
 
-                const username = user ? user.username : body.username;
+                const username = user?.username || body.username;
 
                 if (!username) {
                     return cb(new UnauthorizedException('Valid user is required to upload files'));

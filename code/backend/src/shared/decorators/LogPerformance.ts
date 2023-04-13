@@ -3,7 +3,7 @@ import {Logger} from '@nestjs/common';
 
 const logger = new Logger('logPerformance');
 
-export function logPerformance(extras?: ExtrasType) : any {
+export function LogPerformance(extras?: ExtrasType) : any {
     return (target: any, methodName: string, descriptor: PropertyDescriptor) => {
         const {name: className} = target.constructor;
         const name = `${className}/${methodName}`;
