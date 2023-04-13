@@ -1,15 +1,16 @@
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import {Blender, User} from '@drill-down/common'
-import { logPerformance } from 'src/shared/decorators/logPerformance';
+import { LogPerformance } from 'src/shared/decorators/LogPerformance';
 import * as _ from 'lodash';
 import { AssetsService } from './assets.service';
+import { PostService } from 'src/post/post.service';
+import { UserWithoutPassword, Blender} from 'src/shared/interfaces';
 
 @Injectable()
 export class BlenderService implements OnModuleInit, OnModuleDestroy {
     private logger = new Logger('BlenderService');
 
-    constructor(private userService: UserService, private assetsService: AssetsService) {
+    constructor(private userService: UserService, private postService: PostService, private assetsService: AssetsService) {
 
     }
 
@@ -34,10 +35,10 @@ export class BlenderService implements OnModuleInit, OnModuleDestroy {
         this.cleanUp();
     }
 
-    @logPerformance()
-    private async renderUsersRoom(user: User) {
+    @LogPerformance()
+    private async renderUsersRoom(user: UserWithoutPassword) {
         const {username} = user;
-        const postsCountByTag = await this.userService.getPostsCountByTag(username);
+        const postsCountByTag = await this.postService.getPostsCountByTag(username);
         const tags = _.keys(postsCountByTag);
 
         const assets = await this.assetsService.findOrSchedule(user, tags);

@@ -1,13 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as _ from 'lodash';
 import { UserService } from '../user/user.service';
 import { LoginAttemptDTO } from '../dto';
-
 import { Configuration } from '../configuration';
-import { JwtPayload, AuthResponse, User, Populated } from "@drill-down/common";
-import { UserDocument } from 'src/user/user.schema';
-
+import { JwtPayload, UserWithoutPassword, AuthResponse } from 'src/shared/interfaces';
+  
 @Injectable()
 export class AuthService {
     private authConfig = Configuration.getAuthConfig();
@@ -19,18 +17,23 @@ export class AuthService {
 
         if (user) {
             return {
-                isAuthorized: true,
+                is_authorized: true,
                 message: 'Login successful',
                 token: this.generateTokenFromPayload({user}),
             };
         }
 
-        return { isAuthorized: false, message: 'Wrong email or password', token: null };
+        return { is_authorized: false, message: 'Wrong email or password', token: null };
     }
 
-    public async validateUserByJwt(payload: JwtPayload): Promise<Populated<User>> {
+    public async validateUserByJwt(payload: JwtPayload): Promise<UserWithoutPassword> {
         const { email } = payload.user;
-        return this.userService.findUserByEmail(email);
+        const user = await this.userService.findUserByEmail(email);
+
+        if(!user){
+           throw new UnauthorizedException('Invalid JWT');
+        }
+        return user;
     }
 
     private generateTokenFromPayload(payload: Partial<JwtPayload>): string {

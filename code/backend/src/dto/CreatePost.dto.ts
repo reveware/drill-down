@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import * as _ from 'lodash';
 
 export class CreatePhotoPostDTO {
     @ApiProperty()
-    @IsString()
+    @IsArray()
     @IsNotEmpty()
-    tags!: string; // comma separated
+    tags!: string[];
 
     @ApiProperty()
     @IsOptional()

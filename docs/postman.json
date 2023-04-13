@@ -1,0 +1,487 @@
+{
+	"info": {
+		"_postman_id": "6cab7daf-4966-40a5-a60a-1c7fc6de063c",
+		"name": "Drill Down",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25123273"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('set auth_token', ()=> {",
+									"    const jsonData = JSON.parse(responseBody);",
+									"    console.log('jsonData')",
+									"    pm.collectionVariables.set(\"AUTH_TOKEN\", jsonData.token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"riki@reveware.com\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/auth",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "rrriki",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Ricardo",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Rincon",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "riki@reveware.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "date_of_birth",
+									"value": "2022-01-11T19:13:00.775Z",
+									"type": "text"
+								},
+								{
+									"key": "tagline",
+									"value": "slow down",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "USER",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/home/riki/Pictures/Reveware/nasa.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/users",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "rrriki"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Tag Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/rrriki/tags/count",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"rrriki",
+								"tags",
+								"count"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Get Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/posts/",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"posts",
+								""
+							],
+							"query": [
+								{
+									"key": "author",
+									"value": "rrriki",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "sexy, movies",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "rrriki",
+									"disabled": true
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page_number",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/posts/:id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Photo Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photos",
+									"type": "file",
+									"src": "/home/riki/Pictures/Reveware/cuidateeldulce.jpeg"
+								},
+								{
+									"key": "description",
+									"value": "a  really interesting photo post ",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "star wars",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "star trek",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/posts/photo",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"posts",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reply_to\": null,\n    \"message\": \"first comment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/posts/:id/comments",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"posts",
+								":id",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friends",
+			"item": [
+				{
+					"name": "Get Friends",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/:username/friends",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								":username",
+								"friends"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "rrriki"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Friend",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "rrriki"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Friend",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "yane"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove friend",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "yane"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Root request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AUTH_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AUTH_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "API_URL",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

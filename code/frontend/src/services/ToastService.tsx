@@ -32,7 +32,7 @@ export class ToastService {
     private static formatCustomError = (e: CustomError): React.ReactElement => {
         return (
             <div>
-                <strong>Something happened with calling {e.origin} 😳 </strong>
+                <strong>Something happened when calling {e.origin} 😳 </strong>
                 <p>{e.message || e.name}</p>
                 {e.errors && Array.isArray(e.errors) && (
                     <ul>

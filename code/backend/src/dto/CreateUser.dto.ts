@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsIn, IsNotEmpty, IsString, Length, IsDateString, IsOptional } from 'class-validator';
 import * as _ from 'lodash';
-import { CreateUser, UserRole } from "@drill-down/common";
+import { UserRole } from "../shared/interfaces";
 
-export class CreateUserDTO implements CreateUser {
+export class CreateUserDTO {
     @ApiProperty() 
     avatar!: any;
 
@@ -11,15 +11,16 @@ export class CreateUserDTO implements CreateUser {
     @IsString()
     @IsNotEmpty()
     username!: string;
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    firstName!: string;
 
     @ApiProperty()
     @IsString()
     @IsNotEmpty()
-    lastName!: string;
+    first_name!: string;
+
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    last_name!: string;
 
     @ApiProperty()
     @IsNotEmpty()
@@ -35,11 +36,12 @@ export class CreateUserDTO implements CreateUser {
     @ApiProperty()
     @IsNotEmpty()
     @IsDateString()
-    dateOfBirth!: string;
+    date_of_birth!: string;
 
     @ApiProperty()
     @IsString()
-    tagLine!: string;
+    @IsOptional()
+    tagline!: string;
 
     @ApiProperty()
     @IsString()

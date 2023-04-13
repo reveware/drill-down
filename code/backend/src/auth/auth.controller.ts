@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Response, HttpStatus, UnauthorizedException, Get, UseGuards, Request, Logger, Req } from '@nestjs/common';
+import { Controller, Post, Body, Response, HttpStatus, UnauthorizedException, Get, UseGuards, Request, Logger } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAttemptDTO } from '../dto';
-import { AuthResponse } from "@drill-down/common";
+
 import { AuthGuard } from '@nestjs/passport';
 import express from 'express';
+import { AuthResponse } from 'src/shared/interfaces';
 @Controller('auth')
 export class AuthController {
     private logger = new Logger('AuthController');
@@ -13,7 +14,7 @@ export class AuthController {
     @Post()
     async login(@Response() response: express.Response, @Body() loginAttempt: LoginAttemptDTO) {
         const result: AuthResponse = await this.authService.validateUserByPassword(loginAttempt);
-        if (result.isAuthorized) {
+        if (result.is_authorized) {
             return response.status(HttpStatus.OK).json(result as object);
         }
         throw new UnauthorizedException([result.message]);

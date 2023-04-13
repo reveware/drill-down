@@ -2,8 +2,8 @@ import express from 'express';
 import * as AWS from 'aws-sdk';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
-import { User } from '@drill-down/common';
 import * as path from 'path';
+import { User } from '@prisma/client';
 
 export class Configuration {
     public static HTTP_PORT = (process.env.HTTP_PORT || 8080);

@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module, forwardRef } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { UserService } from './user.service';
-import { UserSchema } from './user.schema';
+import { PrismaModule } from 'src/prisma/prisma.module';
 import { UserController } from './user.controller';
+import { FriendModule } from 'src/friend/friend.module';
+import { PostModule } from 'src/post/post.module';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]), MulterModule],
+    imports: [PrismaModule, MulterModule, forwardRef(() => PostModule), forwardRef(() => FriendModule)],
     controllers: [UserController],
     providers: [UserService, UserController],
     exports: [UserService],

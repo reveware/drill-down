@@ -1,13 +1,13 @@
-_Please, make sure the code follows the conventions, and styleguide when creating or reviewing PRs._
+> Please, make sure the code follows the conventions, and styleguide when creating or reviewing PRs. 
 
 ## Description
 
-_Detail the change you're making to the codebase, and how it will affect the app behaviour and performance_
+<!---  Detail the change you're making to the codebase, and how it will affect the app behaviour and performance -->
 
 ## Motivation 
 
-_Explain the reasoning behind the change, call out any related tickets._
+<!--- Explain the reasoning behind the change, call out any related tickets. -->
 
 ## Testing
 
-_Describe the steps to test and validate the changes you made_
+<!---  Describe the steps to test and validate the changes you made -->

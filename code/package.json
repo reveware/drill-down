@@ -7,9 +7,9 @@
   "license": "MPL-2.0",
   "private": true,
   "scripts": {
-    "start:backend": "yarn --cwd ./backend start",
+    "preinstall": "yarn --cwd ./interfaces build",
+    "start:backend": "yarn --cwd ./backend start:dev",
     "start:frontend": "yarn --cwd ./frontend start:dev",
-    "preinstall": "yarn --cwd ./@common build",
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "clean:build": "find . -name 'build' -type d -prune -exec rm -rf '{}' +",
     "clean": "rm yarn.lock && npm run clean:node_modules && npm run clean:build"
