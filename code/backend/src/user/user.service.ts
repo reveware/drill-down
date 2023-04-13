@@ -1,97 +1,87 @@
-import { HttpException, HttpStatus, Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
-import { CountByTag, Populated, Unpopulated, User } from '@drill-down/interfaces';
-import { UserDocument } from './user.schema';
-import { PostService } from 'src/post/post.service';
+import { Injectable, Logger } from '@nestjs/common';
 import * as _ from 'lodash';
-import { ModuleRef } from '@nestjs/core';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateUserDTO } from 'src/dto';
+import { User } from '@prisma/client';
+import { UserWithoutPassword } from 'src/shared/interfaces';
+import { UniqueConstraintError } from 'src/shared/errors';
 
 @Injectable()
-export class UserService implements OnModuleInit {
+export class UserService {
     private logger = new Logger('UserService');
-    private postService!: PostService;
 
-    constructor(@InjectModel('User') private userModel: mongoose.Model<UserDocument>, private postModuleRef: ModuleRef) {}
+    constructor(private prismaService: PrismaService) {}
 
-    public onModuleInit() {
-        // https://docs.nestjs.com/fundamentals/module-ref
-        // This allows injecting PostService even with Circular Dependency 
-        this.postService = this.postModuleRef.get(PostService, { strict: false });
-    }
-
-    public static isValidFriendship(user: Populated<User>, stranger: string): boolean {
-        const friends = new Set((user.friends) as string[]);
-        return friends.has(stranger);
-    }
-
-    public async createUser(user: Unpopulated<User>): Promise<Populated<User>> {
+    private async isValidPassword(user: User, password: string) {
         try {
-            const newUser = await this.userModel.create(user);
-            this.logger.log(`New user created for ${user.email}`);
-            return UserService.filterSensitiveData(newUser) as Populated<User>;
+            return await bcrypt.compare(password, user.password);
         } catch (e) {
-            if (e.code === 11000) {
-                throw new HttpException(`User ${user.email} already exists`, HttpStatus.CONFLICT);
-            }
-
-            throw new HttpException(`ERROR creating user ${user.email}: ${e.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+            this.logger.error(e.message);
+            throw e;
         }
     }
 
 
-    public async findAllUsers(): Promise<Array<Unpopulated<User>>> {
-        const users = await this.userModel.find({})
-        return users.map((user) => UserService.filterSensitiveData(user) as Unpopulated<User>);
-     
+
+    public static isValidFriendship(user: any, stranger: string): boolean {
+        const friends = new Set(user.friends as string[]);
+        return friends.has(stranger);
     }
 
-    public async findUserByEmail(email: string): Promise<Populated<User>> {
-        return await this.userModel.findOne({ email }).then(UserService.filterSensitiveData) as Populated<User>;
-        
+    public async createUser(user: CreateUserDTO): Promise<UserWithoutPassword> {
+        try {
+            const salt = await bcrypt.genSalt();
+            user.password = await bcrypt.hash(user.password, salt);
+            const newUser = await this.prismaService.user.create({ data: user });
+            this.logger.log(`New user created for ${user.email}`);
+            return newUser;
+        } catch (e) {
+            this.logger.error('Error creating user', e.message);
+            console.log('error code', e.code);
+            if (e.code === 'P2002') {
+                throw new UniqueConstraintError('user already exists');
+            }
+            throw e;
+        }
     }
 
-    public async findUserByUsername(username: string): Promise<Populated<User>> {
-        return await this.userModel.findOne({ username }).then(UserService.filterSensitiveData) as Populated<User>;
+    public async findAllUsers(): Promise<Array<UserWithoutPassword>> {
+        return await this.prismaService.user.findMany({});
     }
 
-    public async validateUserByPassword(email: string, password: string): Promise<Populated<User> | null> {
-        const user = await this.userModel.findOne({ email });
+    public async findUserById(id: number): Promise<UserWithoutPassword | null> {
+        return await this.prismaService.user.findUnique({ where: { id } });
+    }
 
-        if (user && user.isValidPassword(password)) {
-            return UserService.filterSensitiveData(user) as Populated<User>;
+    public async findUserByEmail(email: string): Promise<UserWithoutPassword | null> {
+        return await this.prismaService.user.findUnique({ where: { email } });
+    }
+
+    public async findUserByUsername(username: string): Promise<UserWithoutPassword | null> {
+        return await this.prismaService.user.findUnique({ where: { username }, include: { friends: true } });
+    }
+
+    public async validateUserByPassword(email: string, password: string): Promise<UserWithoutPassword | null> {
+        const user = await this.prismaService.findUserWithPasswordByEmail(email);
+
+        if (user && (await this.isValidPassword(user, password))) {
+            return user;
         }
 
         return null;
     }
 
-    public async starPost(user: Populated<User>, postId: string): Promise<void> {
-        const [post] = await this.postService.getPosts(user, { _id: postId });
-
-        if (!post) {
-            throw new NotFoundException();
-        }
-
-        await this.userModel.update({ _id: user._id }, { $addToSet: { starredPosts: mongoose.Types.ObjectId(postId) } });
+    public async getUserLikes(username: string): Promise<any> {
+        // TODO: implement
     }
 
-    public async unstarPost(user: Populated<User>, postId: string): Promise<void> {
-        await this.userModel.update({ _id: user._id }, { $pull: { starredPosts: mongoose.Types.ObjectId(postId) } });
+    public async likePost(user: User, postId: string): Promise<void> {
+        // TODO: implement
     }
 
-    private static filterSensitiveData(user: UserDocument | null): UserDocument | null{
-        if(user) {
-            user.password = undefined as unknown as string;
-        }
-        
-        return user;
+    public async unlikePost(user: User, postId: string): Promise<void> {
+        // TODO: implement
     }
 
-    public async getPostsCountByTag(username: string): Promise<CountByTag[] | null>{
-        const user = await this.findUserByUsername(username);
-        if(!user) {
-            return null
-        }
-        return this.postService.getPostsCountByTag(user);
-    }
 }

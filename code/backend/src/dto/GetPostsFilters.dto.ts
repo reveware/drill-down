@@ -1,11 +1,11 @@
-import { Providers } from '@drill-down/interfaces';
-import { IsString, IsOptional, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsPositive, IsIn } from 'class-validator';
 
 export class GetPostsFiltersDTO {
 
+    @IsPositive()
+    @IsInt()
     @IsOptional()
-    @IsString()
-    _id? : string;
+    id? : number;
 
     @IsOptional()
     @IsString()
@@ -15,7 +15,13 @@ export class GetPostsFiltersDTO {
     @IsString()
     author?: string;
 
+    @IsInt()
+    @IsPositive()
     @IsOptional()
-    @IsEnum(Providers)
-    provider?: Providers;
+    page_number: number;
+
+    @IsInt()
+    @IsPositive()
+    @IsOptional()
+    page_size: number;
 }

@@ -2,8 +2,9 @@ import { Controller, Get, HttpStatus, Logger, Response, UseGuards } from '@nestj
 import { AuthGuard } from '@nestjs/passport';
 import { AppService } from './app.service';
 import { JwtUser } from './shared/decorators';
-import { Populated, User } from '@drill-down/interfaces';
+
 import express from 'express';
+import { User } from '@prisma/client';
 @Controller()
 @UseGuards(AuthGuard(['jwt']))
 export class AppController {
@@ -11,14 +12,15 @@ export class AppController {
     constructor(private readonly appService: AppService) {}
 
     @Get()
-    async rootRequest(@JwtUser() user: Populated<User>, @Response() res: express.Response): Promise<any> {
+    async rootRequest(@JwtUser() user: User, @Response() res: express.Response): Promise<any> {
+        this.logger.log(`Crawling tumblr posts for user ${user.username}`);
         this.appService
-            .crawlTumblrPosts(user)
+            .crawlTumblrPosts(user, 5)
             .then((result) => {
-                this.logger.log(`finished crawling posts for user ${user.username}: ${JSON.stringify(result)}`);
+                this.logger.log(`Finished crawling posts for user ${user.username}: ${JSON.stringify(result)}`);
             })
             .catch((e) => {
-                this.logger.error(`ERROR crawling posts for ${user.username}: ${e.message}`);
+                this.logger.error(`Error crawling posts for ${user.username}: ${e.message}`);
             });
 
         return res.status(HttpStatus.CREATED).json({});

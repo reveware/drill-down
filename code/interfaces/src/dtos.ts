@@ -1,6 +1,3 @@
-import { UserRole } from "./User.interface";
-
-
 export interface CreateUser {
     avatar: File,
     username: string;
@@ -10,5 +7,5 @@ export interface CreateUser {
     password: string;
     dateOfBirth: string;
     tagLine: string | undefined;
-    role: UserRole;
+    role: string;
 }
