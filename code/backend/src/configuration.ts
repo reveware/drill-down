@@ -79,7 +79,7 @@ export class Configuration {
             s3: s3 as any,
             bucket: usersBucketName,
             serverSideEncryption: 'AES256',
-            key: (req: express.Request & {user: User}, file: Express.Multer.File, cb: (e: any, key?: string)=> void) => {
+            key: (req: express.Request & {user?: User}, file: Express.Multer.File, cb: (e: any, key?: string)=> void) => {
                 const { user, body } = req;
 
                 const username = user?.username || body.username;

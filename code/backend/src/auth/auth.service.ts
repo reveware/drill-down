@@ -4,8 +4,8 @@ import * as _ from 'lodash';
 import { UserService } from '../user/user.service';
 import { LoginAttemptDTO } from '../dto';
 import { Configuration } from '../configuration';
-import { JwtPayload, UserWithoutPassword, AuthResponse } from 'src/shared/interfaces';
-  
+import { JwtPayload, AuthResponse, UserOverview } from '@drill-down/interfaces';
+
 @Injectable()
 export class AuthService {
     private authConfig = Configuration.getAuthConfig();
@@ -19,19 +19,19 @@ export class AuthService {
             return {
                 is_authorized: true,
                 message: 'Login successful',
-                token: this.generateTokenFromPayload({user}),
+                token: this.generateTokenFromPayload({ user }),
             };
         }
 
         return { is_authorized: false, message: 'Wrong email or password', token: null };
     }
 
-    public async validateUserByJwt(payload: JwtPayload): Promise<UserWithoutPassword> {
+    public async validateUserByJwt(payload: JwtPayload): Promise<UserOverview> {
         const { email } = payload.user;
         const user = await this.userService.findUserByEmail(email);
 
-        if(!user){
-           throw new UnauthorizedException('Invalid JWT');
+        if (!user) {
+            throw new UnauthorizedException('Invalid JWT');
         }
         return user;
     }

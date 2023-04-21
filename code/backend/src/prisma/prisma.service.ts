@@ -1,33 +1,37 @@
-import { Injectable, OnModuleInit, INestApplication  } from '@nestjs/common';
+import { Injectable, OnModuleInit, INestApplication } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
 
-
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit{
+export class PrismaService extends PrismaClient implements OnModuleInit {
+    private addCleanPasswordMiddleware = true;
 
-    private addCleanPasswordMiddleware = true
-
-    constructor(){
-        super()
-        this.addMiddleware()
+    constructor() {
+        super({
+            log: [
+                { level: 'query', emit: 'stdout' },
+                { level: 'info', emit: 'stdout' },
+                { level: 'warn', emit: 'stdout' },
+                { level: 'error', emit: 'stdout' },
+            ],
+        });
+        this.addMiddleware();
     }
 
     public async onModuleInit() {
         await this.$connect();
     }
 
-
-    public async findUserWithPasswordByEmail(email: string ) {
+    public async findUserWithPasswordByEmail(email: string) {
         this.addCleanPasswordMiddleware = false;
-        const user = await this.user.findUnique({where: {email}});
+        const user = await this.user.findUnique({ where: { email } });
         this.addCleanPasswordMiddleware = true;
         return user;
     }
 
     public async enableShutdownHooks(app: INestApplication) {
-        this.$on('beforeExit', async ()=> {
+        this.$on('beforeExit', async () => {
             await app.close();
-        })
+        });
     }
 
     private addMiddleware() {
@@ -35,19 +39,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit{
             const result = await next(params);
 
             if (params.model === 'User' && this.addCleanPasswordMiddleware) {
-              if (Array.isArray(result)) {
-                return result.map(this.cleanUserPrivateInfo);
-              } 
-              if (result) {
-                return this.cleanUserPrivateInfo(result);
-              }
+                if (Array.isArray(result)) {
+                    return result.map(this.cleanUserPrivateInfo);
+                }
+                if (result) {
+                    return this.cleanUserPrivateInfo(result);
+                }
             }
-      
+
             return result;
-          });
+        });
     }
-
-
 
     private cleanUserPrivateInfo(user: User): Omit<User, 'password'> {
         const { password, ...userWithoutPassword } = user;

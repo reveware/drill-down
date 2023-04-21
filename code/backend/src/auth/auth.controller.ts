@@ -4,7 +4,7 @@ import { LoginAttemptDTO } from '../dto';
 
 import { AuthGuard } from '@nestjs/passport';
 import express from 'express';
-import { AuthResponse } from 'src/shared/interfaces';
+import { AuthResponse } from '@drill-down/interfaces';
 @Controller('auth')
 export class AuthController {
     private logger = new Logger('AuthController');

@@ -1,7 +1,8 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {IsEmail, IsNotEmpty, IsString, Length, MinLength} from 'class-validator';
+import {IsEmail, IsNotEmpty, IsString, MinLength} from 'class-validator';
+import { LoginAttempt } from '@drill-down/interfaces';
 
-export class LoginAttemptDTO {
+export class LoginAttemptDTO implements LoginAttempt.Request{
     @ApiProperty()
     @IsNotEmpty()
     @IsEmail()

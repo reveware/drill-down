@@ -1,5 +1,4 @@
-export * from './auth.interface';
-export * from './user.interface';
-export * from './post.interface';
+export * from './prisma.user.interface';
+export * from './prisma.post.interface';
 export * from './tumblr.interface';
 export * from './blender.interface';

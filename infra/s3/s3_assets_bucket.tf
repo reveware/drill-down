@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "assets_bucket" {
-  bucket = "${local.project_name}-${local.environment}-assets-bucket"
+  bucket = "${var.bucket_prefix}-assets-bucket"
 }
 
 resource "aws_s3_bucket_acl" "assets_bucket_acl" {

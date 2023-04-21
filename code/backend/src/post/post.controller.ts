@@ -20,7 +20,6 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
-
 import express from 'express';
 import { GetPostsFiltersDTO, CreatePhotoPostDTO, CreateCommentDTO } from '../dto';
 import { PostService } from './post.service';
@@ -41,15 +40,15 @@ export class PostController {
     @ApiResponse({ status: HttpStatus.OK, description: 'Posts retrieved successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving Posts' })
     async getPosts(@Response() res: express.Response, @JwtUser() user: User, @Query() params?: GetPostsFiltersDTO) {       
-        const posts = await this.postService.getPosts(user, params);
+        const posts = await this.postService.searchPostsForUser(user, params);
         return res.status(HttpStatus.OK).json(posts);
     }
 
-    @Get('id')
+    @Get(':id')
     @ApiResponse({ status: HttpStatus.OK, description: 'Post detail retrieved successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving Post detail' })
     async getPostDetaoñ(@Response() res: express.Response, @JwtUser() user: User, @Param('id') id: string) {       
-        const post = await this.postService.getPostDetails(user, +id);
+        const post = await this.postService.getPostDetail(user, +id);
         return res.status(HttpStatus.OK).json(post);
     }
 
@@ -67,7 +66,7 @@ export class PostController {
         }
 
         const photoUrls = photos.map((photo) => photo.location);
-        const newPost = await this.postService.createPhotoPost(user, post, photoUrls);
+        const newPost = await this.postService.createPhotoPost(user, {...post, photos: photoUrls});
 
         return res.status(HttpStatus.OK).json(newPost);
     }

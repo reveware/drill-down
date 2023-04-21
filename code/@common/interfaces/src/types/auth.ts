@@ -1,7 +1,7 @@
-import { UserWithoutPassword } from "./user.interface";
+import { UserOverview } from "./user";
 
 export interface JwtPayload {
-    user: UserWithoutPassword
+    user: UserOverview
     iat: number;
     exp: number;
   }

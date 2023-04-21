@@ -13,10 +13,5 @@
     "esModuleInterop": true,
     "module": "esnext"
   },
-  "include": [
-    "src"
-  ],
-  "paths": {
-    "@drill-down/common": ["./node_modules/@drill-down/common"]
-  }
+  "include": ["src"]
 }

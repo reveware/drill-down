@@ -8,7 +8,8 @@
     "scripts": {
         "prebuild": "rimraf build",
         "build": "nest build",
-        "start": "ts-node -r tsconfig-paths/register -r dotenv/config src/server.ts dotenv_config_path=.env",
+        "start": "ts-node -r tsconfig-paths/register -r dotenv/config src/server.ts dotenv_config_path=.production.env",
+        "start:dev": "ts-node -r tsconfig-paths/register -r dotenv/config src/server.ts dotenv_config_path=.env",
         "start:debug": "nest start --debug --watch",
         "prettier": "prettier --config ./.prettierrc.json --write './**/*.{ts,tsx,json,html,scss,md}'",
         "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -20,7 +21,8 @@
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.199.0",
-        "@drill-down/common": "1.0.0",
+        "@drill-down/interfaces": "1.0.0",
+        "@drill-down/constants": "1.0.0",
         "@nestjs/common": "7.0.0",
         "@nestjs/core": "7.0.0",
         "@nestjs/jwt": "7.0.0",

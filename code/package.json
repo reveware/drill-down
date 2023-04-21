@@ -2,12 +2,12 @@
   "name": "@drill-down/root",
   "version": "1.0.0",
   "description": "drill down",
-  "repository": "git@github.com:rrriki/drill-down.git",
+  "repository": "git@github.com:reveware/drill-down.git",
   "author": "Ricardo Rincon <ricardo_rm25@hotmail.com>",
   "license": "MPL-2.0",
   "private": true,
   "scripts": {
-    "preinstall": "yarn --cwd ./interfaces build",
+    "preinstall": "yarn --cwd ./@common/interfaces build && yarn --cwd ./@common/constants build",
     "start:backend": "yarn --cwd ./backend start:dev",
     "start:frontend": "yarn --cwd ./frontend start:dev",
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
@@ -16,7 +16,8 @@
   },
   "workspaces": {
     "packages": [
-      "@common",
+      "@common/interfaces",
+      "@common/constants",
       "backend",
       "frontend"
     ],

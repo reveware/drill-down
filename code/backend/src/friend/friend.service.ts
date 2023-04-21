@@ -1,15 +1,16 @@
-import { Injectable} from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { UserOverview } from '@drill-down/interfaces';
+import { FriendRequest, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Friendships } from 'src/shared/interfaces';
+import * as _ from 'lodash';
 import { UserService } from 'src/user/user.service';
+import { UserTransformer } from 'src/user/user.transformer';
 
 @Injectable()
 export class FriendService {
-
     constructor(private prismaService: PrismaService, private userService: UserService) {}
 
-    public async getUserFriends(username: string): Promise<Friendships | null> {
+    public async getUserFriends(username: string): Promise<UserOverview[] | null> {
         const user = await this.userService.findUserByUsername(username);
 
         if (!user) {
@@ -18,25 +19,23 @@ export class FriendService {
 
         const friendships = await this.prismaService.friend.findMany({
             where: {
-                OR: [{ user_id: user.id }, { friend_id: user.id }],
+                OR: [{ requester_id: user.id }, { recipient_id: user.id }],
             },
-            include: { friend: true, user: true },
+            include: { requester: true, recipient: true },
         });
 
-        const result = { pending: [], friends: [] } as Friendships;
+        const friends = _.reduce(
+            friendships,
+            (acc, curr) => {
+                const initiatedByUser = user.id === curr.requester_id;
+                const friend = initiatedByUser ? curr.recipient : curr.requester;
+                acc.push(UserTransformer.toUserOverview(friend));
+                return acc;
+            },
+            [] as UserOverview[]
+        );
 
-        for (const friendship of friendships) {
-            const initiatedByUser = user.id === friendship.user_id;
-            const friend = initiatedByUser ? friendship.user : friendship.friend;
-
-            if (friendship.approved) {
-                result.friends.push(friend);
-            } else {
-                result.pending.push(friend);
-            }
-        }
-
-        return result;
+        return friends;
     }
 
     public async addFriendship(user: User, friendUsername: string): Promise<boolean> {
@@ -46,34 +45,50 @@ export class FriendService {
             return false;
         }
 
-        const existingOrPendingFriendship = await this.prismaService.friend.findFirst({
+        const existingFriendship = await this.prismaService.friend.findFirst({
             where: {
                 OR: [
-                    { user_id: user.id, friend_id: friend.id },
-                    { user_id: friend.id, friend_id: user.id },
+                    { requester_id: user.id, recipient_id: friend.id },
+                    { requester_id: friend.id, recipient_id: user.id },
                 ],
-                // no approve check returns both approved and pending
             },
         });
 
-        if (existingOrPendingFriendship) {
-            const initiatedByFriend = existingOrPendingFriendship.user_id === friend.id;
-            const isPendingApproval = !existingOrPendingFriendship.approved;
-
-            if (initiatedByFriend && isPendingApproval) {
-                await this.prismaService.friend.update({
-                    where: {
-                        id: existingOrPendingFriendship.id,
-                    },
-                    data: { approved: true, approved_at: new Date() },
-                });
-            }
-
+        if(existingFriendship) {
             return false;
         }
 
-       const result = await this.prismaService.friend.create({ data: { user_id: user.id, friend_id: friend.id } });
-        return !!result;
+        const pendingRequest = await this.prismaService.friendRequest.findFirst({
+            where: {
+                OR: [
+                    { requester_id: user.id, recipient_id: friend.id },
+                    { requester_id: friend.id, recipient_id: user.id },
+                ]
+            }
+        });
+
+        if(!pendingRequest) {
+            await this.prismaService.friendRequest.create({data: {requester_id: user.id, recipient_id: friend.id}});
+            return true;
+        }
+
+        if (pendingRequest.recipient_id == user.id) {
+            await this.approveFriendRequest(pendingRequest)
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private async approveFriendRequest(friendRequest: FriendRequest) {
+        const addFriend = this.prismaService.friend.create({data: {
+            requester_id: friendRequest.requester_id,
+            recipient_id: friendRequest.recipient_id,
+        }});
+        const deletePendingRequest =this.prismaService.friendRequest.delete({where: {id: friendRequest.id}});
+
+        this.prismaService.$transaction([addFriend, deletePendingRequest]);
     }
 
     public async removeFriendship(user: User, friendUsername: string): Promise<boolean> {
@@ -86,8 +101,8 @@ export class FriendService {
         const result = await this.prismaService.friend.deleteMany({
             where: {
                 OR: [
-                    { user_id: user.id, friend_id: friend.id },
-                    { user_id: friend.id, friend_id: user.id },
+                    { requester_id: user.id, recipient_id: friend.id },
+                    { requester_id: friend.id, recipient_id: user.id },
                 ],
             },
         });

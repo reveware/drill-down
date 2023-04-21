@@ -25,14 +25,23 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "friends" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
-    "friend_id" INTEGER NOT NULL,
-    "approved" BOOLEAN NOT NULL DEFAULT false,
-    "approved_at" TIMESTAMP(3),
+    "requester_id" INTEGER NOT NULL,
+    "recipient_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "friends_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "friend_requests" (
+    "id" SERIAL NOT NULL,
+    "requester_id" INTEGER NOT NULL,
+    "recipient_id" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "friend_requests_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -102,10 +111,22 @@ CREATE INDEX "users_email_idx" ON "users"("email");
 CREATE INDEX "users_created_at_idx" ON "users"("created_at");
 
 -- CreateIndex
-CREATE INDEX "friends_user_id_idx" ON "friends"("user_id");
+CREATE INDEX "friends_requester_id_idx" ON "friends"("requester_id");
 
 -- CreateIndex
-CREATE INDEX "friends_friend_id_idx" ON "friends"("friend_id");
+CREATE INDEX "friends_recipient_id_idx" ON "friends"("recipient_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "friends_requester_id_recipient_id_key" ON "friends"("requester_id", "recipient_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "friends_recipient_id_requester_id_key" ON "friends"("recipient_id", "requester_id");
+
+-- CreateIndex
+CREATE INDEX "friend_requests_requester_id_idx" ON "friend_requests"("requester_id");
+
+-- CreateIndex
+CREATE INDEX "friend_requests_recipient_id_idx" ON "friend_requests"("recipient_id");
 
 -- CreateIndex
 CREATE INDEX "posts_author_id_idx" ON "posts"("author_id");
@@ -135,10 +156,16 @@ CREATE INDEX "time_bombs_recipient_id_idx" ON "time_bombs"("recipient_id");
 CREATE INDEX "time_bombs_visible_at_idx" ON "time_bombs"("visible_at");
 
 -- AddForeignKey
-ALTER TABLE "friends" ADD CONSTRAINT "friends_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "friends" ADD CONSTRAINT "friends_requester_id_fkey" FOREIGN KEY ("requester_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "friends" ADD CONSTRAINT "friends_friend_id_fkey" FOREIGN KEY ("friend_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "friends" ADD CONSTRAINT "friends_recipient_id_fkey" FOREIGN KEY ("recipient_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "friend_requests" ADD CONSTRAINT "friend_requests_requester_id_fkey" FOREIGN KEY ("requester_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "friend_requests" ADD CONSTRAINT "friend_requests_recipient_id_fkey" FOREIGN KEY ("recipient_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "posts_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

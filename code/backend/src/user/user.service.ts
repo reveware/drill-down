@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as _ from 'lodash';
+import { CreateUser, UserDetail, UserOverview } from '@drill-down/interfaces';
+import { UserTransformer } from './user.transformer';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDTO } from 'src/dto';
 import { User } from '@prisma/client';
-import { UserWithoutPassword } from 'src/shared/interfaces';
 import { UniqueConstraintError } from 'src/shared/errors';
 
 @Injectable()
@@ -22,20 +22,15 @@ export class UserService {
         }
     }
 
-
-
-    public static isValidFriendship(user: any, stranger: string): boolean {
-        const friends = new Set(user.friends as string[]);
-        return friends.has(stranger);
-    }
-
-    public async createUser(user: CreateUserDTO): Promise<UserWithoutPassword> {
+    public async createUser(user: CreateUser.Request): Promise<CreateUser.Response> {
         try {
             const salt = await bcrypt.genSalt();
             user.password = await bcrypt.hash(user.password, salt);
             const newUser = await this.prismaService.user.create({ data: user });
+            const userOverview = UserTransformer.toUserOverview(newUser);
+
             this.logger.log(`New user created for ${user.email}`);
-            return newUser;
+            return { data: userOverview };
         } catch (e) {
             this.logger.error('Error creating user', e.message);
             console.log('error code', e.code);
@@ -46,27 +41,65 @@ export class UserService {
         }
     }
 
-    public async findAllUsers(): Promise<Array<UserWithoutPassword>> {
-        return await this.prismaService.user.findMany({});
+    public async findAllUsers(): Promise<Array<UserOverview>> {
+        const users = await this.prismaService.user.findMany({});
+        return users.map(UserTransformer.toUserOverview);
     }
 
-    public async findUserById(id: number): Promise<UserWithoutPassword | null> {
-        return await this.prismaService.user.findUnique({ where: { id } });
+    public async findUserById(id: number): Promise<UserOverview | null> {
+        const user = await this.prismaService.user.findUnique({ where: { id } });
+        if (user) {
+            return UserTransformer.toUserOverview(user);
+        }
+        return null;
     }
 
-    public async findUserByEmail(email: string): Promise<UserWithoutPassword | null> {
-        return await this.prismaService.user.findUnique({ where: { email } });
+    public async findUserByEmail(email: string): Promise<UserOverview | null> {
+        const user = await this.prismaService.user.findUnique({ where: { email } });
+        if (user) {
+            return UserTransformer.toUserOverview(user);
+        }
+        return null;
     }
 
-    public async findUserByUsername(username: string): Promise<UserWithoutPassword | null> {
-        return await this.prismaService.user.findUnique({ where: { username }, include: { friends: true } });
+    public async findUserByUsername(email: string): Promise<UserOverview | null> {
+        const user = await this.prismaService.user.findUnique({ where: { email } });
+        if (user) {
+            return UserTransformer.toUserOverview(user);
+        }
+        return null;
     }
 
-    public async validateUserByPassword(email: string, password: string): Promise<UserWithoutPassword | null> {
+    public async findUserDetails(username: string): Promise<UserDetail | null> {
+        // TODO: does prisma have the concept of "scopes"
+        const user = await this.prismaService.user.findUnique({
+            where: { username },
+            include: {
+                posts: {
+                    take: 25,
+                    orderBy: { created_at: 'desc' },
+                    include: { author: true, _count: { select: { likes: true, comments: true } } },
+                },
+                likes: {
+                    include: { post: { include: { author: true, _count: { select: { likes: true, comments: true } } } } },
+                },
+                requested_friends: { take: 25, orderBy: { created_at: 'desc' }, include: { recipient: true } },
+                approved_friends: { take: 25, orderBy: { created_at: 'desc' }, include: { requester: true } },
+                created_time_bombs: { take: 25, orderBy: { created_at: 'desc' }, include: { author: true, recipient: true } },
+                received_time_bombs: { take: 25, orderBy: { created_at: 'desc' }, include: { author: true, recipient: true } },
+            },
+        });
+        if (user) {
+            return UserTransformer.toUserDetail(user);
+        }
+        return null;
+    }
+
+    public async validateUserByPassword(email: string, password: string): Promise<UserOverview | null> {
         const user = await this.prismaService.findUserWithPasswordByEmail(email);
 
         if (user && (await this.isValidPassword(user, password))) {
-            return user;
+            return UserTransformer.toUserOverview(user);
         }
 
         return null;
@@ -83,5 +116,4 @@ export class UserService {
     public async unlikePost(user: User, postId: string): Promise<void> {
         // TODO: implement
     }
-
 }

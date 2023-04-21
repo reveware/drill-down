@@ -68,11 +68,11 @@ export class AppService {
             const urls = photoPost.photos.map((photo) => photo.original_size.url);
             await this.postService.createPhotoPost(
                 user,
-                {
+                {   photos: urls,
                     description: photoPost.summary,
                     tags: photoPost.tags,
                 },
-                urls
+                
             );
         }
     }

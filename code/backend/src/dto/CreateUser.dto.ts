@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateUser,UserRole } from '@drill-down/interfaces';
 import { IsEmail, IsIn, IsNotEmpty, IsString, Length, IsDateString, IsOptional } from 'class-validator';
 import * as _ from 'lodash';
-import { UserRole } from "../shared/interfaces";
 
-export class CreateUserDTO {
+export class CreateUserDTO implements CreateUser.Request {
     @ApiProperty() 
     avatar!: any;
 

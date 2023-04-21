@@ -19,7 +19,8 @@
     },
 
     "references": [
-      { "path": "./interfaces" },
+      { "path": "./@common/interfaces" },
+      { "path": "./@common/constants" },
       { "path": "./frontend" },
       { "path": "./backend" }
     ],

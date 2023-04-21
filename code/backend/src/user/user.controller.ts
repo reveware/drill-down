@@ -30,6 +30,7 @@ import { User } from '@prisma/client';
 import { FriendService } from 'src/friend/friend.service';
 import { UniqueConstraintError } from 'src/shared/errors';
 import { PostService } from 'src/post/post.service';
+import { VALID_EMAIL_REGEX } from '@drill-down/constants';
 
 @ApiTags('users')
 @Controller('users')
@@ -67,20 +68,12 @@ export class UserController {
         }
     }
 
-    @Get(':usernameOrEmail')
+    @Get(':username')
     @UseGuards(AuthGuard(['jwt']))
     @ApiResponse({ status: HttpStatus.OK, description: 'User fetched successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error fetching user' })
-    async findUserByUsernameOrEmail(@Response() res: express.Response, @Param('usernameOrEmail') usernameOrEmail: string) {
-        let user = null;
-
-        const isValidEmail = VALID_EMAIL_REGEX.test(usernameOrEmail);
-
-        if (isValidEmail) {
-            user = await this.userService.findUserByEmail(usernameOrEmail);
-        } else {
-            user = await this.userService.findUserByUsername(usernameOrEmail);
-        }
+    async getUserDetails(@Response() res: express.Response, @Param('username') username: string) {
+        const user = await this.userService.findUserDetails(username)
 
         if (_.isNil(user)) {
             throw new NotFoundException(['User not found']);

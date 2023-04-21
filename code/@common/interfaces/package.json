@@ -1,7 +1,7 @@
 {
-    "name": "@drill-down/common",
+    "name": "@drill-down/interfaces",
     "version": "1.0.0",
-    "description": "Common interfaces and utilities",
+    "description": "interface definition for common types & dto",
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "license": "MPL-2.0",

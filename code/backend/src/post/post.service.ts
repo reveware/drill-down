@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as _ from 'lodash';
-import { CreateCommentDTO, CreatePhotoPostDTO, GetPostsFiltersDTO } from 'src/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User, Post, Comment, Prisma } from '@prisma/client';
-import { TagCount, PostTypes } from 'src/shared/interfaces';
+import { CreatePhotoPost, CreateComment, GetPosts, PostDetail, PostTypes, CountPerTag } from '@drill-down/interfaces';
+import { PostTransformer } from './post.transformer';
 
 @Injectable()
 export class PostService {
@@ -16,21 +16,39 @@ export class PostService {
     }
 
     private static getMeOrMyFriendsWhereQuery = (user: User): Prisma.PostWhereInput => ({
-        author: {
-            OR: [
-                { id: user.id },
-                {
-                    friends: {
-                        some: {
-                            user_id: user.id,
-                        },
-                    },
-                },
-            ],
-        },
+        OR: [
+            { author_id: user.id },
+            { author: { requested_friends: { some: { requester_id: user.id } } } },
+            { author: { approved_friends: { some: { recipient_id: user.id } } } },
+        ],
     });
 
-    public async getPosts(user: User, params?: GetPostsFiltersDTO): Promise<Post[]> {
+    public async getPostDetail(user: User, postId: number): Promise<PostDetail | null> {
+        const where = PostService.getMeOrMyFriendsWhereQuery(user);
+
+        const post = await this.prismaService.post.findFirst({
+            where: {
+                ...where,
+                id: postId,
+            },
+            include: {
+                author: true,
+                likes: { select: { author: true } },
+                comments: { include: { author: true } },
+                _count: {
+                    select: { likes: true, comments: true },
+                },
+            },
+        });
+
+        if (post === null) {
+            return null;
+        }
+
+        return PostTransformer.toPostDetail(post);
+    }
+
+    public async searchPostsForUser(user: User, params?: GetPosts.Request): Promise<GetPosts.Response> {
         const where = PostService.getMeOrMyFriendsWhereQuery(user);
 
         if (params?.author) {
@@ -53,38 +71,50 @@ export class PostService {
 
         const skip = pageSize * (pageNumber - 1);
 
-        return await this.prismaService.post.findMany({ where, skip, take: pageSize });
+        const [posts, total] = await Promise.all([
+            this.prismaService.post.findMany({
+                where,
+                skip,
+                take: pageSize,
+                include: {
+                    author: true,
+                    likes: { select: { author: true } },
+                    comments: { include: { author: true } },
+                    _count: { select: { likes: true, comments: true } },
+                },
+            }),
+            this.prismaService.post.count({ where }),
+        ]);
+
+        const mappedPosts = posts.map(PostTransformer.toPostOverview);
+
+        return {
+            data: mappedPosts,
+            page: pageNumber,
+            total,
+        };
     }
 
-    public async getPostDetails(user: User, postId: number): Promise<Post | null> {
-        const where = PostService.getMeOrMyFriendsWhereQuery(user);
-        where.id = postId;
-        const post = await this.prismaService.post.findFirst({
-            where,
-            include: { author: true, comments: { include: { author: true } }, likes: { include: { author: true } } },
-        });
-
-        return post;
-    }
-
-    public async createPhotoPost(user: User, post: CreatePhotoPostDTO, photos: string[]): Promise<Post> {
+    public async createPhotoPost(user: User, post: CreatePhotoPost.Request): Promise<CreatePhotoPost.Response> {
         const newPost = await this.prismaService.post.create({
             data: {
                 type: PostTypes.PHOTO,
                 author_id: +user.id,
                 content: {
-                    urls: photos,
+                    urls: post.photos,
                 },
                 tags: post.tags,
                 description: post.description,
             },
-            include: { comments: true },
+            include: {
+                _count: true,
+            },
         });
 
-        return newPost;
+        return { data: PostTransformer.toPostOverview({ ...newPost, author: user }) };
     }
 
-    public async createComment(user: User, postId: number, comment: CreateCommentDTO): Promise<Comment | null> {
+    public async createComment(user: User, postId: number, comment: CreateComment.Request): Promise<CreateComment.Response | null> {
         const where = PostService.getMeOrMyFriendsWhereQuery(user);
         where.id = postId;
 
@@ -102,7 +132,7 @@ export class PostService {
             },
         });
 
-        return newComment;
+        return { data: PostTransformer.toComment({ ...newComment, author: user }) };
     }
 
     public async deletePostAndComments(user: User, postId: number): Promise<boolean> {
@@ -125,7 +155,7 @@ export class PostService {
         return true;
     }
 
-    public async getPostsCountByTag(username: string): Promise<TagCount> {
+    public async getPostsCountByTag(username: string): Promise<CountPerTag> {
         const posts = await this.prismaService.post.findMany({ where: { author: { username } }, select: { tags: true } });
 
         const count = _.reduce(
@@ -136,7 +166,7 @@ export class PostService {
                 }
                 return acc;
             },
-            {} as TagCount
+            {} as CountPerTag
         );
 
         return count;

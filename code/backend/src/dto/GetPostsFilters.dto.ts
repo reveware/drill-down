@@ -18,10 +18,10 @@ export class GetPostsFiltersDTO {
     @IsInt()
     @IsPositive()
     @IsOptional()
-    page_number: number;
+    page_number!: number;
 
     @IsInt()
     @IsPositive()
     @IsOptional()
-    page_size: number;
+    page_size!: number;
 }

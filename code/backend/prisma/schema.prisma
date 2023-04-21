@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgres"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL") 
 }
 
 enum Role {
@@ -22,25 +22,27 @@ enum PostType {
 
 // Social Media
 model User {
-  id                  Int        @id @default(autoincrement())
-  username            String     @unique
-  password            String
-  email               String     @unique
-  avatar              String
-  first_name          String
-  last_name           String
-  date_of_birth       DateTime   @db.Date
-  tagline             String?
-  role                Role       @default(USER)
-  created_at          DateTime   @default(now())
-  updated_at          DateTime   @updatedAt
-  posts               Post[]
-  likes               Like[]
-  comments            Comment[]
-  friends             Friend[]   @relation("friends")
-  pending_friends     Friend[]   @relation("pending_friends")
-  created_time_bombs  TimeBomb[] @relation("author")
-  received_time_bombs TimeBomb[] @relation("recipient")
+  id                       Int             @id @default(autoincrement())
+  username                 String          @unique
+  password                 String
+  email                    String          @unique
+  avatar                   String
+  first_name               String
+  last_name                String
+  date_of_birth            DateTime        @db.Date
+  tagline                  String?
+  role                     Role            @default(USER)
+  posts                    Post[]
+  likes                    Like[]
+  comments                 Comment[]
+  requested_friends        Friend[]        @relation("requested_friends")
+  approved_friends         Friend[]        @relation("approved_friends")
+  pending_friend_requests  FriendRequest[] @relation("pending_friend_requests")
+  received_friend_requests FriendRequest[] @relation("received_friend_requests")
+  created_time_bombs       TimeBomb[]      @relation("created_time_bombs")
+  received_time_bombs      TimeBomb[]      @relation("received_time_bombs")
+  created_at               DateTime        @default(now())
+  updated_at               DateTime        @updatedAt
 
   @@index([username])
   @@index([email])
@@ -49,19 +51,33 @@ model User {
 }
 
 model Friend {
-  id          Int       @id @default(autoincrement())
-  user_id     Int
-  user        User      @relation("friends", fields: [user_id], references: [id])
-  friend_id   Int
-  friend      User      @relation("pending_friends", fields: [friend_id], references: [id])
-  approved    Boolean   @default(false)
-  approved_at DateTime?
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  id           Int       @id @default(autoincrement())
+  requester_id Int
+  requester    User      @relation("requested_friends", fields: [requester_id], references: [id])
+  recipient_id  Int
+  recipient     User      @relation("approved_friends", fields: [recipient_id], references: [id])
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
 
-  @@index([user_id])
-  @@index([friend_id])
+  @@unique([requester_id, recipient_id])
+  @@unique([recipient_id, requester_id])
+  @@index([requester_id])
+  @@index([recipient_id])
   @@map(name: "friends")
+}
+
+model FriendRequest {
+  id           Int      @id @default(autoincrement())
+  requester_id Int
+  requester    User     @relation("pending_friend_requests", fields: [requester_id], references: [id])
+  recipient_id Int
+  recipient    User     @relation("received_friend_requests", fields: [recipient_id], references: [id])
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@index([requester_id])
+  @@index([recipient_id])
+  @@map(name: "friend_requests")
 }
 
 model Post {
@@ -76,7 +92,7 @@ model Post {
   comments    Comment[]
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
-  
+
   @@index([author_id])
   @@index([created_at])
   @@map(name: "posts")
@@ -84,13 +100,13 @@ model Post {
 
 model Like {
   id         Int      @id @default(autoincrement())
-  author_id    Int
-  author       User     @relation(fields: [author_id], references: [id])
+  author_id  Int
+  author     User     @relation(fields: [author_id], references: [id])
   post_id    Int
   post       Post     @relation(fields: [post_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  
+
   @@index([author_id])
   @@index([post_id])
   @@map(name: "likes")
@@ -98,8 +114,8 @@ model Like {
 
 model Comment {
   id         Int       @id @default(autoincrement())
-  author_id    Int
-  author       User      @relation(fields: [author_id], references: [id])
+  author_id  Int
+  author     User      @relation(fields: [author_id], references: [id])
   post_id    Int
   post       Post      @relation(fields: [post_id], references: [id])
   message    String
@@ -117,9 +133,9 @@ model Comment {
 model TimeBomb {
   id           Int      @id @default(autoincrement())
   author_id    Int
-  author       User     @relation("author", fields: [author_id], references: [id])
+  author       User     @relation("created_time_bombs", fields: [author_id], references: [id])
   recipient_id Int
-  recipient    User     @relation("recipient", fields: [recipient_id], references: [id])
+  recipient    User     @relation("received_time_bombs", fields: [recipient_id], references: [id])
   content      Json
   visible_at   DateTime
   created_at   DateTime @default(now())
