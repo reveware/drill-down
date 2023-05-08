@@ -1,0 +1,103 @@
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~react-toastify/dist/ReactToastify.css';
+@import './colors';
+
+
+// Override bootstrap
+.navbar.bg-dark {
+    background-color: $dark-blue !important;
+  }
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+        'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f5f5fc;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+// I like thin handwriting
+h1 {
+    font: caption;
+    font-size: x-large;
+    font-weight: lighter;
+    text-shadow: 1px 1px 1px $maroon;
+}
+
+.hidden {
+    display: none;
+}
+
+// Subtle but annoying
+.form-hint {
+    font-size: x-small;
+    color: $red;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.link, a {
+    color: $sky-blue;
+    cursor: pointer;
+}
+
+.button-as-link {
+    color: $sky-blue;
+    border: none;
+    text-decoration: underline;
+    background: none;
+    cursor: pointer;
+    
+}
+
+.toast-container {
+    margin-top: 60px;
+}
+
+
+@function pickRandomColor() {
+    $values: ($red, $sky-blue, $violet, $lime, $pink, $magenta);
+    $index: random(length($values));
+    @return nth($values, $index);
+}
+
+.neon-border {
+    animation-name: neon-border-animation;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+
+    $color1: pickRandomColor();
+    $color2: pickRandomColor();
+    $color3: pickRandomColor();
+    $color4: pickRandomColor();
+    $color5: pickRandomColor();
+    $color6: pickRandomColor();
+
+    @keyframes neon-border-animation {
+        0% {
+            box-shadow: -13px -13px 13px -16px rgba(red($color1), green($color1), blue($color1), 0.5);
+        }
+        20% {
+            box-shadow: -13px -13px 13px -13px rgba(red($color2), green($color2), blue($color2), 0.3);
+        }
+        40% {
+            box-shadow: -13px -13px 13px -16px rgba(red($color3), green($color3), blue($color3), 0.5);
+        }
+        60% {
+            box-shadow: -13px -13px 13px -13px rgba(red($color4), green($color4), blue($color4), 0.3);
+        }
+        80% {
+            box-shadow: -13px -13px 13px -16px rgba(red($color5), green($color5), blue($color5), 0.5);
+        }
+        100% {
+            box-shadow: -13px -13px 13px -13px rgba(red($color6), green($color6), blue($color6), 0.3);
+        }
+    }
+}

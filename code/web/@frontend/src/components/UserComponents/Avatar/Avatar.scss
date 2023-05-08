@@ -1,0 +1,33 @@
+@import '../../../styles/colors';
+
+.avatar {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    padding-top: 100%;
+}
+
+.avatar-photo {    
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    &.bordered {
+        padding: 2px;
+        border: 2px solid $dark-blue;
+
+    }
+
+    &.square {
+        border-radius: 0.25rem;
+    }
+
+    &.circle {
+        border-radius: 50%;
+    }
+
+}
