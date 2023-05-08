@@ -1,0 +1,53 @@
+@import '../../../styles/colors';
+@import '../../../styles//media-queries';
+
+.user-overview-card{
+    padding: 8px;
+    height: fit-content;
+    min-height: min-content;
+    display: flex;
+    flex-direction: column;
+
+    .overview-avatar {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        width: 60%;
+        align-self: center;
+    }
+
+    .user-profile-details {
+        padding: 8px;
+
+        .user-profile-stats {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+
+        .user-profile-actions {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            
+            font-size: small;
+
+            > div {
+                min-width: max-content;
+                margin-right: 4px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            .action-icon {
+                color: $dark-blue;
+                margin-right: 4px;
+            }
+        }
+    }
+
+
+}

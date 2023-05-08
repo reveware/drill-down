@@ -1,6 +1,5 @@
 # environment variables
 **/*/*.env
-**/*/*.env.local
 
 # compiled output
 **/*/dist

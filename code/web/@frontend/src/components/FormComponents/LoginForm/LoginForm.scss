@@ -1,0 +1,15 @@
+.login-form {
+    margin: auto;
+    max-width: 500px;
+
+    .password-toggle {
+        margin-left: 4px;
+    }
+
+    .login-button {
+        margin-top: 16px;
+        button {
+            width: 100%;
+        }
+    }
+}

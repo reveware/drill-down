@@ -1,0 +1,15 @@
+{
+    "name": "@drill-down/constants",
+    "version": "1.0.0",
+    "description": "constants and function definitions for shared functionality",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "license": "MPL-2.0",
+    "scripts": {
+      "build": "tsc && rm tsconfig.tsbuildinfo",
+      "prepare": "yarn build"
+    },
+    "dependencies": {
+      "@drill-down/interfaces": "1.0.0"
+    }
+  }

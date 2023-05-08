@@ -1,0 +1,12 @@
+.user-room {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+
+    .user-room-img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+}

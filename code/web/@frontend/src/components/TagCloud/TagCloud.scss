@@ -1,0 +1,39 @@
+@import '../../styles/media-queries';
+@import '../../styles//colors';
+
+.tag-cloud {
+    
+    height: 100%;
+    min-height: min-content;
+    max-height: 100%;
+    overflow: hidden;
+    width: 100%;
+    min-width: 100%;
+    max-width: min-content;
+    margin: 0;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    
+    
+    
+    .cloud {
+        .tag-cloud-tag {
+        
+            &:hover {
+                cursor: pointer;
+                color: $sky-blue !important;
+            }
+    }
+
+
+
+    
+    }
+
+    @include mobile {
+        display: none;
+    }
+}

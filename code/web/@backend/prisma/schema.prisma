@@ -1,0 +1,150 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL") 
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum PostType {
+  PHOTO
+  QUOTE
+}
+
+// Social Media
+model User {
+  id                       Int             @id @default(autoincrement())
+  username                 String          @unique
+  password                 String
+  email                    String          @unique
+  avatar                   String
+  first_name               String
+  last_name                String
+  date_of_birth            DateTime        @db.Date
+  tagline                  String?
+  role                     Role            @default(USER)
+  posts                    Post[]
+  likes                    Like[]
+  comments                 Comment[]
+  requested_friends        Friend[]        @relation("requested_friends")
+  approved_friends         Friend[]        @relation("approved_friends")
+  pending_friend_requests  FriendRequest[] @relation("pending_friend_requests")
+  received_friend_requests FriendRequest[] @relation("received_friend_requests")
+  created_time_bombs       TimeBomb[]      @relation("created_time_bombs")
+  received_time_bombs      TimeBomb[]      @relation("received_time_bombs")
+  created_at               DateTime        @default(now())
+  updated_at               DateTime        @updatedAt
+
+  @@index([username])
+  @@index([email])
+  @@index([created_at])
+  @@map(name: "users")
+}
+
+model Friend {
+  id           Int       @id @default(autoincrement())
+  requester_id Int
+  requester    User      @relation("requested_friends", fields: [requester_id], references: [id])
+  recipient_id  Int
+  recipient     User      @relation("approved_friends", fields: [recipient_id], references: [id])
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  @@unique([requester_id, recipient_id])
+  @@unique([recipient_id, requester_id])
+  @@index([requester_id])
+  @@index([recipient_id])
+  @@map(name: "friends")
+}
+
+model FriendRequest {
+  id           Int      @id @default(autoincrement())
+  requester_id Int
+  requester    User     @relation("pending_friend_requests", fields: [requester_id], references: [id])
+  recipient_id Int
+  recipient    User     @relation("received_friend_requests", fields: [recipient_id], references: [id])
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@index([requester_id])
+  @@index([recipient_id])
+  @@map(name: "friend_requests")
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  author_id   Int
+  author      User      @relation(fields: [author_id], references: [id])
+  type        PostType
+  content     Json
+  description String?
+  tags        String[]
+  likes       Like[]
+  comments    Comment[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@index([author_id])
+  @@index([created_at])
+  @@map(name: "posts")
+}
+
+model Like {
+  id         Int      @id @default(autoincrement())
+  author_id  Int
+  author     User     @relation(fields: [author_id], references: [id])
+  post_id    Int
+  post       Post     @relation(fields: [post_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([author_id])
+  @@index([post_id])
+  @@map(name: "likes")
+}
+
+model Comment {
+  id         Int       @id @default(autoincrement())
+  author_id  Int
+  author     User      @relation(fields: [author_id], references: [id])
+  post_id    Int
+  post       Post      @relation(fields: [post_id], references: [id])
+  message    String
+  reply_to   Int?
+  parent     Comment?  @relation("replies", fields: [reply_to], references: [id])
+  replies    Comment[] @relation("replies")
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  @@index([author_id])
+  @@index([post_id])
+  @@map(name: "comments")
+}
+
+model TimeBomb {
+  id           Int      @id @default(autoincrement())
+  author_id    Int
+  author       User     @relation("created_time_bombs", fields: [author_id], references: [id])
+  recipient_id Int
+  recipient    User     @relation("received_time_bombs", fields: [recipient_id], references: [id])
+  content      Json
+  visible_at   DateTime
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@index([author_id])
+  @@index([recipient_id])
+  @@index([visible_at])
+  @@map(name: "time_bombs")
+}
+
+// Render Pipeline
