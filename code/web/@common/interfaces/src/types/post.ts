@@ -30,11 +30,15 @@ export type PostContent =
 
 export interface PhotoPostContent {
   urls: string[];
+
+  
 }
 
 export interface QuotePostContent {
   quote: string;
   author: string;
+  date?: Date
+  location? : string // contry
 }
 
 export interface Comment {

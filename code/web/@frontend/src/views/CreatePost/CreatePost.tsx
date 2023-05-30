@@ -2,7 +2,7 @@ import React from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Card from 'react-bootstrap/Card';
-import { PostTypes } from '@drill-down/interfaces';
+import { CreatePhotoPost, CreateQuotePost, PostTypes } from '@drill-down/interfaces';
 import { CreatePhotoPostForm, Loading } from 'src/components';
 import { useCreatePhotoPostMutation } from '../../hooks';
 import './CreatePost.scss';
@@ -13,7 +13,7 @@ import { AppRoutes } from 'src/Routes';
 export const CreatePost: React.FC = () => {
     const [createPhotoPost, { isLoading }] = useCreatePhotoPostMutation();
 
-    const handlePhotoPostSubmit = async (values: any) => {
+    const handlePhotoPostSubmit = async (values: CreatePhotoPost.Request) => {
         try {
             const { photos, description, tags } = values;
             console.log('onPhotoPostSubmit', { values });
@@ -25,6 +25,16 @@ export const CreatePost: React.FC = () => {
         }
     };
 
+    const handleQuotePostSubmit = async (values: CreateQuotePost.Request) => {
+        try {
+            console.log('onQuotePostSubmit', {values});
+            const {} = values;
+            await 
+        } catch (error) {
+            
+        }
+    }
+
     return (
         <Card className="neon-border w-50 mx-auto mt-5">
             <Card.Body>
@@ -35,7 +45,10 @@ export const CreatePost: React.FC = () => {
                         {isLoading && <Loading />}
                         {!isLoading && <CreatePhotoPostForm onSubmit={handlePhotoPostSubmit} />}
                     </Tab>
-                    <Tab eventKey={PostTypes.QUOTE} title="Quote"></Tab>
+                    <Tab eventKey={PostTypes.QUOTE} title="Quote">
+                        {isLoading && <Loading/>}
+                        {!isLoading && <CreateQuotePostForm onSubmit={handleQuotePostSubmit}/>}
+                    </Tab>
                 </Tabs>
             </Card.Body>
         </Card>

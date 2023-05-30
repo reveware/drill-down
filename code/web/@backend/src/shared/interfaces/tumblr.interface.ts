@@ -114,4 +114,10 @@ export interface TumblrTextPost extends TumblrBasePost {
   body: string;
 }
 
-export type TumblrPost = TumblrPhotoPost | TumblrTextPost;
+export interface TumblrQuotePost extends TumblrBasePost {
+  type: 'quote',
+  text: string,
+  source: string,
+}
+
+export type TumblrPost = TumblrPhotoPost | TumblrTextPost | TumblrQuotePost;

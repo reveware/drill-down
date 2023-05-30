@@ -2,7 +2,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import * as _ from 'lodash';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User, Post, Prisma } from '@prisma/client';
-import { CreatePhotoPost, CreateComment, GetPosts, GetPostDetail, DeletePost, PostTypes, CountPerTag } from '@drill-down/interfaces';
+import {
+    CreatePhotoPost,
+    CreateComment,
+    GetPosts,
+    GetPostDetail,
+    DeletePost,
+    PostTypes,
+    CountPerTag,
+    CreateQuotePost,
+} from '@drill-down/interfaces';
 import { PostTransformer } from './post.transformer';
 
 @Injectable()
@@ -98,13 +107,31 @@ export class PostService {
     }
 
     public async createPhotoPost(user: User, post: CreatePhotoPost.Request, urls: string[]): Promise<CreatePhotoPost.Response> {
+        const content: object = {urls}
         const newPost = await this.prismaService.post.create({
             data: {
                 type: PostTypes.PHOTO,
                 author_id: +user.id,
-                content: {
-                    urls,
-                },
+                content,
+                tags: post.tags,
+                description: post.description,
+            },
+            include: {
+                _count: true,
+            },
+        });
+
+        return { data: PostTransformer.toPostOverview({ ...newPost, author: user }) };
+    }
+
+    public async createQuotePost(user: User, post: CreateQuotePost.Request) {
+        const {author, quote, location, date} = post;
+        const content: object = {author, quote, location, date};
+        const newPost = await this.prismaService.post.create({
+            data: {
+                type: PostTypes.QUOTE,
+                author_id: +user.id,
+                content,
                 tags: post.tags,
                 description: post.description,
             },
