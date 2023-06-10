@@ -8,6 +8,7 @@ import {
     PostOverview,
     Comment,
     CreateComment,
+    CreateQuotePost,
 } from '@drill-down/interfaces';
 import { customFetchBaseQuery } from './customFetchBaseQuery';
 import { UserApiTags } from './User.api';
@@ -44,6 +45,10 @@ export const PostsApi = createApi({
             },
             transformResponse: (response: CreatePhotoPost.Response) => response.data,
             invalidatesTags: [{ type: PostApiTags.OVERVIEW, id: 'TRIGGER' }],
+        }),
+
+        createQuotePost: builder.mutation<PostOverview, CreateQuotePost.Request>({
+            query: (request)=> {}
         }),
         /** Get Posts **/
         getPosts: builder.query<PostOverview[], GetPosts.Request>({
