@@ -3,35 +3,33 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Card from 'react-bootstrap/Card';
 import { CreatePhotoPost, CreateQuotePost, PostTypes } from '@drill-down/interfaces';
-import { CreatePhotoPostForm, Loading } from 'src/components';
-import { useCreatePhotoPostMutation } from '../../hooks';
+import { CreatePhotoPostForm, Loading, CreateQuotePostForm } from 'src/components';
+import { useCreatePhotoPostMutation, useCreateQuotePostMutation } from '../../hooks';
 import './CreatePost.scss';
-import { ToastService } from 'src/services';
+import { Prompts, ToastService } from 'src/services';
 import { history } from 'src/App';
 import { AppRoutes } from 'src/Routes';
 
 export const CreatePost: React.FC = () => {
-    const [createPhotoPost, { isLoading }] = useCreatePhotoPostMutation();
+    const [createPhotoPost, { isLoading: isCreatingPhotoPost }] = useCreatePhotoPostMutation();
+    const [createQuotePost, {isLoading: isCreatingQuotePost}] = useCreateQuotePostMutation();
 
     const handlePhotoPostSubmit = async (values: CreatePhotoPost.Request) => {
         try {
-            const { photos, description, tags } = values;
             console.log('onPhotoPostSubmit', { values });
-            await createPhotoPost({ description, photos, tags }).unwrap();
-            ToastService.success({ title: 'Post created!', message: '>:)' });
+            await createPhotoPost(values).unwrap();
             history.push(AppRoutes.HOME);
         } catch (error) {
-            ToastService.error(error);
+            ToastService.prompt(Prompts.ErrorHandled, error);
         }
     };
 
     const handleQuotePostSubmit = async (values: CreateQuotePost.Request) => {
         try {
             console.log('onQuotePostSubmit', {values});
-            const {} = values;
-            await 
+            await createQuotePost(values).unwrap()
         } catch (error) {
-            
+            ToastService.prompt(Prompts.ErrorHandled, error);
         }
     }
 
@@ -42,12 +40,12 @@ export const CreatePost: React.FC = () => {
 
                 <Tabs className="post-type-tabs" defaultActiveKey={PostTypes.PHOTO}>
                     <Tab eventKey={PostTypes.PHOTO} title="Photo">
-                        {isLoading && <Loading />}
-                        {!isLoading && <CreatePhotoPostForm onSubmit={handlePhotoPostSubmit} />}
+                        {isCreatingPhotoPost && <Loading />}
+                        {!isCreatingPhotoPost && <CreatePhotoPostForm onSubmit={handlePhotoPostSubmit} />}
                     </Tab>
                     <Tab eventKey={PostTypes.QUOTE} title="Quote">
-                        {isLoading && <Loading/>}
-                        {!isLoading && <CreateQuotePostForm onSubmit={handleQuotePostSubmit}/>}
+                        {isCreatingQuotePost && <Loading/>}
+                        {!isCreatingQuotePost && <CreateQuotePostForm onSubmit={handleQuotePostSubmit}/>}
                     </Tab>
                 </Tabs>
             </Card.Body>

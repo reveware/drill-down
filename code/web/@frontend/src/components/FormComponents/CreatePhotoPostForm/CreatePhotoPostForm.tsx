@@ -27,6 +27,7 @@ export const CreatePhotoPostForm: React.FC<CreatePhotoPostFormProps> = (props) =
         <Formik validationSchema={PhotoPostSchema} initialValues={initialValues} validateOnMount={true} onSubmit={onSubmit}>
             {({ values, errors, handleChange, handleSubmit, setFieldValue, isValid }) => (
                 <div>
+                    {/* TODO: move to Feedback components */}
                     <p className="text-muted">
                         Upload photos and tag them appropiately to be able to backtrack to them later{' '}
                         <span role="img" aria-label="smirking moon">

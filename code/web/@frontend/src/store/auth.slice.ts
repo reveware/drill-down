@@ -1,10 +1,11 @@
-import { AuthResponse, CustomError, JwtPayload, UserOverview } from '@drill-down/interfaces';
+import { AuthResponse, JwtPayload, UserOverview } from '@drill-down/interfaces';
 import { createSelector, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import JwtDecode from 'jwt-decode';
 import moment from 'moment';
 import { resetState } from '.';
 import { StorageKeys, AppState } from './store.types';
-import { ToastService } from 'src/services';
+import { ToastService, Prompts } from 'src/services';
+
 
 type AuthState =
     | {
@@ -71,7 +72,7 @@ export const validateAuth = createAsyncThunk('auth/validate', async (_, { dispat
         }
     }
 
-    ToastService.error({ message: 'Please Log back in', errors: ['Invalid Auth'] } as CustomError);
+    ToastService.prompt(Prompts.InvalidAuth);
     dispatch(logOut());
 });
 

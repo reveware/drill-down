@@ -6,7 +6,7 @@ import { AppRoutes } from '../../Routes';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch, logOut, selectLoggedInUser } from '../../store';
 
-import { ToastService } from '../../services/Toast.service';
+import { Prompts, ToastService } from '../../services/Toast.service';
 import { history } from '../../App';
 
 export const NavBar: React.FC = () => {
@@ -59,9 +59,7 @@ export const NavBar: React.FC = () => {
                             <FormControl type="text" placeholder="Search" />
                             <Button
                                 variant="light"
-                                onClick={() => {
-                                    ToastService.success({ title: 'GAHD DAMN', message: 'This is cool' });
-                                }}>
+                                onClick={() => {ToastService.prompt(Prompts.SearchTriggered)}}>
                                 Search
                             </Button>
                         </div>
