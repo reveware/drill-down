@@ -1,10 +1,13 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
-import { PostOverview, PostTypes } from '@drill-down/interfaces';
+import Card from 'react-bootstrap/Card';
+import { QuotePost } from './QuotePost/QuotePost';
+import { PostOverview, PostTypes, UserRole } from '@drill-down/interfaces';
+
 import moment from 'moment';
 import './PostCard.scss';
 
 import { TagList } from 'src/components';
+import { selectLoggedInUser, useAppSelector } from 'src/store';
 
 interface PostCardProps {
     post: PostOverview;
@@ -14,7 +17,11 @@ interface PostCardProps {
 
 export const PostCard: React.FC<PostCardProps> = (props: PostCardProps) => {
     const { post, onClick, size } = props;
+    const loggedInUser = useAppSelector(selectLoggedInUser);
 
+    const isAdmin = () => {
+        return loggedInUser?.role === UserRole.ADMIN;
+    };
     const formaToRelativeDate = (date: Date): string => {
         return moment(date).fromNow();
     };
@@ -26,12 +33,16 @@ export const PostCard: React.FC<PostCardProps> = (props: PostCardProps) => {
                 onClick={() => {
                     onClick(post);
                 }}>
-                {post.type === PostTypes.PHOTO ? (
+                {post.type === PostTypes.PHOTO && (
+                    // TODO: remame "ImgPost" and move to PostComponents
                     <Card.Img variant="top" className="post-card-img" src={post.content.urls[0]} />
-                ) : (
-                    // TODO: if (user.admin), should be for debug, logs/visual.log
-                    `${JSON.stringify(post)}`
                 )}
+
+                {post.type === PostTypes.QUOTE && <QuotePost variant="handwritting" post={post} />}
+
+                {isAdmin() &&
+                    // TODO: if (user.admin), should be for debug, logs/visual.log
+                    `${JSON.stringify(post)}`}
             </div>
 
             <div className="post-card-detail">

@@ -7,7 +7,7 @@ import { selectLoggedInUser, useAppSelector, useAppDispatch, logIn } from '../..
 
 import './Login.scss';
 import { useLoginAttemptMutation } from 'src/hooks';
-import { ToastService } from 'src/services';
+import { Prompts, ToastService } from 'src/services';
 import { Loading, LoginForm } from 'src/components';
 
 export const Login = () => {
@@ -28,9 +28,9 @@ export const Login = () => {
         try {
             const authResponse = await loginAttempt(values).unwrap();
             dispatch(logIn(authResponse));
-            ToastService.success({ title: `Welcome back!`, message: authResponse.message });
+            ToastService.prompt(Prompts.AfterLogin, authResponse.message);
         } catch (error) {
-            ToastService.error(error);
+            ToastService.prompt(Prompts.ErrorHandled, error);
         }
     };
 

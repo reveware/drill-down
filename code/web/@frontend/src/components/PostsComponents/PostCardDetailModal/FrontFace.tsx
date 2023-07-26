@@ -5,7 +5,7 @@ import './PostCardDetailModal.scss';
 import { history } from '../../../App';
 import { AppRoutes } from '../../../Routes';
 import moment from 'moment';
-import { PostOverview, PostTypes } from '@drill-down/interfaces';
+import { PhotoPostContent, PostOverview, PostTypes, QuotePostContent } from '@drill-down/interfaces';
 import { Values } from '@drill-down/constants';
 
 interface FrontFaceProps {
@@ -24,13 +24,32 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
         setShowCaptions(!showCaptions);
     };
 
-    if (post.type !== PostTypes.PHOTO) {
-        // TODO: handle other post types
-        return <div>{JSON.stringify(post)}</div>;
-    }
-
     const { author, content, description, created_at } = post;
-    const hasMultiplePhotos = content.urls.length > 1;
+
+    const renderPhotoContent = (content: PhotoPostContent) => {
+        const hasMultiplePhotos = content.urls.length > 1;
+        return (
+            <Carousel className="image-carousel" indicators={false} controls={hasMultiplePhotos} nextLabel="" prevLabel="">
+                {content.urls.map((photo, i) => (
+                    <Carousel.Item key={i} className="image-carousel-item">
+                        <Image src={photo} fluid onMouseDown={toggleHideCaptions} onMouseUp={toggleHideCaptions} />
+                    </Carousel.Item>
+                ))}
+                {showCaptions && description && <p className="captions">{description}</p>}
+            </Carousel>
+        );
+    };
+
+    const renderQuoteContent = (content: QuotePostContent) => {
+        return (
+            <div className="quote-content">
+                <div className="quote-content-quote">
+                    <p>{content.quote}</p>
+                </div>
+                <span className="quote-content-author"> {content.author}</span>
+            </div>
+        );
+    };
 
     return (
         <div className="front">
@@ -44,14 +63,8 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
                 <div className="modal-body">
                     <div className="front-face">
                         <div className="post-content">
-                            <Carousel className="image-carousel" indicators={false} controls={hasMultiplePhotos} nextLabel="" prevLabel="">
-                                {content.urls.map((photo, i) => (
-                                    <Carousel.Item key={i} className="image-carousel-item">
-                                        <Image src={photo} fluid onMouseDown={toggleHideCaptions} onMouseUp={toggleHideCaptions} />
-                                    </Carousel.Item>
-                                ))}
-                                {showCaptions && description && <p className="captions">{description}</p>}
-                            </Carousel>
+                            {post.type === PostTypes.PHOTO && renderPhotoContent(content as PhotoPostContent)}
+                            {post.type === PostTypes.QUOTE && renderQuoteContent(content as QuotePostContent)}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Formik, FormikValues } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Comment, CreateComment } from '@drill-down/interfaces';
 import './CreateCommentForm.scss';

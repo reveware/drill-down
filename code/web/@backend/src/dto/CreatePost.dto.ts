@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import * as _ from 'lodash';
-import { CreatePhotoPost } from '@drill-down/interfaces';
-export class CreatePhotoPostDTO implements CreatePhotoPost.Request {
+import { CreatePhotoPost, CreateQuotePost } from '@drill-down/interfaces';
+
+class BasePost {
     @ApiProperty()
     @IsArray()
     @IsNotEmpty()
@@ -11,7 +12,18 @@ export class CreatePhotoPostDTO implements CreatePhotoPost.Request {
     @ApiProperty()
     @IsOptional()
     description?: string;
-
+}
+export class CreatePhotoPostDTO extends BasePost implements CreatePhotoPost.Request {
     @ApiProperty()
     photos!: File[];
+}
+
+export class CreateQuotePostDTO extends BasePost implements CreateQuotePost.Request {
+    @ApiProperty()
+    @IsString()
+    quote!: string;
+
+    @ApiProperty()
+    @IsString()
+    author!: string;
 }

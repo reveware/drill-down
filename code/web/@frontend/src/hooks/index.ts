@@ -1,9 +1,14 @@
-import {AuthApi, UsersApi ,PostsApi } from 'src/services';
+import { AuthApi, UsersApi, PostsApi } from 'src/services';
 
+export const { useLoginAttemptMutation } = AuthApi;
 
-export const {useLoginAttemptMutation} = AuthApi;
+export const { useCreateUserMutation, useGetUserDetailQuery } = UsersApi;
 
-export const {useCreateUserMutation, useGetUserDetailQuery} = UsersApi;
-
-export const { useGetPostsQuery, useGetPostDetailQuery, useCreatePhotoPostMutation, useCreateCommentMutation, useDeletePostMutation } = PostsApi;
-
+export const {
+    useGetPostsQuery,
+    useGetPostDetailQuery,
+    useCreatePhotoPostMutation,
+    useCreateQuotePostMutation,
+    useCreateCommentMutation,
+    useDeletePostMutation,
+} = PostsApi;

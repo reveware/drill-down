@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useCallback } from 'react';
 import $ from 'jquery';
 import 'bootstrap';
 import { FrontFace } from './FrontFace';
@@ -24,37 +24,14 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
     const [deletePost] = useDeletePostMutation();
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
 
-    // Since we're opening the modal manually, we need to do it before the render
-    useLayoutEffect(() => {
-        const modal = $('#post-card-detail-modal') as any;
-        modal.on('hidden.bs.modal', function () {
-            onHide();
-        });
-
-        
-        modal.modal('show');
-
-        return function cleanup() {
-            handleHide();
-        };
-    }, [post]);
-
-    useEffect(() => {
-        if (isFlipped) {
-            $('.flipper').addClass('flip');
-        } else {
-            $('.flipper').removeClass('flip');
-        }
-    }, [isFlipped]);
-
-    const handleHide = () => {
+    const handleHide = useCallback(() => {
         // When closing manually, we need to get rid of the backdrop
         const modal = $('#post-card-detail-modal') as any;
         modal.modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
         onHide();
-    };
+      }, [onHide]);
 
     const handleCommentCreated = (comment: CreateComment.Request): void => {
         createComment({ post: post.id, comment: comment });
@@ -76,6 +53,31 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
     const togglePostCardFlip = () => {
         setIsFlipped(!isFlipped);
     };
+
+
+    // Since we're opening the modal manually, we need to do it before the render
+    useLayoutEffect(() => {
+        const modal = $('#post-card-detail-modal') as any;
+        modal.on('hidden.bs.modal', function () {
+            handleHide();
+        });
+
+        
+        modal.modal('show');
+
+        return function cleanup() {
+            handleHide();
+        };
+    }, [post, handleHide]);
+
+    useEffect(() => {
+        if (isFlipped) {
+            $('.flipper').addClass('flip');
+        } else {
+            $('.flipper').removeClass('flip');
+        }
+    }, [isFlipped]);
+
 
     return (
         <React.Fragment>

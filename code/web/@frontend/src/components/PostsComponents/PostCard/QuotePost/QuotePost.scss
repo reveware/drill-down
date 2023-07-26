@@ -1,0 +1,45 @@
+.quote-post {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 8px;
+    .quote-post-quote {
+        flex: 1;
+        word-spacing: 1.2;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        height: 100%;
+        
+        > p {
+            margin: 0;    
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Adjust the number of lines as needed */
+            -webkit-box-orient: vertical;
+        }
+    }
+
+    .quote-post-author {
+        text-align: right;
+        
+        -webkit-line-clamp: 1;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+    }
+
+    &.handwritting {
+        .quote-post-quote {
+            font-family: cursive;
+            font-size: larger;
+        }
+
+        .quote-post-author {
+            font-family: cursive;
+            font-weight: bolder;
+        }
+    }
+}

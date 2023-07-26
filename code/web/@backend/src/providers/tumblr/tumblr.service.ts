@@ -39,4 +39,17 @@ export class TumblrService {
             });
         });
     }
+
+    public isPhotoPost(post: TumblrPost) {
+        return post.type === 'photo'
+    }
+
+    public isTextPost(post: TumblrPost): boolean  {
+        return post.type === "text";
+    }
+
+    public isQuotePosts(post: TumblrPost): boolean {
+        return post.type === "quote";
+    }
+
 }

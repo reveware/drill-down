@@ -8,6 +8,7 @@ import {
     PostOverview,
     Comment,
     CreateComment,
+    CreateQuotePost,
 } from '@drill-down/interfaces';
 import { customFetchBaseQuery } from './customFetchBaseQuery';
 import { UserApiTags } from './User.api';
@@ -23,7 +24,6 @@ export const PostsApi = createApi({
     tagTypes: [PostApiTags.OVERVIEW, PostApiTags.DETAIL],
     endpoints: (builder) => ({
         /** Create Post  **/
-        // TODO: should accept other post types (createPost)
         createPhotoPost: builder.mutation<PostOverview, CreatePhotoPost.Request>({
             query: (request) => {
                 const { description, tags, photos } = request;
@@ -43,6 +43,14 @@ export const PostsApi = createApi({
                 };
             },
             transformResponse: (response: CreatePhotoPost.Response) => response.data,
+            invalidatesTags: [{ type: PostApiTags.OVERVIEW, id: 'TRIGGER' }],
+        }),
+
+        createQuotePost: builder.mutation<PostOverview, CreateQuotePost.Request>({
+            query: (request) => {
+                return { url: `/quote`, method: 'POST', body: request };
+            },
+            transformResponse: (response: CreateQuotePost.Response) => response.data,
             invalidatesTags: [{ type: PostApiTags.OVERVIEW, id: 'TRIGGER' }],
         }),
         /** Get Posts **/
@@ -83,7 +91,7 @@ export const PostsApi = createApi({
         /** Get Post Detail**/
         getPostDetail: builder.query<PostDetail, GetPostDetail.Request>({
             query: (request) => {
-                const {id} = request;
+                const { id } = request;
                 return {
                     url: `/${id}`,
                     method: 'GET',
@@ -105,7 +113,7 @@ export const PostsApi = createApi({
             invalidatesTags: (result, error, request) => [
                 { type: PostApiTags.OVERVIEW, id: request.id },
                 { type: PostApiTags.DETAIL, id: request.id },
-                { type: UserApiTags.DETAIL} as any
+                { type: UserApiTags.DETAIL } as any,
             ],
         }),
         /** Create Comment**/

@@ -21,7 +21,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
 import express from 'express';
-import { GetPostsFiltersDTO, CreatePhotoPostDTO, CreateCommentDTO } from '../dto';
+import { GetPostsFiltersDTO, CreatePhotoPostDTO, CreateCommentDTO, CreateQuotePostDTO } from '../dto';
 import { PostService } from './post.service';
 import { JwtUser } from 'src/shared/decorators';
 
@@ -39,7 +39,7 @@ export class PostController {
     @Get()
     @ApiResponse({ status: HttpStatus.OK, description: 'Posts retrieved successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving Posts' })
-    async getPosts(@Response() res: express.Response, @JwtUser() user: User, @Query() params?: GetPostsFiltersDTO) {       
+    async getPosts(@Response() res: express.Response, @JwtUser() user: User, @Query() params?: GetPostsFiltersDTO) {
         const posts = await this.postService.searchPostsForUser(user, params);
         return res.status(HttpStatus.OK).json(posts);
     }
@@ -47,7 +47,7 @@ export class PostController {
     @Get(':id')
     @ApiResponse({ status: HttpStatus.OK, description: 'Post detail retrieved successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error retrieving Post detail' })
-    async getPostDetaoñ(@Response() res: express.Response, @JwtUser() user: User, @Param('id') id: string) {       
+    async getPostDetaoñ(@Response() res: express.Response, @JwtUser() user: User, @Param('id') id: string) {
         const post = await this.postService.getPostDetail(user, +id);
         return res.status(HttpStatus.OK).json(post);
     }
@@ -60,7 +60,12 @@ export class PostController {
             storage: multerS3(Configuration.getMulterConfig('posts/photos', ['png', 'jpg', 'jpeg', 'gif'])),
         })
     )
-    async createPhotoPost(@Response() res: express.Response, @JwtUser() user: User, @Body() post: CreatePhotoPostDTO, @UploadedFiles() photos: Express.MulterS3.File[]) {
+    async createPhotoPost(
+        @Response() res: express.Response,
+        @JwtUser() user: User,
+        @Body() post: CreatePhotoPostDTO,
+        @UploadedFiles() photos: Express.MulterS3.File[]
+    ) {
         if (_.isEmpty(photos)) {
             throw new BadRequestException(['photos are required'], 'Validation Failed');
         }
@@ -71,20 +76,31 @@ export class PostController {
         return res.status(HttpStatus.OK).json(newPost);
     }
 
+    @Post('/quote')
+    @ApiResponse({ status: HttpStatus.OK, description: 'Post created successfully' })
+    @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error creating POst' })
+    async createQuotePost(@Response() res: express.Response, @JwtUser() user: User, @Body() post: CreateQuotePostDTO) {
+        const newPost = await this.postService.createQuotePost(user, post);
+        return res.status(HttpStatus.OK).json(newPost);
+    }
+
     @Put('/:id/comments')
     @ApiResponse({ status: HttpStatus.OK, description: 'Comment created successfully' })
     @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Error leaving comment' })
     @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Post not found for commenting' })
-    async leaveComment(@Response() res: express.Response, @JwtUser() user: User, @Body() comment: CreateCommentDTO, @Param('id') postId: string) {
+    async leaveComment(
+        @Response() res: express.Response,
+        @JwtUser() user: User,
+        @Body() comment: CreateCommentDTO,
+        @Param('id') postId: string
+    ) {
         const newComment = await this.postService.createComment(user, +postId, comment);
         return res.status(HttpStatus.OK).json(newComment);
     }
 
-
-
     @Delete('/:id')
     async deletePost(@Response() res: express.Response, @JwtUser() user: User, @Param('id') postId: number) {
-        const response = await this.postService.deletePostAndComments(user, {id: postId});
+        const response = await this.postService.deletePostAndComments(user, { id: postId });
         return res.status(HttpStatus.OK).json(response);
     }
 }
