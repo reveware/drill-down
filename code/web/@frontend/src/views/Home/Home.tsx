@@ -1,5 +1,5 @@
 import React from 'react';
-import { PostCardGrid, NoContent, Loading, PostCard } from '../../components';
+import { PostCardGrid, NoContent, Loading } from '../../components';
 import './Home.scss';
 import { useGetPostsQuery } from '../../hooks';
 import _ from 'lodash';
@@ -23,7 +23,6 @@ export const Home = () => {
             <PostCardGrid title="Latest Posts" className="latest-posts neon-border" posts={posts} postSize="md" />
 
             <PostCardGrid title="Reversed Posts" className="reverese-posts neon-border" posts={reversed} postSize="sm" />
-
             
         </div>
     );

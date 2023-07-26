@@ -5,13 +5,13 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import ReactDatePicker from 'react-datepicker';
+
 import { Validation, Values } from '@drill-down/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Yup from 'yup';
 import { CreateUser, UserRole } from '@drill-down/interfaces';
 import moment from 'moment';
-import { Avatar } from 'src/components/UserComponents';
+import { Avatar, DatePicker } from 'src/components/';
 import './RegisterForm.scss';
 
 interface RegisterFormProps {
@@ -204,12 +204,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
                             <Col>
                                 <Form.Group controlId="dateOfBirth">
                                     <Form.Label>Date Of Birth</Form.Label>
-                                    <ReactDatePicker
-                                        closeOnScroll={true}
-                                        selected={values.date_of_birth}
-                                        onBlur={handleBlur}
+                                    <DatePicker
+                                        date={values.date_of_birth}
                                         onChange={(date) => {
-                                            return Array.isArray(date) ? null : setFieldValue('date_of_birth', date, true);
+                                            return setFieldValue('date_of_birth', date, true);
                                         }}
                                     />
                                     <Form.Text className={`form-hint ${isMouseOverSubmit && errors.date_of_birth ? '' : 'invisible'}`}>

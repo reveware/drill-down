@@ -15,6 +15,7 @@ export const QuotePost: React.FC<QuotePostProps> = (props) => {
     }
 
     const { quote, author } = post.content;
+    
     return (
         <div className={`quote-post ${variant}`}>
             <div className="quote-post-quote">

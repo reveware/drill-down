@@ -7,7 +7,6 @@ import { AppRoutes } from '../../../Routes';
 import moment from 'moment';
 import { PhotoPostContent, PostOverview, PostTypes, QuotePostContent } from '@drill-down/interfaces';
 import { Values } from '@drill-down/constants';
-import { TextBox } from 'src/components/TextBox/TextBox';
 
 interface FrontFaceProps {
     post: PostOverview;
@@ -44,7 +43,9 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
     const renderQuoteContent = (content: QuotePostContent) => {
         return (
             <div className="quote-content">
-                <p className="quote-content-quote">{content.quote}</p>
+                <div className="quote-content-quote">
+                    <p>{content.quote}</p>
+                </div>
                 <span className="quote-content-author"> {content.author}</span>
             </div>
         );

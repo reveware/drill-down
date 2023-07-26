@@ -24,7 +24,6 @@ export const PostsApi = createApi({
     tagTypes: [PostApiTags.OVERVIEW, PostApiTags.DETAIL],
     endpoints: (builder) => ({
         /** Create Post  **/
-        // TODO: should accept other post types (createPost)
         createPhotoPost: builder.mutation<PostOverview, CreatePhotoPost.Request>({
             query: (request) => {
                 const { description, tags, photos } = request;
@@ -48,7 +47,11 @@ export const PostsApi = createApi({
         }),
 
         createQuotePost: builder.mutation<PostOverview, CreateQuotePost.Request>({
-            query: (request)=> {}
+            query: (request) => {
+                return { url: `/quote`, method: 'POST', body: request };
+            },
+            transformResponse: (response: CreateQuotePost.Response) => response.data,
+            invalidatesTags: [{ type: PostApiTags.OVERVIEW, id: 'TRIGGER' }],
         }),
         /** Get Posts **/
         getPosts: builder.query<PostOverview[], GetPosts.Request>({
@@ -88,7 +91,7 @@ export const PostsApi = createApi({
         /** Get Post Detail**/
         getPostDetail: builder.query<PostDetail, GetPostDetail.Request>({
             query: (request) => {
-                const {id} = request;
+                const { id } = request;
                 return {
                     url: `/${id}`,
                     method: 'GET',
@@ -110,7 +113,7 @@ export const PostsApi = createApi({
             invalidatesTags: (result, error, request) => [
                 { type: PostApiTags.OVERVIEW, id: request.id },
                 { type: PostApiTags.DETAIL, id: request.id },
-                { type: UserApiTags.DETAIL} as any
+                { type: UserApiTags.DETAIL } as any,
             ],
         }),
         /** Create Comment**/

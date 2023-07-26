@@ -1,0 +1,21 @@
+.create-quote-post-form {
+    .form-label {
+        font-weight: bold;
+        margin-top: 4px;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .quote-details {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 40px;
+
+        div {
+            flex-grow: 1;
+        }
+    }
+}

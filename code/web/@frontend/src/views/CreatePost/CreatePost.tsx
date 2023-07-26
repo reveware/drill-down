@@ -27,7 +27,8 @@ export const CreatePost: React.FC = () => {
     const handleQuotePostSubmit = async (values: CreateQuotePost.Request) => {
         try {
             console.log('onQuotePostSubmit', {values});
-            await createQuotePost(values).unwrap()
+            await createQuotePost(values).unwrap();
+            history.push(AppRoutes.HOME);
         } catch (error) {
             ToastService.prompt(Prompts.ErrorHandled, error);
         }

@@ -1,6 +1,12 @@
-.create-photo-post-button {
-    margin-top: 16px;
-    button {
-        float: right;
+.create-photo-post-form {
+    .form-label {
+        font-weight: bold;
+        margin-top: 4px;
+    }
+    .create-photo-post-button {
+        margin-top: 16px;
+        button {
+            float: right;
+        }
     }
 }

@@ -20,7 +20,7 @@ export const PostCard: React.FC<PostCardProps> = (props: PostCardProps) => {
     const loggedInUser = useAppSelector(selectLoggedInUser);
 
     const isAdmin = () => {
-        return loggedInUser?.role == UserRole.ADMIN;
+        return loggedInUser?.role === UserRole.ADMIN;
     };
     const formaToRelativeDate = (date: Date): string => {
         return moment(date).fromNow();
