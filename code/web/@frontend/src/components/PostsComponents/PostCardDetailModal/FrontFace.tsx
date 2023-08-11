@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Carousel, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostCardDetailModal.scss';
-import { history } from '../../../App';
 import { AppRoutes } from '../../../Routes';
 import moment from 'moment';
 import { PhotoPostContent, PostOverview, PostTypes, QuotePostContent } from '@drill-down/interfaces';
 import { Values } from '@drill-down/constants';
+import { useNavigate } from 'react-router-dom';
 
 interface FrontFaceProps {
     post: PostOverview;
@@ -19,6 +19,7 @@ interface FrontFaceProps {
 export const FrontFace: React.FC<FrontFaceProps> = (props) => {
     const { post, onPostCardFlip, onHide, onEdit, onDelete } = props;
     const [showCaptions, setShowCaptions] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     const toggleHideCaptions = () => {
         setShowCaptions(!showCaptions);
@@ -73,7 +74,7 @@ export const FrontFace: React.FC<FrontFaceProps> = (props) => {
                         <span
                             className="pointer"
                             onClick={() => {
-                                history.push(AppRoutes.USER_PROFILE.replace(':username', author.username));
+                                navigate(AppRoutes.USER_PROFILE.replace(':username', author.username));
                             }}>
                             {author.username}
                         </span>

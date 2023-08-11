@@ -6,7 +6,6 @@
     border: none;
     height: 100%;
     width: 100%;
-    border: 1px solid red;;
 
     .userlist-item {
         display: flex;
@@ -60,7 +59,7 @@
             }
             .action-icon {
                 margin-right: 8px;
-                color: $dark-blue;
+                color: $deep-blue;
      
             }
         }

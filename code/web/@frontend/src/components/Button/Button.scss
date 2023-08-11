@@ -1,0 +1,42 @@
+@import '../../styles/colors';
+
+.button {
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    
+    &:disabled {
+       opacity: 85%;
+    }
+
+    &.primary {
+        background-color: $deep-blue;
+        border: 1px solid adjust-color($deep-blue, $lightness: -13%);
+        box-shadow: inset 0 0 13px 4px adjust-color($deep-blue, $lightness: -13%);
+    }
+    &.secondary {
+        background-color:$light-grey ;
+        box-shadow: inset 0 0 13px 4px adjust-color($light-grey, $lightness: -13%);
+        
+    }
+    &.danger {
+        background-color: $red;
+        border: 1px solid adjust-color($red, $lightness: -13%);
+        box-shadow: inset 0 0 13px 4px adjust-color($red, $lightness: -13%);
+    }
+
+    &.info {
+        background-color: $grey;
+        border: 1px solid adjust-color($grey, $lightness: -13%);
+        box-shadow: inset 0 0 13px 4px adjust-color($grey, $lightness: -13%);
+    }
+
+    &.link {
+        color: $sky-blue;
+        border: none;
+        text-decoration: underline;
+        background: none;
+        cursor: pointer;
+    }
+    
+}

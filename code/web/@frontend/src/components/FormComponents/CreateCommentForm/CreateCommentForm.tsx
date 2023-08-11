@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import {Button} from '../../../components';
 import { Comment, CreateComment } from '@drill-down/interfaces';
 import './CreateCommentForm.scss';
 
@@ -59,16 +60,13 @@ export const CreateCommentForm: React.FC<CreateCommentFormProps> = (props) => {
                                         setIsMouseOverSubmit(false);
                                     }}>
                                     <Button
-                                        type="button"
+                                        label='Leave comment'
                                         className="mt-1"
-                                        variant="dark"
-                                        size="lg"
+                                        variant="primary"
                                         onClick={() => {
                                             handleSubmit();
                                         }}
-                                        disabled={!isValid}>
-                                        Leave comment
-                                    </Button>
+                                        disabled={!isValid}/>
                                 </span>
                             </Form.Group>
                         </Form>

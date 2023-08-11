@@ -15,9 +15,11 @@ enum ProfileTabs {
 
 export const UserProfile: React.FC = () => {
     const params = useParams<{ username: string }>();
-    const { username } = params;
+    const  username  = params.username!;
+    
     const mastheadPhoto = 'https://images8.alphacoders.com/442/thumb-1920-442066.jpg';
     // TODO: handle errors
+    console.log('getting user profile', username)
     const { data: user, isLoading } = useGetUserDetailQuery({ username });
     const loggedInUser = useAppSelector(selectLoggedInUser);
 

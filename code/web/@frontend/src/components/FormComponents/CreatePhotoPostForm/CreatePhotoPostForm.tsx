@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { CustomPhotosInput, TagList } from '../..';
-import { Button, Form } from 'react-bootstrap';
+import { CustomPhotosInput, HintMessage, TagList, Button } from '../../../components';
+import { Form } from 'react-bootstrap';
+
 import { CreatePhotoPost } from '@drill-down/interfaces';
 import './CreatePhotoPostForm.scss';
 
@@ -27,19 +28,13 @@ export const CreatePhotoPostForm: React.FC<CreatePhotoPostFormProps> = (props) =
         <Formik validationSchema={PhotoPostSchema} initialValues={initialValues} validateOnMount={true} onSubmit={onSubmit}>
             {({ values, errors, handleChange, handleSubmit, setFieldValue, isValid }) => (
                 <div>
-                    {/* TODO: move to Feedback components */}
-                    <div className="leave-a-tag-message">
-                        <p className="text-muted">
-                            Upload photos and tag them appropiately to be able to backtrack to them later{' '}
-                            <span role="img" aria-label="smirking moon">
-                                🌚
-                            </span>
-                        </p>
-                    </div>
+     
                     <div className="create-photo-post-form">
+                    <HintMessage message={`Upload photos and tag them appropiately to be able to backtrack to them later 🌚`}/>
                         <Form>
                             <Form.Group controlId="photos">
                                 <Form.Label>Photos (or GIFS!)</Form.Label>
+                                
                                 <CustomPhotosInput
                                     onPhotosChanged={(files) => {
                                         setFieldValue('photos', files);
@@ -79,9 +74,8 @@ export const CreatePhotoPostForm: React.FC<CreatePhotoPostFormProps> = (props) =
                                 className="create-photo-post-button"
                                 onMouseEnter={() => setIsMouseOverSubmit(() => true)}
                                 onMouseLeave={() => setIsMouseOverSubmit(() => false)}>
-                                <Button type="button" variant="dark" onClick={() => handleSubmit()} disabled={!isValid}>
-                                    Create Photo Post
-                                </Button>
+                                <Button label='Create Photo Post' variant="primary" onClick={() => handleSubmit()} disabled={!isValid}/>
+                                
                             </div>
                         </Form>
                     </div>

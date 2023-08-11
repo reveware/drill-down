@@ -4,8 +4,8 @@ import * as Yup from 'yup';
 import { CreateQuotePost } from '@drill-down/interfaces';
 import { useSelector } from 'react-redux';
 import { selectLoggedInUser } from 'src/store';
-import { Button, Form } from 'react-bootstrap';
-import { TagList, DatePicker } from 'src/components';
+import { Form } from 'react-bootstrap';
+import { TagList, DatePicker, Button } from 'src/components';
 import './CreateQuotePostForm.scss';
 
 interface CreateQuotePostFormProps {
@@ -124,9 +124,7 @@ export const CreateQuotePostForm: React.FC<CreateQuotePostFormProps> = (props) =
                             className="create-quote-post-button"
                             onMouseEnter={() => setIsMouseOverSubmit(() => true)}
                             onMouseLeave={() => setIsMouseOverSubmit(() => false)}>
-                            <Button type="button" variant="dark" onClick={() => handleSubmit()} disabled={!isValid}>
-                                Create Photo Post
-                            </Button>
+                            <Button label='Create Quote Post' variant="primary" onClick={() => handleSubmit()} disabled={!isValid}/>
                         </div>
                     </Form>
                 </div>

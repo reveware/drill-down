@@ -8,7 +8,8 @@ import { useGetPostsQuery } from 'src/hooks';
 
 export const PostForTag: React.FC = () => {
     const params = useParams<{ tag: string }>();
-    const tag = params.tag;
+    const tag = params.tag!;
+
     // TODO: handle loading, error
     const { data: posts } = useGetPostsQuery({ tags: tag });
 

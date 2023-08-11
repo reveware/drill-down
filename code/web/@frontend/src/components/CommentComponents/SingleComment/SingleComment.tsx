@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Collapse } from 'react-bootstrap';
 import { Comment } from '@drill-down/interfaces';
-import { TextBox } from '../../../components';
+import { TextBox, Button } from '../../../components';
 import _ from 'lodash';
 import './SingleComment.scss';
 import moment from 'moment';
@@ -56,13 +56,13 @@ export const SingleComment: React.FC<SingleCommentProps> = (props) => {
                                 {isShowingReplies ? 'Hide replies' : 'Show replies'}
                             </span>
                         )}
-                        <button
+                        <Button
+                            label='reply'
                             onClick={() => {
                                 onLeaveReplyClick(comment);
                             }}
-                            className="comment-reply-button button-as-link">
-                            reply
-                        </button>
+                            variant='link'
+                            className="comment-reply-button"/>
                     </div>
 
                     <div className="comment-replies">

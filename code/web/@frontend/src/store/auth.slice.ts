@@ -6,7 +6,6 @@ import { resetState } from '.';
 import { StorageKeys, AppState } from './store.types';
 import { ToastService, Prompts } from 'src/services';
 
-
 type AuthState =
     | {
           isAuthorized: false;
@@ -19,15 +18,38 @@ type AuthState =
           user: UserOverview;
       };
 
-const initialState = {
-    isAuthorized: false,
-    user: null,
-    authToken: null,
-} as AuthState;
+
+const isValidToken = (token: JwtPayload): boolean => {
+    const now = moment();
+    const expires = moment.unix(token.exp);
+    return expires.isAfter(now);
+}
+
+export const getInitialState = (): AuthState => {
+    const storedToken = localStorage.getItem(StorageKeys.AUTH_TOKEN);
+
+    if (storedToken) {
+        const payload: JwtPayload = JwtDecode(storedToken);
+        if (isValidToken(payload)) {
+            
+            return {
+                isAuthorized: true,
+                user: payload.user,
+                authToken: storedToken,
+            };
+        }
+    }
+
+    return {
+        isAuthorized: false,
+        user: null,
+        authToken: null,
+    };
+};
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: initialState,
+    initialState: getInitialState,
     reducers: {
         logIn: (state, action: PayloadAction<AuthResponse>) => {
             const { is_authorized, token } = action.payload;
@@ -39,12 +61,11 @@ const authSlice = createSlice({
                 state.authToken = token;
                 state.isAuthorized = is_authorized;
                 state.user = user;
+                return;
             }
+            ToastService.prompt(Prompts.InvalidAuth);
         },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(logOut.fulfilled, (state) => initialState);
-    },
+    }
 });
 
 export const { reducer: authReducer } = authSlice;
@@ -58,22 +79,15 @@ export const logOut = createAsyncThunk('auth/logout', async (_, { dispatch }) =>
     dispatch(resetState());
 });
 
-export const validateAuth = createAsyncThunk('auth/validate', async (_, { dispatch }) => {
-    const storedToken = localStorage.getItem(StorageKeys.AUTH_TOKEN);
-    if (storedToken) {
-        const payload: JwtPayload = JwtDecode(storedToken);
-        const now = moment();
-        const expires = moment.unix(payload.exp);
-        const isValid = expires.isAfter(now);
+export const validateTokenExpiration = createAsyncThunk('auth/validateTokenExpiration', async (_, { dispatch, getState }) => {
+    const {authToken} = (getState() as AppState).auth;
 
-        if (isValid) {
-            dispatch(logIn({ is_authorized: true, token: storedToken, message: 'Valid token in local storage' }));
-            return;
-        }
+    if(authToken){
+        const payload: JwtPayload = JwtDecode(authToken);
+        if( isValidToken(payload) ) {
+            dispatch(resetState());
+        }        
     }
-
-    ToastService.prompt(Prompts.InvalidAuth);
-    dispatch(logOut());
 });
 
 export const selectLoggedInUser = createSelector([(state: AppState) => state.auth.user], (user) => user);

@@ -16,7 +16,7 @@
     display: inline-block;
     position: relative;
     border: 3px solid;
-    border-color: $dark-blue $dark-blue transparent transparent;
+    border-color: $deep-blue $deep-blue transparent transparent;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
   }
@@ -31,7 +31,7 @@
     bottom: 0;
     margin: auto;
     border: 3px solid;
-    border-color: transparent transparent $violet $violet;
+    border-color: transparent transparent $pink $pink;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -42,7 +42,7 @@
   .loader::before {
     width: 32px;
     height: 32px;
-    border-color: #FFF #FFF transparent transparent;
+    border-color: $white $white transparent transparent;
     animation: rotation 1.5s linear infinite;
   }
       

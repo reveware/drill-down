@@ -4,8 +4,8 @@ import * as _ from 'lodash';
 import { Card } from 'react-bootstrap';
 import { TagCloud as ReactTagCloud } from 'react-tagcloud';
 import './TagCloud.scss';
-import { history } from 'src/App';
 import { AppRoutes } from 'src/Routes';
+import { useNavigate } from 'react-router-dom';
 
 interface TagCloudProps {
     tagCount: CountPerTag;
@@ -14,10 +14,11 @@ interface TagCloudProps {
 
 export const TagCloud: React.FC<TagCloudProps> = (props) => {
     const { tagCount } = props;
+    const navigate = useNavigate();
 
     const handleTagClicked = (tagCount: {value: string, count: number})=> {
         const tag = tagCount.value.replace('#', '');
-        history.push(AppRoutes.POSTS_FOR_TAG.replace(':tag', tag))
+        navigate(AppRoutes.POSTS_FOR_TAG.replace(':tag', tag))
     }
 
     const tags = _.reduce(

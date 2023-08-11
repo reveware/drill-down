@@ -1,17 +1,18 @@
 import React from 'react';
-import { Button, Dropdown, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Dropdown, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavBar.scss';
 import { AppRoutes } from '../../Routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch, logOut, selectLoggedInUser } from '../../store';
-
+import {Button} from '../../components';
 import { Prompts, ToastService } from '../../services/Toast.service';
-import { history } from '../../App';
+
 
 export const NavBar: React.FC = () => {
     const loggedInUser = useAppSelector(selectLoggedInUser);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="navbar">
@@ -40,7 +41,7 @@ export const NavBar: React.FC = () => {
                             <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />}>
                                 <NavDropdown.Item
                                     onClick={() => {
-                                        history.push(AppRoutes.USER_PROFILE.replace(':username', loggedInUser.username));
+                                        navigate(AppRoutes.USER_PROFILE.replace(':username', loggedInUser.username));
                                     }}>
                                     {`${loggedInUser.first_name} ${loggedInUser.last_name}`}
                                 </NavDropdown.Item>
@@ -58,10 +59,9 @@ export const NavBar: React.FC = () => {
                         <div className="search-bar">
                             <FormControl type="text" placeholder="Search" />
                             <Button
-                                variant="light"
-                                onClick={() => {ToastService.prompt(Prompts.SearchTriggered)}}>
-                                Search
-                            </Button>
+                                label='Search'
+                                variant="info"
+                                onClick={() => {ToastService.prompt(Prompts.SearchTriggered)}}/>
                         </div>
                     </Navbar.Collapse>
                 </React.Fragment>

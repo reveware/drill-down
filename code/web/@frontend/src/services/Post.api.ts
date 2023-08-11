@@ -80,13 +80,7 @@ export const PostsApi = createApi({
                 };
             },
             transformResponse: (response: GetPosts.Response) => response.data,
-            providesTags: (result) =>
-                result
-                    ? [
-                          ...result.map(({ id }) => ({ type: PostApiTags.OVERVIEW, id }), { type: PostApiTags.OVERVIEW, id: 'TRIGGER' }),
-                          // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'TRIGGER' }` is invalidated
-                      ]
-                    : [{ type: PostApiTags.OVERVIEW, id: 'TRIGGER' }],
+            providesTags: (result) => [{ type: PostApiTags.OVERVIEW, id: 'TRIGGER' }],
         }),
         /** Get Post Detail**/
         getPostDetail: builder.query<PostDetail, GetPostDetail.Request>({

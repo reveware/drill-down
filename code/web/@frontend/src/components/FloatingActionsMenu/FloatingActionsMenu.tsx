@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './FloatingActionsMenu.scss';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../Routes';
 
 export const FloatingActionsMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleNewPost = () => {
-        history.push(AppRoutes.CREATE_POST);
+        navigate(AppRoutes.CREATE_POST);
     };
 
     const handleChatbot = () => {};

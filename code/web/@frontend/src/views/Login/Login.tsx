@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import { AppRoutes } from '../../Routes';
 import { LoginAttempt } from '@drill-down/interfaces';
@@ -12,7 +12,7 @@ import { Loading, LoginForm } from 'src/components';
 
 export const Login = () => {
     const dispatch = useAppDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const loggedInUser = useAppSelector(selectLoggedInUser);
 
     // TODO: handle  error
@@ -20,9 +20,9 @@ export const Login = () => {
 
     useEffect(() => {
         if (loggedInUser) {
-            history.push(AppRoutes.HOME);
+            navigate(AppRoutes.HOME);
         }
-    }, [loggedInUser, history]);
+    }, [loggedInUser, navigate]);
 
     const handleSubmit = async (values: { [key in keyof LoginAttempt.Request]: any }) => {
         try {

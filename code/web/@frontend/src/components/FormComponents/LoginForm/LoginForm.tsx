@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {Form, Button, InputGroup } from 'react-bootstrap';
+import {Form, InputGroup } from 'react-bootstrap';
 import * as Yup from 'yup';
+import {Button} from '../../../components';
 import { LoginAttempt } from '@drill-down/interfaces';
 import './LoginForm.scss'
 
@@ -75,9 +76,7 @@ export const LoginForm: React.FC<LoginFormProps> = (props) => {
                             onMouseLeave={() => {
                                 setIsMouseOverSubmit(false);
                             }}>
-                            <Button variant="dark" type="button" disabled={!isValid} onClick={() => handleSubmit()}>
-                                Login
-                            </Button>
+                            <Button label='Login' variant="primary" disabled={!isValid} onClick={() => handleSubmit()}/>
                         </span>
                     </div>
                 </Form>
