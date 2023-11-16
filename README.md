@@ -2,7 +2,7 @@
 
 This is a pet project, that looks to emulate the typical interactions from a social network: whereyou can create users, who can add friends, create, tag and comment posts, interact with each other via messaging. This project also adds an interesting feature, giving users new interactions, such as `Time Bombs`*
 
-This Web App should eventually serve as a framework to drive the `POV` FPS Unity project and the Render series Blender project.
+This Web App should eventually serve as a framework to drive the `POV` FPS UE5 project and the Render series Blender project.
 
 you can find more information about the idea under `/docs` , as well as a postman collection to get started.
 
@@ -12,10 +12,10 @@ To run you will need to have the following apps and versions
 
 **Social Web**
 ```
-Docker >= v.23.0.1 | #33 . ? . 1 + 23 = 33 ? 2 + 1 = 3x3
-Node >= 14.20.1
+Docker >= v.24.0.2
+Node >= v16.20.2
 NPM >= 9.6.2
-Yarn >= 1.22.19
+Yarn >= 1.22.21
 ```
 
 **Render Pipeline**
@@ -106,7 +106,7 @@ There's a great value for designers to understand the prop definition. and being
 
 Ideas and suggestions are welcome.
 
-You can submit a pull request on [GitHub](https://github.com/rrriki/drill-down), or if you're thinking about a major changes, you can open an issue first to discuss it.
+You can submit a pull request on [GitHub](https://github.com/reveware/drill-down), or if you're thinking about a major changes, you can open an issue first to discuss it.
 
 You can request access to the [Trello board](https://trello.com/b/OTwMAWjI/drill-down) where we keep track of the work.
   
