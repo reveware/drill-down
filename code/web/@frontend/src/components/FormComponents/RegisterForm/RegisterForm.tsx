@@ -17,9 +17,12 @@ import './RegisterForm.scss';
 interface RegisterFormProps {
     onSubmit: (formValues: CreateUser.Request) => void;
     onCancel: () => void;
+    className?: string;
+
 }
 export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
     const { onSubmit, onCancel } = props;
+    const className = props.className || 'register-form'
 
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
     const [avatarSource, setAvatarSource] = useState<string>(images.MaleAvatar);
@@ -89,7 +92,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
     };
 
     return (
-        <div className="register-form">
+        <div className={className}>
             <Formik initialValues={initialValues} validationSchema={registerSchema} onSubmit={handleFormSubmit} validateOnMount={true}>
                 {({ isValid, values, errors, handleChange, handleBlur, setFieldValue, handleSubmit }) => (
                     <Form>
@@ -248,6 +251,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
                                     <Button label='Register' variant='primary' disabled={!isValid} onClick={handleSubmit}/>
                             </span>
                         </div>
+
+                        <div className="register-options">
+                        <p className="text-muted text-center">Or register with:</p>
+                        <hr />
+                    </div>
                     </Form>
                 )}
             </Formik>

@@ -60,7 +60,7 @@ export const NavBar: React.FC = () => {
                             <FormControl type="text" placeholder="Search" />
                             <Button
                                 label='Search'
-                                variant="info"
+                                variant="secondary"
                                 onClick={() => {ToastService.prompt(Prompts.SearchTriggered)}}/>
                         </div>
                     </Navbar.Collapse>

@@ -15,7 +15,7 @@ import { Prompts, ToastService } from 'src/services';
 export const Register = () => {
     const navigate = useNavigate();
     const loggedInUser = useAppSelector((state) => selectLoggedInUser(state));
-    const [createUser, { isLoading, error }] = useCreateUserMutation();
+    let [createUser, { isLoading, error }] = useCreateUserMutation();
 
     useEffect(() => {
         if (loggedInUser) {
@@ -23,7 +23,7 @@ export const Register = () => {
         }
     }, [loggedInUser, navigate]);
 
-    const handleSubmit = async(user: CreateUser.Request)=> {
+    const handleSubmit = async (user: CreateUser.Request) => {
         try {
             await createUser(user).unwrap();
             ToastService.prompt(Prompts.AfterRegister);
@@ -39,28 +39,19 @@ export const Register = () => {
     };
 
     if (isLoading) {
-        return <Loading />;
+        return <Loading />
     }
 
     if (error) {
         return <div>{JSON.stringify(error)}</div>;
     }
 
+
+    isLoading = true
+
     return (
-        <div className="register">
-            <Card className="neon-border register-card">
-                <Card.Body>
-                    <Card.Title>Register</Card.Title>
-
-                    <RegisterForm onSubmit={handleSubmit} onCancel={handleCancel} />            
-
-                    <hr />
-                    <div>
-                        <p className="text-muted text-center">Or register with:</p>
-                    </div>
-                </Card.Body>
-            </Card>
-
+        <div className='register card neon-border'>
+            <RegisterForm onSubmit={handleSubmit} onCancel={handleCancel} />
             <Image source={images.Delorean} className="register-image" alt="time-travel with us" />
         </div>
     );

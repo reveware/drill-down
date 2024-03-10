@@ -6,14 +6,17 @@ import * as Yup from 'yup';
 import {Button} from '../../../components';
 import { LoginAttempt } from '@drill-down/interfaces';
 import './LoginForm.scss'
+import { AppRoutes } from 'src/Routes';
 
 interface LoginFormProps {
-    onSubmit: (values: LoginAttempt.Request)=> void
+    onSubmit: (values: LoginAttempt.Request)=> void;
+    className?: string;
 }
 export const LoginForm: React.FC<LoginFormProps> = (props) => {
     const {onSubmit} = props;
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
+    const className = props.className || 'login-form'
 
     const validations: { [key in keyof LoginAttempt.Request]: any } = {
         email: Yup.string().email('Must be a valid email').required('Email is required!'),
@@ -33,7 +36,8 @@ export const LoginForm: React.FC<LoginFormProps> = (props) => {
     };
 
     return (
-        <Formik initialValues={initialValues} validationSchema={loginAttemptSchema} onSubmit={onSubmit} validateOnMount={true}>
+        <div className={className}>
+            <Formik initialValues={initialValues} validationSchema={loginAttemptSchema} onSubmit={onSubmit} validateOnMount={true}>
             {({ isValid, errors, handleChange, handleBlur, handleSubmit }) => (
                 <Form>
                     <Form.Group controlId="username">
@@ -79,8 +83,14 @@ export const LoginForm: React.FC<LoginFormProps> = (props) => {
                             <Button label='Login' variant="primary" disabled={!isValid} onClick={() => handleSubmit()}/>
                         </span>
                     </div>
+                    <hr />
+                    <p className="text-muted text-center">
+                        Not a member? <a href={AppRoutes.REGISTER}>Register</a>
+                    </p>
                 </Form>
             )}
         </Formik>
+        </div>
+        
     );
 };

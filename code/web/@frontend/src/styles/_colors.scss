@@ -1,16 +1,16 @@
+
 $white: #ffffff;
 $black: #000000;
 $gold: #f5ae48;
 $red: #bc2e5c;
 $pink: #e620a6;
-$deep-blue: #101529;
-$sky-blue: #1da3c7;
+$blue: #0000ff;
+$dark-blue: #101529;
+$light-blue: #1da3c7;
 $grey: #6c6d70;
 $light-grey: #ced4da;
+$dark-grey: #333536;
 
-
-
-$blue: #0000ff;
 $yellow: #ffff00;
 $violet: #800080;
 $maroon: #c5191965;
@@ -18,6 +18,9 @@ $lime: #00ff00;
 $magenta: #ff00ff;
 $silver: #c0c0c0;
 
-
+/** ALIAS **/
+$primary : $dark-blue;
+$secondary: $dark-grey;
+$accent : $pink;
 
 

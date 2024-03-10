@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, Route, RouteProps, Routes as ReactRoutes } from 'react-router-dom';
+import { Route, RouteProps, Routes as ReactRoutes } from 'react-router-dom';
 import { selectLoggedInUser } from './store';
 import { Home, Login, Register, PostForTag, CreatePost, Chat, UserProfile } from './views';
 

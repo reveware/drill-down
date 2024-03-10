@@ -10,7 +10,9 @@ export interface ImageProps {
 }
 
 export const Image: React.FC<ImageProps> = (props) => {
-    const { id, source, className, alt } = props;
-    return <Img id={id} className={`image ${className ?? ''}`} src={source} alt={alt} />;
+    const { id, source, alt } = props;
+    const className= props.className || 'image'
+    
+    return <Img id={id} className={className} src={source} alt={alt} />;
 };
 

@@ -39,7 +39,7 @@ h1 {
 }
 
 .link, a {
-    color: $sky-blue;
+    color: $light-blue;
     cursor: pointer;
 }
 
@@ -50,12 +50,14 @@ h1 {
 
 
 @function pickRandomColor() {
-    $values: ($red, $sky-blue, $violet, $lime, $pink, $magenta);
+    $values: ($red, $light-blue, $violet, $lime, $pink, $magenta);
     $index: random(length($values));
     @return nth($values, $index);
 }
 
+
 .neon-border {
+    padding: 16px;
     animation-name: neon-border-animation;
     animation-duration: 6s;
     animation-iteration-count: infinite;

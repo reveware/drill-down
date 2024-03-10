@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -20,6 +20,7 @@ export const App: React.FC = () => {
                 <div className="app">
                     <BrowserRouter>
                         <NavBar />
+                        
                         <div className="body">
                             <Routes />
                             <FloatingActionsMenu />

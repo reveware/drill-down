@@ -1,17 +1,17 @@
-.register {
+@import '../../styles/media-queries';
 
+.register {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 16px;
-    height: 100%;
 
-    .register-card {
-        max-width: 500px;
+    .register-form {
+        padding: 16px; 
+        flex: 1;
     }
 
     .register-image {
-        margin-left: 16px;
+        margin-left: 8px;
         display: flex;
         flex-direction: row;
         width: 100%;
@@ -20,6 +20,12 @@
         flex: 1; 
         object-fit: cover;
         border-radius: 5px 5px;
+    }
+
+    @include media(mobile, tablet) {
+        .register-image {
+            display: none;
+        }
     }
 }
 

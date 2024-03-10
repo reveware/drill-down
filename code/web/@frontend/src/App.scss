@@ -3,6 +3,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    
 }
 
 .app {
@@ -13,7 +14,12 @@ body {
     margin: 8px;
 }
 
+
 .body {
-    height: calc(100% - 70px);
-    max-height: calc(100% - 70px);
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
