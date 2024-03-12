@@ -25,7 +25,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
     const className = props.className || 'register-form'
 
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
-    const [avatarSource, setAvatarSource] = useState<string>(images.MaleAvatar);
+    const [avatarSource, setAvatarSource] = useState<string>(images.AstroWelcome);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
 
     const validations: { [key in keyof CreateUser.Request]: any } = {

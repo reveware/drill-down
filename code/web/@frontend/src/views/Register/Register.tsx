@@ -52,7 +52,7 @@ export const Register = () => {
     return (
         <div className='register card neon-border'>
             <RegisterForm onSubmit={handleSubmit} onCancel={handleCancel} />
-            <Image source={images.Delorean} className="register-image" alt="time-travel with us" />
+            <Image source={images.Delorean} className="register-poster" alt="time-travel with us" />
         </div>
     );
 };
