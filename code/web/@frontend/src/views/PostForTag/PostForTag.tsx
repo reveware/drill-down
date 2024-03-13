@@ -15,7 +15,7 @@ export const PostForTag: React.FC = () => {
 
     const atLeastOnePost = posts && posts.length > 1;
     if (!posts) {
-        return <NoPostsFound query="tags" />;
+        return <NoPostsFound />;
     }
     return (
         <React.Fragment>
@@ -24,7 +24,7 @@ export const PostForTag: React.FC = () => {
                     <PostCardBanner title={tag} post={posts[0]} />
                 </div>
 
-                {atLeastOnePost ? <PostCardGrid posts={posts.slice(1, posts.length)} postSize="md" /> : <NoPostsFound query="tags" />}
+                {atLeastOnePost ? <PostCardGrid posts={posts.slice(1, posts.length)} postSize="md" /> : <NoPostsFound />}
             </div>
         </React.Fragment>
     );

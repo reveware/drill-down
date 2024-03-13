@@ -19,11 +19,9 @@ export const Home = () => {
     const reversed = posts.slice(0).reverse();
     return (
         <div className="home-view">
-            
-            <PostCardGrid title="Latest Posts" className="latest-posts neon-border" posts={posts} postSize="md" />
+        <PostCardGrid title="Latest Posts" className="latest-posts neon-border" posts={posts} postSize="md" />
 
-            <PostCardGrid title="Reversed Posts" className="reverese-posts neon-border" posts={reversed} postSize="sm" />
-            
+        <PostCardGrid title="Reversed Posts" className="reverese-posts neon-border" posts={reversed} postSize="sm" />
         </div>
     );
 };

@@ -13,7 +13,8 @@ interface TagCloudProps {
 }
 
 export const TagCloud: React.FC<TagCloudProps> = (props) => {
-    const { tagCount } = props;
+    const { tagCount, className } = props;
+    
     const navigate = useNavigate();
 
     const handleTagClicked = (tagCount: {value: string, count: number})=> {
@@ -30,7 +31,7 @@ export const TagCloud: React.FC<TagCloudProps> = (props) => {
     );
 
     return (
-        <Card className="tag-cloud">
+        <Card className={`tag-cloud ${className || ''}`}>
             {_.isEmpty(tags) && (
                   <strong>No tags</strong>
             )}

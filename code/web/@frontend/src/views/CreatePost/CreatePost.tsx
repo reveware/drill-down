@@ -36,7 +36,7 @@ export const CreatePost: React.FC = () => {
     }
 
     return (
-        <Card className="neon-border w-50 mx-auto mt-5">
+        <Card className="create-post neon-border">
             <Card.Body>
                 <Card.Title>Create New Post</Card.Title>
 

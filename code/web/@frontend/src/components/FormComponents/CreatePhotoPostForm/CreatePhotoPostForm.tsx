@@ -28,7 +28,6 @@ export const CreatePhotoPostForm: React.FC<CreatePhotoPostFormProps> = (props) =
         <Formik validationSchema={PhotoPostSchema} initialValues={initialValues} validateOnMount={true} onSubmit={onSubmit}>
             {({ values, errors, handleChange, handleSubmit, setFieldValue, isValid }) => (
                 <div>
-     
                     <div className="create-photo-post-form">
                     <HintMessage message={`Upload photos and tag them appropiately to be able to backtrack to them later 🌚`}/>
                         <Form>
@@ -72,8 +71,8 @@ export const CreatePhotoPostForm: React.FC<CreatePhotoPostFormProps> = (props) =
 
                             <div
                                 className="create-photo-post-button"
-                                onMouseEnter={() => setIsMouseOverSubmit(() => true)}
-                                onMouseLeave={() => setIsMouseOverSubmit(() => false)}>
+                                onMouseEnter={() => setIsMouseOverSubmit(true)}
+                                onMouseLeave={() => setIsMouseOverSubmit(false)}>
                                 <Button label='Create Photo Post' variant="primary" onClick={() => handleSubmit()} disabled={!isValid}/>
                                 
                             </div>

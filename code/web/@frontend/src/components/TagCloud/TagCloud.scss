@@ -17,8 +17,6 @@
     justify-content: center;
     text-align: center;
     
-    
-    
     .cloud {
         .tag-cloud-tag {
         
@@ -27,13 +25,5 @@
                 color: $light-blue !important;
             }
     }
-
-
-
-    
-    }
-
-    @include mobile {
-        display: none;
     }
 }

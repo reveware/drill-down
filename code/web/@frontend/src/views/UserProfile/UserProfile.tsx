@@ -15,11 +15,11 @@ enum ProfileTabs {
 
 export const UserProfile: React.FC = () => {
     const params = useParams<{ username: string }>();
-    const  username  = params.username!;
-    
+    const username = params.username!;
+
     const mastheadPhoto = 'https://images8.alphacoders.com/442/thumb-1920-442066.jpg';
     // TODO: handle errors
-    console.log('getting user profile', username)
+    
     const { data: user, isLoading } = useGetUserDetailQuery({ username });
     const loggedInUser = useAppSelector(selectLoggedInUser);
 
@@ -35,49 +35,41 @@ export const UserProfile: React.FC = () => {
     }
 
     return (
-        <React.Fragment>
-            <div className="user-profile">
-                <div className="user-profile-masthead-photo">
-                    {/*TODO: Allow users to set their photo */}
-                    <img src={mastheadPhoto} alt="masthead" />
-                </div>
-
-                <div className="user-profile-content">
-                    <div className="user-profile-overview">
-                        <UserOverviewCard user={user} />
-                        <TagCloud tagCount={user.posts_per_tag} />
-                    </div>
-
-                    <Card className="user-profile-main">
-                        <Card.Body className="user-profile-card-body">
-                            <Tabs
-                                activeKey={selectedTab as any}
-                                onSelect={(key) => setSelectedTab(key)}
-                                className="user-profile-tabs"
-                                mountOnEnter
-                                unmountOnExit>
-                                <Tab eventKey={ProfileTabs.POSTS} title="Posts">
-                                    <div className="user-profile-tab">
-                                        <PostCardGrid postSize="sm" posts={user.posts} onClick={(e) => alert('not triggering')} />
-                                    </div>
-                                </Tab>
-
-                                <Tab eventKey={ProfileTabs.FRIENDS} title="Friends">
-                                    <div className="user-profile-tab">
-                                        <UserList users={user.friends} />
-                                    </div>
-                                </Tab>
-
-                                <Tab eventKey={ProfileTabs.ROOM} title="Room">
-                                    <div className="user-profile-tab" onClick={(e) => alert('this click')}>
-                                        <UserRoom user={user} />
-                                    </div>
-                                </Tab>
-                            </Tabs>
-                        </Card.Body>
-                    </Card>
-                </div>
+        <div className="user-profile">
+            <div className="user-profile-masthead-photo">
+                {/*TODO: Allow users to set their photo */}
+                <img src={mastheadPhoto} alt="masthead" />
             </div>
-        </React.Fragment>
+
+            <div className="user-profile-content">
+                <div className="user-profile-overview ">
+                    <UserOverviewCard className='neon-border' user={user} />
+                    <TagCloud className='neon-border' tagCount={user.posts_per_tag} />
+                </div>
+
+                <Card className="user-profile-main neon-border">
+                    <Card.Body className="user-profile-card-body">
+                        <Tabs
+                            activeKey={selectedTab as any}
+                            onSelect={(key) => setSelectedTab(key)}
+                            className="user-profile-tabs"
+                            mountOnEnter
+                            unmountOnExit>
+                            <Tab className="user-profile-tab" eventKey={ProfileTabs.POSTS} title="Posts">
+                                <PostCardGrid postSize="sm" posts={user.posts} onClick={(e) => alert('not triggering')} />
+                            </Tab>
+
+                            <Tab className="user-profile-tab" eventKey={ProfileTabs.FRIENDS} title="Friends">
+                                <UserList users={user.friends} />
+                            </Tab>
+
+                            <Tab className="user-profile-tab" eventKey={ProfileTabs.ROOM} title="Room">
+                                <UserRoom user={user} />
+                            </Tab>
+                        </Tabs>
+                    </Card.Body>
+                </Card>
+            </div>
+        </div>
     );
 };

@@ -17,11 +17,17 @@ code {
 }
 
 // I like thin handwriting
-h1 {
+h1, .title {
     font: caption;
-    font-size: x-large;
+    font-size: xx-large;
     font-weight: lighter;
-    text-shadow: 1px 1px 1px $maroon;
+}
+
+h2, .subtitle {
+    font: caption;
+    font-style: italic;
+    font-size: x-large;
+    font-weight: lighter;   
 }
 
 .hidden {

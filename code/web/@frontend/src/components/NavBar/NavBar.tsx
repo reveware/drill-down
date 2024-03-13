@@ -1,11 +1,11 @@
 import React from 'react';
-import { Dropdown, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Dropdown, FormControl, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './NavBar.scss';
 import { AppRoutes } from '../../Routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch, logOut, selectLoggedInUser } from '../../store';
-import {Button} from '../../components';
+import { Button } from '../../components';
 import { Prompts, ToastService } from '../../services/Toast.service';
 
 
@@ -15,12 +15,15 @@ export const NavBar: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="navbar">
+        <Navbar variant="dark" bg="dark" className="card navbar" expand="md">
             <Navbar.Brand href={AppRoutes.HOME}>Drill Down</Navbar.Brand>
             {loggedInUser && (
                 <React.Fragment>
-                    <Navbar.Toggle />
-                    <Navbar.Collapse id="user-menu-collapse">
+                    <Navbar.Toggle aria-controls="user-offcanvas-menu" />
+                    <Navbar.Offcanvas id="user-offcanvas-menu" placement="end">
+                        <Offcanvas.Header closeButton />
+                        <Offcanvas.Body>
+
                         <div id="nav-links-collapse" className="nav-links">
                             {loggedInUser && (
                                 <Nav className="mr-auto">
@@ -38,12 +41,12 @@ export const NavBar: React.FC = () => {
                         </div>
 
                         <Nav>
-                            <NavDropdown title={<FontAwesomeIcon icon="user" size="lg" />}>
+                            <NavDropdown title={<span>@{loggedInUser.username} <FontAwesomeIcon icon="user"  /></span>}>
                                 <NavDropdown.Item
                                     onClick={() => {
                                         navigate(AppRoutes.USER_PROFILE.replace(':username', loggedInUser.username));
                                     }}>
-                                    {`${loggedInUser.first_name} ${loggedInUser.last_name}`}
+                                    Profile
                                 </NavDropdown.Item>
                                 <Dropdown.Divider />
                                 <NavDropdown.Item
@@ -61,9 +64,10 @@ export const NavBar: React.FC = () => {
                             <Button
                                 label='Search'
                                 variant="secondary"
-                                onClick={() => {ToastService.prompt(Prompts.SearchTriggered)}}/>
+                                onClick={() => { ToastService.prompt(Prompts.SearchTriggered) }} />
                         </div>
-                    </Navbar.Collapse>
+                        </Offcanvas.Body>
+                    </Navbar.Offcanvas>
                 </React.Fragment>
             )}
         </Navbar>
