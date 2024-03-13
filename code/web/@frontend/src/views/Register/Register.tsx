@@ -1,33 +1,33 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import { AppRoutes } from '../../Routes';
-
 import 'react-datepicker/dist/react-datepicker.css';
 import './Register.scss';
 import { useCreateUserMutation } from 'src/hooks';
 
 import { CreateUser } from '@drill-down/interfaces';
 import { useAppSelector, selectLoggedInUser } from '../../store/';
-import {  Loading, RegisterForm } from 'src/components';
+import { Loading, RegisterForm, Image } from 'src/components';
+import * as images from '../../assets/img';
 import { Prompts, ToastService } from 'src/services';
 
 export const Register = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const loggedInUser = useAppSelector((state) => selectLoggedInUser(state));
-    const [createUser, { isLoading, error }] = useCreateUserMutation();
+    let [createUser, { isLoading, error }] = useCreateUserMutation();
 
     useEffect(() => {
         if (loggedInUser) {
-            history.push(AppRoutes.HOME);
+            navigate(AppRoutes.HOME);
         }
-    }, [loggedInUser, history]);
+    }, [loggedInUser, navigate]);
 
-    const handleSubmit = async(user: CreateUser.Request)=> {
+    const handleSubmit = async (user: CreateUser.Request) => {
         try {
             await createUser(user).unwrap();
             ToastService.prompt(Prompts.AfterRegister);
-            history.push(AppRoutes.HOME);
+            navigate(AppRoutes.HOME);
         } catch (error) {
             ToastService.prompt(Prompts.ErrorHandled)
         }
@@ -35,32 +35,24 @@ export const Register = () => {
 
 
     const handleCancel = () => {
-        history.push(AppRoutes.LOGIN);
+        navigate(AppRoutes.LOGIN);
     };
 
     if (isLoading) {
-        return <Loading />;
+        return <Loading />
     }
 
     if (error) {
         return <div>{JSON.stringify(error)}</div>;
     }
 
+
+    isLoading = true
+
     return (
-        <div className='register'>
-            <Card className="register-form neon-border">
-                <Card.Body>
-                    <Card.Title>Register</Card.Title>
-
-                    <RegisterForm onSubmit={handleSubmit} onCancel={handleCancel} />            
-
-                    <hr />
-
-                    <div>
-                        <p className="text-muted text-center">Or register with:</p>
-                    </div>
-                </Card.Body>
-            </Card>
+        <div className='register card neon-border'>
+            <RegisterForm onSubmit={handleSubmit} onCancel={handleCancel} />
+            <Image source={images.Delorean} className="register-poster" alt="time-travel with us" />
         </div>
     );
 };

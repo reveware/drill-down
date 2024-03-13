@@ -1,7 +1,13 @@
+@import '../../styles/colors';
+@import '../../styles/media-queries';
+
 .navbar {
     display: flex;
     flex-direction: row;
     height: 50px;
+    padding: 8px;
+    
+    
     .nav-links {
         width: 100%;
     }
@@ -12,5 +18,22 @@
         gap: 8px;
         justify-content: space-between;
         max-width: 375px;
+        
     }
 }
+
+@include media(mobile, tablet) {
+    .search-bar {
+        margin-top: 16px;
+        button {
+            width: 100%;
+            margin-top: 4px;
+            
+        }
+    }
+}
+
+// Override bootstrap
+.navbar.bg-dark {
+    background-color: $primary !important;
+  }

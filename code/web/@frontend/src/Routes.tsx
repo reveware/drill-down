@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, Route, RouteProps, Switch } from 'react-router-dom';
+import { Route, RouteProps, Routes as ReactRoutes } from 'react-router-dom';
 import { selectLoggedInUser } from './store';
 import { Home, Login, Register, PostForTag, CreatePost, Chat, UserProfile } from './views';
 
@@ -14,36 +14,32 @@ export enum AppRoutes {
     CHAT = '/chat',
 }
 
-export interface AppRouteProps extends RouteProps {
+type AppRouteProps = RouteProps & {
     isProtected: boolean;
-    component: React.ComponentType<any>;
-}
+};
 
 const routes: AppRouteProps[] = [
-    { path: AppRoutes.LOGIN, isProtected: false, exact: true, component: Login },
-    { path: AppRoutes.REGISTER, isProtected: false, exact: true, component: Register },
-    { path: AppRoutes.HOME, isProtected: true, exact: true, component: Home },
-    { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, exact: true, component: PostForTag },
-    { path: AppRoutes.CREATE_POST, isProtected: true, exact: true, component: CreatePost },
-    { path: AppRoutes.USER_PROFILE, isProtected: true, exact: true, component: UserProfile },
-    { path: AppRoutes.CHAT, isProtected: true, exact: true, component: Chat },
-    { path: '*', isProtected: true, component: Home },
+    { path: AppRoutes.LOGIN, isProtected: false, element: <Login /> },
+    { path: AppRoutes.REGISTER, isProtected: false, element: <Register /> },
+    { path: AppRoutes.HOME, isProtected: true, element: <Home /> },
+    { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, element: <PostForTag /> },
+    { path: AppRoutes.CREATE_POST, isProtected: true, element: <CreatePost /> },
+    { path: AppRoutes.USER_PROFILE, isProtected: true, element: <UserProfile /> },
+    { path: AppRoutes.CHAT, isProtected: true, element: <Chat /> },
+    { path: '*', isProtected: true, element: <Home /> },
 ];
 
 export const Routes: React.FC = () => {
     const loggedInUser = useSelector(selectLoggedInUser);
-
     return (
         <React.Fragment>
-            <Switch>
+            <ReactRoutes>
                 {routes.map((route, i) => {
-                    if (route.isProtected && !loggedInUser) {
-                        return <Redirect key={i} to={AppRoutes.LOGIN} />;
-                    }
-
-                    return <Route key={i} {...route} />;
+                    const isAuthorized = !!loggedInUser || !route.isProtected;
+                    console.log('isAuthorized', {isAuthorized, loggedInUser, path: route.path})
+                    return <Route key={i} {...route} element={isAuthorized ? route.element : <Login/>} />;
                 })}
-            </Switch>
+            </ReactRoutes>
         </React.Fragment>
     );
 };

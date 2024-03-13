@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostCardDetailModal.scss';
 import { CommentsList, CreateCommentForm, Loading } from '../../../components';
 import { useGetPostDetailQuery } from '../../../hooks';
-import { history } from '../../../App';
 import { AppRoutes } from '../../../Routes';
 import { CreateComment, Comment, PostOverview } from '@drill-down/interfaces';
+import { useNavigate } from 'react-router-dom';
 
 interface BackFaceProps {
     post: PostOverview;
@@ -17,7 +17,7 @@ interface BackFaceProps {
 export const BackFace: React.FC<BackFaceProps> = (props) => {
     const { post, onFlipPostCard, onCreateComment, onStarPost } = props;
     const [replyingTo, setReplyingTo] = useState<Comment | null>(null);
-
+    const navigate = useNavigate();
     const { data: postDetail, isLoading: isLoadingDetails } = useGetPostDetailQuery({ id: post.id });
 
     return (
@@ -37,7 +37,7 @@ export const BackFace: React.FC<BackFaceProps> = (props) => {
                                 comments={postDetail.comments}
                                 onLeaveReplyClick={setReplyingTo}
                                 onAuthorClick={(author: string) => {
-                                    history.push(AppRoutes.USER_PROFILE.replace(':username', author));
+                                    navigate(AppRoutes.USER_PROFILE.replace(':username', author));
                                 }}
                             />
                             <CreateCommentForm replyTo={replyingTo} onSubmit={onCreateComment} />

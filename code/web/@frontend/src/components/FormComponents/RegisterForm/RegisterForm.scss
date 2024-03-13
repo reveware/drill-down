@@ -3,23 +3,34 @@
 .register-form {
     margin: auto;
     width: 100%;
+    height: 100%;
+    
+    label {
+        
+        font-size: small;
+    }
 
     .register-avatar {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        margin: 8px;
+        padding-top: 8px;
+        height: 100%;
+        width: 100%;
+        
+        .avatar-file {
+            display: none;
+        }
 
         .register-avatar-photo {
-            width: 50%;
+            min-height: 150px;
+            min-width: 150px;
         }
     }
 
 
-    .avatar-file {
-        display: none;
-    }
+
 
     .register-form-buttons {
         display: flex;
@@ -40,17 +51,7 @@
         }
     }
 
-
-    @include media(mobile, tablet) {
-        .register-form-buttons {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            :first-child {
-                margin-right: 0;
-                margin-bottom: 8px;
-            }
-        }
+    .register-options {
+        margin-top: 16px;
     }
 }

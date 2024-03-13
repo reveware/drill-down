@@ -1,4 +1,18 @@
-.post-type-tabs {
-    margin-bottom: 8px;
+@import '../../styles/colors';
+
+.create-post {
+    min-width: 50%;
+
+    .nav-item {
+        .nav-link {color: $secondary;}
+        .active {
+            font-weight: bold;
+        }
+    }
+
+    .post-type-tabs {
+
+        margin-bottom: 8px;
+    }
 }
 

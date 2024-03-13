@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, TextBox } from '../../../components';
 import { selectLoggedInUser } from '../../../store';
 import './UserOverviewCard.scss';
-import { history } from '../../../App';
+import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from 'src/Routes';
+
 
 interface UserOverviewCardProps {
     user: UserDetail;
@@ -16,11 +17,12 @@ interface UserOverviewCardProps {
 export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
     const currentUser = useSelector(selectLoggedInUser);
     const { user, className } = props;
-
+     
+    const navigate = useNavigate();
     const isMySelf = user.id === currentUser?.id;
 
     const handleChatClick = () => {
-        history.push(AppRoutes.CHAT);
+        navigate(AppRoutes.CHAT);
     };
 
     const handleFriendRequest = ()=> {
@@ -32,16 +34,17 @@ export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
     }
 
     return (
-        <Card className={`user-overview-card ${className || ""}`}>
+        <Card className={`user-overview-card ${className || ''}`}>
             <div className="overview-avatar">
                 <Avatar type="circle" source={user.avatar} />
             </div>
 
             <div className="user-profile-details">
                 <div>
-                    <h2>{user.username}</h2>
+                    <h1 className='title'>{`${user.first_name} ${user.last_name}`}</h1>
 
-                    <h1>{`${user.first_name} ${user.last_name}`}</h1>
+                    <h2 className='subtitle'>{`@${user.username}`}</h2>
+
                     {user.tagline && (
                         <div>
                             <TextBox className="text-muted" text={user.tagline} maxLength={100} />
@@ -49,27 +52,27 @@ export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
                     )}
                 </div>
                 <div className="user-profile-stats">
-                    <span>Friends: {user.friends.length}</span>
-                    <span>Likes: {user.likes.length} </span>
+                    <span> {user.friends.length} Friends</span>
+                    <span> {user.likes.length} Likes </span>
                 </div>
 
                 <hr />
 
                 <div className="user-profile-actions">
                     {!isMySelf && (
-                        <div className="pointer" onClick={handleFriendRequest}>
+                        <div className="pointer profile-action" onClick={handleFriendRequest}>
                             <FontAwesomeIcon className="action-icon" size="lg" icon="user-friends" />
                             <span className="icon-label">Befriend</span>
                         </div>
                     )}
 
-                    <div className="pointer" onClick={handleChatClick}>
+                    <div className="pointer profile-action" onClick={handleChatClick}>
                         <FontAwesomeIcon className="action-icon" size="lg" icon="comment-alt" />
                         <span className="icon-label">
                             Message
                         </span>
                     </div>
-                    <div className="pointer" onClick={handleSendTimeBomb}>
+                    <div className="pointer profile-action" onClick={handleSendTimeBomb}>
                         <FontAwesomeIcon className="action-icon" size="lg" icon="bomb" />
                         <span className="icon-label">Time Bomb</span>
                     </div>

@@ -17,23 +17,13 @@
     justify-content: center;
     text-align: center;
     
-    
-    
     .cloud {
         .tag-cloud-tag {
         
             &:hover {
                 cursor: pointer;
-                color: $sky-blue !important;
+                color: $light-blue !important;
             }
     }
-
-
-
-    
-    }
-
-    @include mobile {
-        display: none;
     }
 }

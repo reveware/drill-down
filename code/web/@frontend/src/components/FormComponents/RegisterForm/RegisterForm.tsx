@@ -1,29 +1,31 @@
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-
+import * as images from '../../../assets/img'
 import { Validation, Values } from '@drill-down/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Yup from 'yup';
 import { CreateUser, UserRole } from '@drill-down/interfaces';
 import moment from 'moment';
-import { Avatar, DatePicker } from 'src/components/';
+import { Avatar, DatePicker, Button } from 'src/components/';
 import './RegisterForm.scss';
 
 interface RegisterFormProps {
     onSubmit: (formValues: CreateUser.Request) => void;
     onCancel: () => void;
+    className?: string;
+
 }
 export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
     const { onSubmit, onCancel } = props;
-    const DEFAULT_AVATAR_PATH = '/images/male-avatar.png'; // TODO: move to configuration.ts
+    const className = props.className || 'register-form'
 
     const [isShowingPassword, setIsShowingPassword] = useState<boolean>(false);
-    const [avatarSource, setAvatarSource] = useState<string>(DEFAULT_AVATAR_PATH);
+    const [avatarSource, setAvatarSource] = useState<string>(images.AstroWelcome);
     const [isMouseOverSubmit, setIsMouseOverSubmit] = useState<boolean>(false);
 
     const validations: { [key in keyof CreateUser.Request]: any } = {
@@ -90,7 +92,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
     };
 
     return (
-        <div className="register-form">
+        <div className={className}>
             <Formik initialValues={initialValues} validationSchema={registerSchema} onSubmit={handleFormSubmit} validateOnMount={true}>
                 {({ isValid, values, errors, handleChange, handleBlur, setFieldValue, handleSubmit }) => (
                     <Form>
@@ -236,9 +238,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
                         <div className="register-form-buttons">
                             {/* Disabled buttons don't emit events, so wrap it around span */}
                             <span>
-                                <Button variant="secondary" type="button" onClick={handleCancel}>
-                                    Cancel
-                                </Button>
+                                <Button label='Cancel' variant="secondary" onClick={handleCancel}/>
                             </span>
 
                             <span
@@ -248,11 +248,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = (props) => {
                                 onMouseLeave={() => {
                                     setIsMouseOverSubmit(false);
                                 }}>
-                                <Button variant="dark" type="button" disabled={!isValid} onClick={() => handleSubmit()}>
-                                    Register
-                                </Button>
+                                    <Button label='Register' variant='primary' disabled={!isValid} onClick={handleSubmit}/>
                             </span>
                         </div>
+
+                        <div className="register-options">
+                        <p className="text-muted text-center">Or register with:</p>
+                        <hr />
+                    </div>
                     </Form>
                 )}
             </Formik>

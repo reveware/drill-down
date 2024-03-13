@@ -39,6 +39,7 @@ export const UsersApi = createApi({
         /** Get User Detail **/
         getUserDetail: builder.query<UserDetail, GetUser.Request>({
             query: (request) => {
+                console.log('getting user profile', {request})
                 const { username } = request;
                 return {
                     url: `/${username}`,

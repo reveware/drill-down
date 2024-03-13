@@ -1,5 +1,5 @@
 import React, { useRef, MutableRefObject } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as _ from 'lodash';
@@ -14,7 +14,7 @@ export interface TagListProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export const TagList: React.FC<TagListProps> = (props) => {
     const { tags, edit, className } = props;
-    const history = useHistory();
+    const navigate = useNavigate();
     const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
     if (edit) {
@@ -96,7 +96,7 @@ export const TagList: React.FC<TagListProps> = (props) => {
                     key={index}
                     onClick={() => {
                         const encodedAsUri = encodeURI(tag);
-                        history.push(AppRoutes.POSTS_FOR_TAG.replace(':tag', encodedAsUri));
+                        navigate(AppRoutes.POSTS_FOR_TAG.replace(':tag', encodedAsUri));
                     }}>
                     {`#${tag.toUpperCase()}${index === tags.length - 1 ? '' : ', '}`}
                 </span>

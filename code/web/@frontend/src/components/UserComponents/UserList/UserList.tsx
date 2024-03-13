@@ -2,22 +2,23 @@ import React from 'react';
 import { UserOverview } from '@drill-down/interfaces';
 import './UserList.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { history } from '../../../App';
 import { AppRoutes } from '../../../Routes';
 import { Avatar } from '../../..//components';
+import { useNavigate } from 'react-router-dom';
 
 interface UserListProps {
     users: UserOverview[];
 }
 export const UserList: React.FC<UserListProps> = (props) => {
     const {users} = props;
+    const navigate = useNavigate();
     return (
         <div className="userlist">
             {users.map((user, i) => (
                 <div className="userlist-item" key={i}>
                     <div
                         className="user-info pointer"
-                        onClick={() => history.push(AppRoutes.USER_PROFILE.replace('username', user.username))}>
+                        onClick={() => navigate(AppRoutes.USER_PROFILE.replace('username', user.username))}>
                         <div className="user-avatar">
                             <Avatar source={user.avatar} type="square" border={false} />
                         </div>

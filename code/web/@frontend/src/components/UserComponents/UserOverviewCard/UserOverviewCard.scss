@@ -12,6 +12,9 @@
         margin-top: 8px;
         margin-bottom: 8px;
         width: 60%;
+        min-width: 100px;
+        min-height: 100px;
+        border: 1px solid red;
         align-self: center;
     }
 
@@ -20,8 +23,9 @@
 
         .user-profile-stats {
             display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
+            flex-direction: row;
+            justify-content: center;
+            gap: 16px;
             margin-bottom: 8px;
             margin-top: 8px;
         }
@@ -42,10 +46,20 @@
                 }
             }
 
-            .action-icon {
-                color: $dark-blue;
-                margin-right: 4px;
+            .profile-action {
+                font-size: small;
+
+                .action-icon {
+                    color: $dark-blue;
+                    margin-right: 4px;
+                }
+    
+                .icon-label {
+                    font-weight: bolder; 
+                }
             }
+
+         
         }
     }
 

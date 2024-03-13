@@ -7,18 +7,19 @@ import { CreatePhotoPostForm, Loading, CreateQuotePostForm } from 'src/component
 import { useCreatePhotoPostMutation, useCreateQuotePostMutation } from '../../hooks';
 import './CreatePost.scss';
 import { Prompts, ToastService } from 'src/services';
-import { history } from 'src/App';
 import { AppRoutes } from 'src/Routes';
+import { useNavigate } from 'react-router-dom';
 
 export const CreatePost: React.FC = () => {
     const [createPhotoPost, { isLoading: isCreatingPhotoPost }] = useCreatePhotoPostMutation();
     const [createQuotePost, {isLoading: isCreatingQuotePost}] = useCreateQuotePostMutation();
+    const navigate = useNavigate();
 
     const handlePhotoPostSubmit = async (values: CreatePhotoPost.Request) => {
         try {
             console.log('onPhotoPostSubmit', { values });
             await createPhotoPost(values).unwrap();
-            history.push(AppRoutes.HOME);
+            navigate(AppRoutes.HOME);
         } catch (error) {
             ToastService.prompt(Prompts.ErrorHandled, error);
         }
@@ -28,14 +29,14 @@ export const CreatePost: React.FC = () => {
         try {
             console.log('onQuotePostSubmit', {values});
             await createQuotePost(values).unwrap();
-            history.push(AppRoutes.HOME);
+            navigate(AppRoutes.HOME);
         } catch (error) {
             ToastService.prompt(Prompts.ErrorHandled, error);
         }
     }
 
     return (
-        <Card className="neon-border w-50 mx-auto mt-5">
+        <Card className="create-post neon-border">
             <Card.Body>
                 <Card.Title>Create New Post</Card.Title>
 

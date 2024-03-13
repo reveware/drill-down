@@ -1,0 +1,42 @@
+@import '../../styles/colors';
+
+.button {
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    
+    &:disabled {
+       opacity: 85%;
+    }
+
+    &.primary {
+        background-color: $primary;
+        border: 1px solid adjust-color($dark-blue, $lightness: -13%);
+     
+    }
+    &.secondary {
+        background-color: $secondary;
+     
+        
+    }
+    &.danger {
+        background-color: $red;
+        border: 1px solid adjust-color($red, $lightness: -13%);
+      
+    }
+
+    &.info {
+        background-color: $grey;
+        border: 1px solid adjust-color($grey, $lightness: -13%);
+      
+    }
+
+    &.link {
+        color: $light-blue;
+        border: none;
+        text-decoration: underline;
+        background: none;
+        cursor: pointer;
+    }
+    
+}

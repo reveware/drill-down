@@ -1,4 +1,33 @@
+@import '../../styles/media-queries';
+
 .register {
-    max-width: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-height: fit-content;
+    max-width: 80%;
+    
+
+    .register-form {
+        padding: 16px; 
+        flex: 1;
+    }
+
+    .register-poster {
+        margin-left: 8px;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+        flex: 1; 
+        object-fit: cover;
+        
+    }
+
+    @include media(mobile, tablet) {
+        .register-poster {
+            display: none;
+        }
+    }
 }
 

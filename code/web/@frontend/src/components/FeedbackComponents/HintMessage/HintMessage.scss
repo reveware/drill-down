@@ -1,0 +1,14 @@
+@import '../../../styles/colors';
+
+.hint-message {
+    color: $grey;
+    display: flex;
+    flex-direction: row;
+    padding: 4px;
+    align-items: center;
+    
+    
+    svg {
+       margin-right: 8px;
+   }
+}

@@ -8,13 +8,14 @@ import { useGetPostsQuery } from 'src/hooks';
 
 export const PostForTag: React.FC = () => {
     const params = useParams<{ tag: string }>();
-    const tag = params.tag;
+    const tag = params.tag!;
+
     // TODO: handle loading, error
     const { data: posts } = useGetPostsQuery({ tags: tag });
 
     const atLeastOnePost = posts && posts.length > 1;
     if (!posts) {
-        return <NoPostsFound query="tags" />;
+        return <NoPostsFound />;
     }
     return (
         <React.Fragment>
@@ -23,7 +24,7 @@ export const PostForTag: React.FC = () => {
                     <PostCardBanner title={tag} post={posts[0]} />
                 </div>
 
-                {atLeastOnePost ? <PostCardGrid posts={posts.slice(1, posts.length)} postSize="md" /> : <NoPostsFound query="tags" />}
+                {atLeastOnePost ? <PostCardGrid posts={posts.slice(1, posts.length)} postSize="md" /> : <NoPostsFound />}
             </div>
         </React.Fragment>
     );

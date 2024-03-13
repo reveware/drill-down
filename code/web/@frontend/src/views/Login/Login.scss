@@ -1,8 +1,28 @@
 @import '../../styles/media-queries';
 
-
-.login {
+.login {    
+    
     display: flex;
-    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+    
+
+    .login-image {   
+       object-fit: cover;
+       max-height: 300px;
+    
+    }
+
+    .login-form {
+        padding: 16px;
+    }
+
+    @include media(mobile, tablet) {
+        .login-image {
+            display: none;
+        }
+    }
 }
 

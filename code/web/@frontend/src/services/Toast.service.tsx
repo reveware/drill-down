@@ -84,6 +84,7 @@ const PromptLibrary = {
 
 export class ToastService {
     static prompt = (prompt: Prompts, args?: any): void => {
+        console.log('prompting toast: ', {prompt, args})
         const found = PromptLibrary[prompt];
         found && found(args);
     };
