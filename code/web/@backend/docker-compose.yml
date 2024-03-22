@@ -54,7 +54,24 @@ services:
         environment:
             - REDIS_SECRET
         command: redis-server --requirepass ${REDIS_SECRET}
+
+    localstack:
+        hostname: localstack
+        container_name: localstack
+        image: localstack/localstack
+        ports:
+            - "127.0.0.1:4566:4566"            # LocalStack Gateway
+            - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+        environment:
+            # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+            - DEBUG=${DEBUG:-0}
+        volumes:
+            - localstack_storage:/var/lib/localstack
+            - "/var/run/docker.sock:/var/run/docker.sock"
+
+
 volumes:
     mongo_storage:
     postgres_storage:
+    localstack_storage:
             
