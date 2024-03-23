@@ -1,4 +1,5 @@
 @import '../../styles/colors';
+@import '../../styles/media-queries';
 
 .create-post {
     min-width: 50%;
@@ -13,6 +14,12 @@
     .post-type-tabs {
 
         margin-bottom: 8px;
+    }
+
+    @include media(mobile, tablet) {
+        height: 100%;
+        flex-direction: column;
+        padding: 0px;
     }
 }
 

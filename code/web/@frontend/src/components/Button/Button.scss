@@ -9,6 +9,11 @@
        opacity: 85%;
     }
 
+    &:block {
+        display: block;
+        width: 100%;
+     }
+
     &.primary {
         background-color: $primary;
         border: 1px solid adjust-color($dark-blue, $lightness: -13%);
