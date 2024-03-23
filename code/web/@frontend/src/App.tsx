@@ -21,7 +21,7 @@ export const App: React.FC = () => {
                     <BrowserRouter>
                         <NavBar />
                         
-                        <div className="card body">
+                        <div className="body">
                             <Routes />
                             <FloatingActionsMenu />
                         </div>
