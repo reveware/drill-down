@@ -1,11 +1,9 @@
-import React, { useLayoutEffect, useState, useCallback } from 'react';
-import $ from 'jquery';
-import 'bootstrap';
+import React, { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
 import { FrontFace } from './FrontFace';
 import { BackFace } from './BackFace';
 import { CreateComment, PostOverview } from '@drill-down/interfaces';
 import { useEffect } from 'react';
-import {} from 'react-redux';
 import './PostCardDetailModal.scss';
 import { useCreateCommentMutation, useDeletePostMutation } from 'src/hooks';
 
@@ -17,21 +15,17 @@ interface PostCardDetailModalProps {
 
 export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) => {
     const { post, onHide } = props;
-    // TODO: handle loading, errors
-
+    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isFlipped, setIsFlipped] = useState<boolean>(false);
     
+    // TODO: handle loading, errors
     const [createComment] = useCreateCommentMutation();
     const [deletePost] = useDeletePostMutation();
-    const [isFlipped, setIsFlipped] = useState<boolean>(false);
 
-    const handleHide = useCallback(() => {
-        // When closing manually, we need to get rid of the backdrop
-        const modal = $('#post-card-detail-modal') as any;
-        modal.modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
+    const handleHide = () => {
+        setIsOpen(false)
         onHide();
-      }, [onHide]);
+    }
 
     const handleCommentCreated = (comment: CreateComment.Request): void => {
         createComment({ post: post.id, comment: comment });
@@ -55,57 +49,33 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
     };
 
 
-    // Since we're opening the modal manually, we need to do it before the render
-    useLayoutEffect(() => {
-        const modal = $('#post-card-detail-modal') as any;
-        modal.on('hidden.bs.modal', function () {
-            handleHide();
-        });
-
-        
-        modal.modal('show');
-
-        return function cleanup() {
-            handleHide();
-        };
-    }, [post, handleHide]);
-
     useEffect(() => {
+        const flipperElement = document.querySelector('.flipper') as HTMLElement | null;
         if (isFlipped) {
-            $('.flipper').addClass('flip');
+            flipperElement?.classList.add('flip');
         } else {
-            $('.flipper').removeClass('flip');
+            flipperElement?.classList.remove('flip');
         }
     }, [isFlipped]);
 
 
     return (
-        <React.Fragment>
-            <div
-                className="modal"
-                id="post-card-detail-modal"
-                tabIndex={-1}
-                role="dialog"
-                aria-labelledby="Post detail modal"
-                aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    <div className="flipper">
-                        <FrontFace
-                            post={post}
-                            onHide={handleHide}
-                            onPostCardFlip={togglePostCardFlip}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                        />
-                        <BackFace
-                            post={post}
-                            onFlipPostCard={togglePostCardFlip}
-                            onCreateComment={handleCommentCreated}
-                            onStarPost={handlePostStarred}
-                        />
-                    </div>
-                </div>
-            </div>
-        </React.Fragment>
+        <Modal show={isOpen} onHide={handleHide}>
+        <div className="flipper">
+            <FrontFace
+                post={post}
+                onHide={handleHide}
+                onPostCardFlip={togglePostCardFlip}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
+            <BackFace
+                post={post}
+                onFlipPostCard={togglePostCardFlip}
+                onCreateComment={handleCommentCreated}
+                onStarPost={handlePostStarred}
+            />
+        </div>
+</Modal>     
     );
 };

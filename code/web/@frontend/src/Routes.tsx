@@ -36,7 +36,6 @@ export const Routes: React.FC = () => {
             <ReactRoutes>
                 {routes.map((route, i) => {
                     const isAuthorized = !!loggedInUser || !route.isProtected;
-                    console.log('isAuthorized', {isAuthorized, loggedInUser, path: route.path})
                     return <Route key={i} {...route} element={isAuthorized ? route.element : <Login/>} />;
                 })}
             </ReactRoutes>

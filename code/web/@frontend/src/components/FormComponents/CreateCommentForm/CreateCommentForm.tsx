@@ -52,7 +52,7 @@ export const CreateCommentForm: React.FC<CreateCommentFormProps> = (props) => {
                                     {errors.message}
                                 </Form.Text>
                                 {/* Disabled buttons don't emit events, so wrap it around span */}
-                                <span
+                                <div className='submit-button'
                                     onMouseEnter={() => {
                                         setIsMouseOverSubmit(true);
                                     }}
@@ -67,7 +67,7 @@ export const CreateCommentForm: React.FC<CreateCommentFormProps> = (props) => {
                                             handleSubmit();
                                         }}
                                         disabled={!isValid}/>
-                                </span>
+                                </div>
                             </Form.Group>
                         </Form>
                     );

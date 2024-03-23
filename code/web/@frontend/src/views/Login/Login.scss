@@ -20,9 +20,8 @@
     }
 
     @include media(mobile, tablet) {
-        .login-image {
-            display: none;
-        }
+        width: 100%;
+        height: 100%;
     }
 }
 

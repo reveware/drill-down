@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './FloatingActionsMenu.scss';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../Routes';
+import { selectLoggedInUser, useAppSelector } from 'src/store';
 
 export const FloatingActionsMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const loggedInUser = useAppSelector(selectLoggedInUser);
     const navigate = useNavigate();
 
     const handleNewPost = () => {
@@ -13,6 +15,10 @@ export const FloatingActionsMenu: React.FC = () => {
     };
 
     const handleChatbot = () => {};
+
+    if(!loggedInUser) {
+        return null;
+    }
 
     return (
         <React.Fragment>

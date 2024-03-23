@@ -11,7 +11,6 @@ import {
     CreateQuotePost,
 } from '@drill-down/interfaces';
 import { customFetchBaseQuery } from './customFetchBaseQuery';
-import { UserApiTags } from './User.api';
 
 export enum PostApiTags {
     OVERVIEW = 'PostOverview',
@@ -105,11 +104,11 @@ export const PostsApi = createApi({
             },
             transformResponse: (response: DeletePost.Response) => response.deleted,
             invalidatesTags: (result, error, request) => [
+                { type: PostApiTags.OVERVIEW, id: 'TRIGGER' },
                 { type: PostApiTags.OVERVIEW, id: request.id },
                 { type: PostApiTags.DETAIL, id: request.id },
-                { type: UserApiTags.DETAIL } as any,
-            ],
-        }),
+                
+            ]}),
         /** Create Comment**/
         createComment: builder.mutation<Comment, { post: number; comment: CreateComment.Request }>({
             query: (request) => {
