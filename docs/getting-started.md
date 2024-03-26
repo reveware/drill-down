@@ -1,7 +1,7 @@
 
 # Getting Started
 
-This page describes how to set up the projects for both the web app and the render pipeline. As well as setting up the required infrastructure either locally with [localstack](https://www.localstack.cloud/) or in AWS through terraform.
+This page describes how to set up the projects for both the web app and the render pipeline. As well as setting up the required infrastructure either locally with LocalStack or in AWS through terraform.
   
 
 ## Requirements
@@ -80,28 +80,41 @@ npx  prisma  generate
 
 #### Terraform & LocalStack 
 
-You will probably also need to create AWS resources (Ex.the S3 bucket used to store the media). For this you can use terraform from the `infra` folder, just make sure to update the tf_vars in the `./infra/env_vars` folder and make sure they match your `~/aws/credentials` file with the account(s) you want to use. Avoid commiting this file.
+To create AWS resources like the S3 buckets for media storage you can use [terraform](https://developer.hashicorp.com/terraform) from the `infra` folder, just make sure to update the tf_vars in the `./infra/env_vars` folder and make sure they match your `~/aws/credentials` file with the account(s) you want to use. 
 
+Optionally you can use [localstack](https://docs.localstack.cloud) & [terraform-local](https://github.com/localstack/terraform-local) to create the required infra in your local machine instead. 
+
+For this, you would have to configure `tflocal` using pyton and pip, and then simply use it as you would the `terraform` CLI.
   
 Initialize terraform
 ```bash
 terraform init
 ```
 
+create a workspace for development:
+```bash
+terraform workspace new development
+```
+
 Verify the changes:
 ```bash
 terraform plan -var-file=env_vars/development.tfvars
+# Or, for local development
+tflocal plan -var-file=env_vars/development.tfvars
 ```
 then use those variables to to create the resources on AWS:
 
 ```bash
-terraform  apply  -var-file=env_vars/development.tfvars
+terraform apply  -var-file=env_vars/development.tfvars
+# Or, for local development
+tflocal apply  -var-file=env_vars/development.tfvars
 ```
 
-You can use localstack & terraform-local to create the infra in your local machine. 
+You can see the list of created resources with:
 
-For this, you have to configure the tflocal using pyton and pip, and then simply use it as you would the `terraform` CLI.
-
+```bash
+terraform state list
+```
 ---
 
 If everything is set up, you should be able to start the apps from the root folder (you will need at least two terminals):

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import {Button} from '../../../components';
 import { Comment, CreateComment } from '@drill-down/interfaces';
 import './CreateCommentForm.scss';
 
+type CommentFormValues = {
+    message: string
+}
 interface CreateCommentFormProps {
     replyTo?: Comment | null;
     onSubmit: (comment: CreateComment.Request) => void;
@@ -24,16 +27,18 @@ export const CreateCommentForm: React.FC<CreateCommentFormProps> = (props) => {
         message: '',
     };
 
+    const handleFormSubmit = (values: CommentFormValues, helpers: FormikHelpers<CommentFormValues>)=>{
+        onSubmit({ ...values, reply_to: replyTo?.id || null });
+        helpers.resetForm()
+    }
+
     return (
         <div className="create-comment-form">
             <Formik
                 validationSchema={CommentSchema}
                 initialValues={initialValues}
                 validateOnMount={true}
-                onSubmit={(values) => {
-                    console.log('submitting comment', { values });
-                    onSubmit({ ...values, reply_to: replyTo?.id || null });
-                }}>
+                onSubmit={handleFormSubmit}>
                 {({ values, errors, handleChange, handleBlur, handleSubmit, isValid, resetForm }) => {
                     return (
                         <Form>
@@ -63,9 +68,7 @@ export const CreateCommentForm: React.FC<CreateCommentFormProps> = (props) => {
                                         label='Leave comment'
                                         className="mt-1"
                                         variant="primary"
-                                        onClick={() => {
-                                            handleSubmit();
-                                        }}
+                                        onClick={handleSubmit}
                                         disabled={!isValid}/>
                                 </div>
                             </Form.Group>
