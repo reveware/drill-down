@@ -4,6 +4,7 @@ import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 import * as path from 'path';
 import { User } from '@prisma/client';
+import * as _ from 'lodash';
 
 export class Configuration {
     public static HTTP_PORT = (process.env.HTTP_PORT || 8080);
@@ -34,8 +35,8 @@ export class Configuration {
     }
 
     public static getRedisConfig() {
-        const {REDIS_URI: redis_url, REDIS_SECRET: redis_secret} = process.env;
-        if(!redis_url || !redis_secret){ 
+        const { REDIS_URI: redis_url, REDIS_SECRET: redis_secret } = process.env;
+        if (!redis_url || !redis_secret) {
             throw new Error("invalid redis credentials");
         }
         return {
@@ -55,21 +56,9 @@ export class Configuration {
         };
     };
 
-    private static getAWSCredentials() {
-        const { AWS_KEY: accessKeyId, AWS_SECRET: secretAccessKey, AWS_REGION: region } = process.env;
-        if(!accessKeyId || !secretAccessKey) {
-            throw new Error("invalid aws credentials")
-        }
-        return {
-            accessKeyId,
-            secretAccessKey,
-            region,
-        };
-    }
-
+    // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
     public static getMulterConfig = (folder: string, fileTypes: string[]) => {
-        // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
-        const s3 = new AWS.S3({ credentials: Configuration.getAWSCredentials() });
+        const s3 = new AWS.S3(this.getAWSClientConfig());
         const usersBucketName = process.env.AWS_BUCKET_NAME;
 
         if (!usersBucketName) {
@@ -79,12 +68,14 @@ export class Configuration {
             s3: s3 as any,
             bucket: usersBucketName,
             serverSideEncryption: 'AES256',
-            key: (req: express.Request & {user?: User}, file: Express.Multer.File, cb: (e: any, key?: string)=> void) => {
+            key: (req: express.Request & { user?: User }, file: Express.Multer.File, cb: (e: any, key?: string) => void) => {
                 const { user, body } = req;
 
-                const username = user?.username || body.username;
+                const username =  user?.username || body.username;
+                
+                const isAllowedToPost = !_.isNil(username) // TODO: validate auth token
 
-                if (!username) {
+                if (!isAllowedToPost) {
                     return cb(new UnauthorizedException('Valid user is required to upload files'));
                 }
 
@@ -95,7 +86,12 @@ export class Configuration {
                 const isMimeValid = allowedFileTypes.test(file.mimetype);
 
                 if (isMimeValid && isExtValid) {
-                    const key = `${username}/${folder}/${Date.now()}-${file.originalname}`;
+                    let key = `/${username}/${folder}/${Date.now()}-${file.originalname}`;
+                    
+                    if(this.useLocalStack()) {
+                        key = `${usersBucketName}${key}`
+                    }
+
                     return cb(null, key);
                 }
                 return cb(
@@ -104,4 +100,38 @@ export class Configuration {
             },
         };
     };
+
+    public static useLocalStack(): boolean {
+        return process.env.USE_LOCAL_STACK == 'TRUE';
+    }
+
+    private static getAWSCredentials() {
+        const { AWS_KEY: accessKeyId, AWS_SECRET: secretAccessKey } = process.env;
+        if (!accessKeyId || !secretAccessKey) {
+            throw new Error("invalid aws credentials");
+        }
+        return {
+            accessKeyId,
+            secretAccessKey,
+        }
+    }
+
+    private static getAWSClientConfig() {
+        const {AWS_REGION: region, USE_LOCAL_STACK: useLocalStack } = process.env;
+        const config = {
+            region,
+            credentials: this.getAWSCredentials() 
+        }
+        if (useLocalStack === 'TRUE') {
+            return {
+                ...config,
+                endpoint: 'http://localhost:4566',
+                s3BucketEndpoint: true
+                
+            }
+        }
+
+        return config;
+    }
+
 }

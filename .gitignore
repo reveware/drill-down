@@ -8,10 +8,9 @@
 **/*/build
 
 # Terraform directories
-.terraform
 **/*/.terraform
-**./*/*.tfstate
-**/*/*.tfstate.*
+**/*/*.tfstate*
+**/*/terraform.tfstate
 
 # dependencies
 **/*/node_modules

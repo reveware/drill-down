@@ -27,23 +27,25 @@ export const PostCard: React.FC<PostCardProps> = (props: PostCardProps) => {
         return moment(date).fromNow();
     };
 
+    const renderCardContent = (post: PostOverview) => {
+        const type = post.type;
+        if(type == PostTypes.PHOTO) {
+            const url = post.content.urls[0];
+            return <Card.Img variant="top" className="post-card-img" src={url} />
+        }
+        if(type == PostTypes.QUOTE){
+            return  <QuotePost variant="handwritting" post={post} />
+        } 
+        
+        if(isAdmin()){ return JSON.stringify(post) }
+    }
+
     return (
         <Card id={`post-card-${post.id}`} className={`post-card ${size ?? ''}`}>
             <div
                 className="post-card-content"
-                onClick={() => {
-                    onClick(post);
-                }}>
-                {post.type === PostTypes.PHOTO && (
-                    // TODO: remame "ImgPost" and move to PostComponents
-                    <Card.Img variant="top" className="post-card-img" src={post.content.urls[0]} />
-                )}
-
-                {post.type === PostTypes.QUOTE && <QuotePost variant="handwritting" post={post} />}
-
-                {isAdmin() &&
-                    // TODO: if (user.admin), should be for debug, logs/visual.log
-                    `${JSON.stringify(post)}`}
+                onClick={() => {onClick(post)}}>
+                {renderCardContent(post)}
             </div>
 
             <div className="post-card-detail">

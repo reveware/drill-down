@@ -28,6 +28,7 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
     }
 
     const handleCommentCreated = (comment: CreateComment.Request): void => {
+        console.log('comment created', {comment})
         createComment({ post: post.id, comment: comment });
     };
 
