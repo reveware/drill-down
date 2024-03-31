@@ -4,6 +4,7 @@ import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 import * as path from 'path';
 import { User } from '@prisma/client';
+import * as _ from 'lodash';
 
 export class Configuration {
     public static HTTP_PORT = (process.env.HTTP_PORT || 8080);
@@ -55,8 +56,8 @@ export class Configuration {
         };
     };
 
+    // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
     public static getMulterConfig = (folder: string, fileTypes: string[]) => {
-        // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
         const s3 = new AWS.S3(this.getAWSClientConfig());
         const usersBucketName = process.env.AWS_BUCKET_NAME;
 
@@ -70,9 +71,11 @@ export class Configuration {
             key: (req: express.Request & { user?: User }, file: Express.Multer.File, cb: (e: any, key?: string) => void) => {
                 const { user, body } = req;
 
-                const username = user?.username || body.username;
+                const username =  user?.username || body.username;
+                
+                const isAllowedToPost = !_.isNil(username) // TODO: validate auth token
 
-                if (!username) {
+                if (!isAllowedToPost) {
                     return cb(new UnauthorizedException('Valid user is required to upload files'));
                 }
 
@@ -83,7 +86,12 @@ export class Configuration {
                 const isMimeValid = allowedFileTypes.test(file.mimetype);
 
                 if (isMimeValid && isExtValid) {
-                    const key = `${usersBucketName}/${username}/${folder}/${Date.now()}-${file.originalname}`;
+                    let key = `/${username}/${folder}/${Date.now()}-${file.originalname}`;
+                    
+                    if(this.useLocalStack()) {
+                        key = `${usersBucketName}${key}`
+                    }
+
                     return cb(null, key);
                 }
                 return cb(
@@ -114,11 +122,12 @@ export class Configuration {
             region,
             credentials: this.getAWSCredentials() 
         }
-        if (useLocalStack) {
+        if (useLocalStack === 'TRUE') {
             return {
                 ...config,
                 endpoint: 'http://localhost:4566',
                 s3BucketEndpoint: true
+                
             }
         }
 

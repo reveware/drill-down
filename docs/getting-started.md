@@ -97,6 +97,7 @@ terraform workspace new development
 ```
 
 Verify the changes:
+
 ```bash
 terraform plan -var-file=env_vars/development.tfvars
 # Or, for local development

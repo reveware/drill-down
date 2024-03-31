@@ -32,7 +32,7 @@ model User {
   date_of_birth            DateTime        @db.Date
   tagline                  String?
   role                     Role            @default(USER)
-  posts                    Post[]
+  posts                    Post[]           
   likes                    Like[]
   comments                 Comment[]
   requested_friends        Friend[]        @relation("requested_friends")
@@ -53,9 +53,9 @@ model User {
 model Friend {
   id           Int       @id @default(autoincrement())
   requester_id Int
-  requester    User      @relation("requested_friends", fields: [requester_id], references: [id])
+  requester    User      @relation("requested_friends", fields: [requester_id], references: [id], onDelete: Cascade)
   recipient_id  Int
-  recipient     User      @relation("approved_friends", fields: [recipient_id], references: [id])
+  recipient     User      @relation("approved_friends", fields: [recipient_id], references: [id], onDelete: Cascade)
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
 
@@ -69,9 +69,9 @@ model Friend {
 model FriendRequest {
   id           Int      @id @default(autoincrement())
   requester_id Int
-  requester    User     @relation("pending_friend_requests", fields: [requester_id], references: [id])
+  requester    User     @relation("pending_friend_requests", fields: [requester_id], references: [id], onDelete: Cascade)
   recipient_id Int
-  recipient    User     @relation("received_friend_requests", fields: [recipient_id], references: [id])
+  recipient    User     @relation("received_friend_requests", fields: [recipient_id], references: [id], onDelete: Cascade)
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
@@ -83,7 +83,7 @@ model FriendRequest {
 model Post {
   id          Int       @id @default(autoincrement())
   author_id   Int
-  author      User      @relation(fields: [author_id], references: [id])
+  author      User      @relation(fields: [author_id], references: [id], onDelete: Cascade)
   type        PostType
   content     Json
   description String?
@@ -101,9 +101,9 @@ model Post {
 model Like {
   id         Int      @id @default(autoincrement())
   author_id  Int
-  author     User     @relation(fields: [author_id], references: [id])
+  author     User     @relation(fields: [author_id], references: [id], onDelete: Cascade)
   post_id    Int
-  post       Post     @relation(fields: [post_id], references: [id])
+  post       Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -133,9 +133,9 @@ model Comment {
 model TimeBomb {
   id           Int      @id @default(autoincrement())
   author_id    Int
-  author       User     @relation("created_time_bombs", fields: [author_id], references: [id])
+  author       User     @relation("created_time_bombs", fields: [author_id], references: [id], onDelete: Cascade)
   recipient_id Int
-  recipient    User     @relation("received_time_bombs", fields: [recipient_id], references: [id])
+  recipient    User     @relation("received_time_bombs", fields: [recipient_id], references: [id], onDelete: Cascade)
   content      Json
   visible_at   DateTime
   created_at   DateTime @default(now())
