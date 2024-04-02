@@ -1,2 +1,2 @@
-export * from "./dto";
+export * from "./methods";
 export * from "./types";

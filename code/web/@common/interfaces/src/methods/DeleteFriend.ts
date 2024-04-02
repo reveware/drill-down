@@ -1,6 +1,6 @@
 export namespace DeleteFriend {
   export interface Request {
-    friend_username: string;
+    username: string;
   }
 
   export interface Response {

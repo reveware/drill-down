@@ -1,6 +1,6 @@
 export namespace AddFriend {
     export interface Request {
-        friend_username: string
+        username: string
     }
 
     export interface Response {

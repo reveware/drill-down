@@ -1,6 +1,6 @@
 import { UserOverview } from "src/types";
 
-export namespace GetUserFriends {
+export namespace GetFriends {
     export interface Request {
         username: string;
         page_number?: number;
@@ -8,7 +8,7 @@ export namespace GetUserFriends {
     }
 
     export interface Response {
-        data: UserOverview[],
+        data: UserOverview[] | null,
         page: number;
         total: number;
     }
