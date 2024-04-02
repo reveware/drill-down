@@ -1,7 +1,8 @@
 import { GetPosts } from '@drill-down/interfaces';
 import { IsString, IsOptional, IsInt, IsPositive } from 'class-validator';
+import { PaginateDTO } from './Paginate.dto';
 
-export class GetPostsFiltersDTO implements GetPosts.Request {
+export class GetPostsFiltersDTO extends PaginateDTO implements GetPosts.Request {
     @IsPositive()
     @IsInt()
     @IsOptional()
@@ -14,14 +15,4 @@ export class GetPostsFiltersDTO implements GetPosts.Request {
     @IsOptional()
     @IsString()
     author?: string;
-
-    @IsInt()
-    @IsPositive()
-    @IsOptional()
-    page_number!: number;
-
-    @IsInt()
-    @IsPositive()
-    @IsOptional()
-    page_size!: number;
 }
