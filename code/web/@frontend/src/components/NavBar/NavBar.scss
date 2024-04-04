@@ -1,15 +1,41 @@
 @import '../../styles/colors';
 @import '../../styles/media-queries';
+@import '../../styles/animations';
 
 .navbar {
     display: flex;
     flex-direction: row;
     height: 50px;
     padding: 8px;
+
+    background-color: $primary !important;
     
+    .notification {
+        position: absolute;
+        top: 0;
+        right: -8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: xx-small;
+        color: white;
+        background-color: $accent;
+        font-weight: bold;
+        text-align: center;
+        width: 1em; 
+        height: 1em; 
+        padding: 1em;
+        
+    }
     
-    .nav-links {
-        width: 100%;
+    .nav-links-group {
+        flex: 1;
+
+        .nav-links > * {
+            position: relative;
+            
+        }
     }
 
     .search-bar {
@@ -32,8 +58,3 @@
         }
     }
 }
-
-// Override bootstrap
-.navbar.bg-dark {
-    background-color: $primary !important;
-  }

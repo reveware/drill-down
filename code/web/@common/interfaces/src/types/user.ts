@@ -23,7 +23,6 @@ export interface UserDetail extends UserOverview {
   posts: PostOverview[];
   likes: PostOverview[];
   friends: UserOverview[];
-  pending_friends?: UserOverview[]; // only if self
   created_time_bombs: TimeBomb[];
   received_time_bombs: TimeBomb[];
   posts_per_tag: CountPerTag;
