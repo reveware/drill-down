@@ -6,7 +6,6 @@ It consists of a Web App that should eventually serve as a framework to drive a 
 
 you can find more information about the idea and conceptsand [Docs](./docs/), as well as a postman collection and technical details to get started.
 
-
 ## Contributing
 
 Ideas and suggestions are welcome.
