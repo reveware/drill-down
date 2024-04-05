@@ -86,7 +86,6 @@ export const FriendsApi = createApi({
             }
         }),
 
-
         /** Approve Friend Request **/
         approveFriendRequest: builder.mutation<boolean, { request: AddFriend.Request, loggedInUser: UserOverview }>({
             query: (query) => {
@@ -118,8 +117,6 @@ export const FriendsApi = createApi({
             transformResponse: (response: DeleteFriend.Response) => (response.data.deleted),
             invalidatesTags: (result, error, request) => (result ? [{ type: FriendApiTags.PENDING }] : [])
         }),
-
-
 
         /** Remove Friend **/
         removeFriend: builder.mutation<boolean, { request: DeleteFriend.Request, loggedInUser: UserOverview }>({
