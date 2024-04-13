@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useGetPendingFriendsQuery, useGetUserFriendsQuery } from 'src/hooks';
 import { useParams } from 'react-router-dom';
-import { NotFound, Loading, UserList } from '../../components';
+import { NoFriendsFound, Loading, UserList } from '../../components';
 import './UserFriends.scss';
 import { selectLoggedInUser, useAppSelector } from 'src/store';
 import { Card } from 'react-bootstrap';
+import * as _ from 'lodash';
 
 export const UserFriends: React.FC = () => {
     const params = useParams<{ username: string }>();
@@ -18,8 +19,10 @@ export const UserFriends: React.FC = () => {
         return <Loading />;
     }
 
-    if (!friends) {
-        return null;
+    
+    const noFriends = _.isEmpty(friends) && _.isEmpty(friendRequests)
+    if (noFriends) {
+        return <NoFriendsFound/>
     }
 
     friendRequests = friendRequests?.map((u) => ({ ...u, is_pending_friend: true }))

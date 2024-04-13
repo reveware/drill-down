@@ -10,7 +10,7 @@ export const PostForTag: React.FC = () => {
     const params = useParams<{ tag: string }>();
     const tag = params.tag!;
 
-    // TODO: handle loading, error
+    // TODO: handle loading, error (https://trello.com/c/YZby4Xz9)
     const { data: posts } = useGetPostsQuery({ tags: tag });
 
     const atLeastOnePost = posts && posts.length > 1;

@@ -34,7 +34,7 @@ export const UserList: React.FC<UserListProps> = (props) => {
         alert('timebomb not implemented')
     }
     
-    // TODO: handle catch on actions
+    // TODO: handle catch on actions (https://trello.com/c/YZby4Xz9)
     const handleAddFriendRequest = async (username: string) => {
         try {
             await addFriendRequest({ request: { username }, loggedInUser }).unwrap()

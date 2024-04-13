@@ -29,11 +29,11 @@ export const PostCard: React.FC<PostCardProps> = (props: PostCardProps) => {
 
     const renderCardContent = (post: PostOverview) => {
         const type = post.type;
-        if(type == PostTypes.PHOTO) {
+        if(type === PostTypes.PHOTO) {
             const url = post.content.urls[0];
             return <Card.Img variant="top" className="post-card-img" src={url} />
         }
-        if(type == PostTypes.QUOTE){
+        if(type === PostTypes.QUOTE){
             return  <QuotePost variant="handwritting" post={post} />
         } 
         

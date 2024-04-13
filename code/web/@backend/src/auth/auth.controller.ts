@@ -30,7 +30,7 @@ export class AuthController {
     @Get('tumblr/callback')
     @UseGuards(AuthGuard('tumblr'))
     async tumblrCallback(@Request() request: express.Request, @Response() response: express.Response) {
-        // TODO: Should redirect user (?) how to handle subsequent request to tumblr (?)
+        // TODO: Should redirect user (?) how to handle subsequent request to tumblr (?) (https://trello.com/c/SqQLiajM)
         return response.status(HttpStatus.OK).json({ user: request.user });
     }
 }

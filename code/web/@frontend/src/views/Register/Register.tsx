@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
 import { AppRoutes } from '../../Routes';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Register.scss';
 import { useCreateUserMutation } from 'src/hooks';
-
 import { CreateUser } from '@drill-down/interfaces';
 import { useAppSelector, selectLoggedInUser } from '../../store/';
 import { Loading, RegisterForm, Image } from 'src/components';
