@@ -118,6 +118,12 @@ terraform state list
 ```
 ---
 
+And delete them with:
+
+```bash
+terraform destroy -var-file=env_vars/development.tfvars
+```
+
 If everything is set up, you should be able to start the apps from the root folder (you will need at least two terminals):
 
   

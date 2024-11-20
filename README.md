@@ -4,7 +4,7 @@ This project looks to emulate the typical interactions from a social network: yo
 
 It consists of a Web App that should eventually serve as a framework to drive a 3D render pipepline, to present the user with a personalized `POV FPS`. 
 
-you can find more information about the idea and conceptsand [Docs](./docs/), as well as a postman collection and technical details to get started.
+you can find more information about the idea and concept in the [Docs](./docs/), as well as a postman collection and technical details to get started.
 
 ## Contributing
 

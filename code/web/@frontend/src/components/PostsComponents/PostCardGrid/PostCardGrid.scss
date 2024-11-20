@@ -24,8 +24,12 @@
 
         .item {
             display: flex;
-            width: max-content;
+            background-color: yellow;
             margin-bottom: 2px;
+
+            @include mobile {
+                width: 100%;
+            }
         }
     }
 }

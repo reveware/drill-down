@@ -118,7 +118,7 @@ export class UserService {
         // TODO: implement (https://trello.com/c/RZCsyDOq)
     }
 
-    public async removePostLike(user: User, postId: string): Promise<void> {
+    public async unlikePost(user: User, postId: string): Promise<void> {
         // TODO: implement (https://trello.com/c/RZCsyDOq)
     }
 }
