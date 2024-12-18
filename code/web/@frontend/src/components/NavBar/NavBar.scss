@@ -2,6 +2,8 @@
 @import '../../styles/media-queries';
 @import '../../styles/animations';
 
+
+
 .navbar {
     display: flex;
     flex-direction: row;
@@ -9,34 +11,7 @@
     padding: 8px;
 
     background-color: $primary !important;
-    
-    .notification {
-        position: absolute;
-        top: 0;
-        right: -8px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        font-size: xx-small;
-        color: white;
-        background-color: $accent;
-        font-weight: bold;
-        text-align: center;
-        width: 1em; 
-        height: 1em; 
-        padding: 1em;
-        
-    }
-    
-    .nav-links-group {
-        flex: 1;
 
-        .nav-links > * {
-            position: relative;
-            
-        }
-    }
 
     .search-bar {
         display: flex;
@@ -45,6 +20,35 @@
         justify-content: space-between;
         max-width: 375px;
         
+    }
+}
+
+.nav-links-group {
+    flex: 1;
+
+    .nav-links {
+        .nav-link {
+            position: relative;
+
+            .notification {
+                position: absolute;
+                top: 0;
+                right: -8px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: xx-small;
+                color: white;
+                background-color: $accent !important;
+                font-weight: bold;
+                text-align: center;
+                width: 1em; 
+                height: 1em; 
+                padding: 1em;
+                
+            }
+        }
     }
 }
 

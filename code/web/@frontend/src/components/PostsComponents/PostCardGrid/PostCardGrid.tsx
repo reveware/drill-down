@@ -26,7 +26,7 @@ export const PostCardGrid: React.FC<PostCardGridProps> = (props) => {
     if (posts.length === 0) {
         return null;
     }
-
+    
     return (
         <Card className={`post-card-grid ${className ?? ''}`}>
             {title && <h1>{title}</h1>}

@@ -76,8 +76,8 @@ export const UserList: React.FC<UserListProps> = (props) => {
             return FriendRequestActions(user)
         }
 
-        return DefaultActions(user);
-    }
+            return DefaultActions(user);
+        }
 
     const FriendActions = (user: ListUser) => (
         <div className="user-actions">
@@ -100,6 +100,7 @@ export const UserList: React.FC<UserListProps> = (props) => {
         </div>
     )
 
+    
     return (
         <div className="userlist">
             {users.map((user, i) => (

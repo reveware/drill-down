@@ -53,30 +53,36 @@
                 padding: 0;
 
                 .nav-item {
-                    .nav-link {color: $secondary;}
+                    .nav-link {
+                        color: $secondary;
+                    }
+
                     .active {
                         font-weight: bold;
                     }
                 }
-            
-                .tab-content {    
+
+                .tab-content {
                     border: none;
                     flex: 1;
                     height: 1px; // can't explain
                     width: 100%;
                     max-height: min-content;
+
                     .post-card-grid {
                         border: none;
                     }
-                    
+
                     .user-profile-tab {
                         height: 100%;
                         width: 100%;
+
+            
                     }
                 }
             }
 
-  
+
         }
     }
 
