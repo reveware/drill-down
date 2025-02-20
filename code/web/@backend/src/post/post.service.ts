@@ -186,7 +186,7 @@ export class PostService {
     }
 
     public async getPostByTagForUser(username: string): Promise<CountPerTag> {
-        // TODO: use pagination
+        // TODO: use pagination (https://trello.com/c/lYYaPPZB)
         const posts = await this.prismaService.post.findMany({ where: { author: { username } }, select: { tags: true } });
 
         const count = _.reduce(

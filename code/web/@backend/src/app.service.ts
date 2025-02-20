@@ -27,6 +27,7 @@ export class AppService {
         }
     }
 
+    // TODO: Move to user.service (https://trello.com/c/SqQLiajM)
     private async findAndSaveBlogPosts(user: User, blog: string, type: string, maxPages?: number) {
         let pageNumber = 1;
         const pageSize = 25;
@@ -60,7 +61,7 @@ export class AppService {
                     }
                 }
 
-                // TODO: add confg table and store new latest timestamp
+                // TODO: add confg table and store new latest timestamp (https://trello.com/c/SqQLiajM)
                 // before = _.last(currentPosts)!.timestamp;
 
                 currentPosts = [];

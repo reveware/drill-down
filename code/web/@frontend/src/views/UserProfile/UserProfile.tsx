@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Card, Tabs, Tab } from 'react-bootstrap';
-import { selectLoggedInUser, useAppSelector } from 'src/store';
 import { useGetUserDetailQuery } from 'src/hooks';
 import { useParams } from 'react-router-dom';
-import { UserList, PostCardGrid, UserOverviewCard, UserRoom, NotFound, TagCloud, Loading } from '../../components';
+import { UserList, PostCardGrid, UserOverviewCard, UserRoom, NotFound, TagCloud, Loading, NoFriendsFound } from '../../components';
 import './UserProfile.scss';
+import _ from 'lodash';
 
 enum ProfileTabs {
     POSTS = 'POSTS',
@@ -18,13 +18,11 @@ export const UserProfile: React.FC = () => {
     const username = params.username!;
 
     const mastheadPhoto = 'https://images8.alphacoders.com/442/thumb-1920-442066.jpg';
-    // TODO: handle errors
+    // TODO: handle errors (https://trello.com/c/YZby4Xz9)
     
     const { data: user, isLoading } = useGetUserDetailQuery({ username });
-    const loggedInUser = useAppSelector(selectLoggedInUser);
 
     const [selectedTab, setSelectedTab] = useState<string | null>(ProfileTabs.POSTS);
-    const isMySelf = loggedInUser?.id === user?.id;
 
     if (isLoading) {
         return <Loading />;
@@ -37,7 +35,7 @@ export const UserProfile: React.FC = () => {
     return (
         <div className="user-profile">
             <div className="user-profile-masthead-photo">
-                {/*TODO: Allow users to set their photo */}
+                {/*TODO: Allow users to set their photo  (https://trello.com/c/tOHsSZmV) */}
                 <img src={mastheadPhoto} alt="masthead" />
             </div>
 
@@ -60,7 +58,7 @@ export const UserProfile: React.FC = () => {
                             </Tab>
 
                             <Tab className="user-profile-tab" eventKey={ProfileTabs.FRIENDS} title="Friends">
-                                <UserList users={user.friends} />
+                                {_.isEmpty(user.friends) ? <NoFriendsFound/> : <UserList users={user.friends} />}
                             </Tab>
 
                             <Tab className="user-profile-tab" eventKey={ProfileTabs.ROOM} title="Room">

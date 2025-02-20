@@ -111,7 +111,7 @@ export const CreateQuotePostForm: React.FC<CreateQuotePostFormProps> = (props) =
                                         onChange: (tags) => {
                                             setFieldValue('tags', tags);
                                         },
-                                        suggestions: [], // TODO: bring back suggestions
+                                        suggestions: [], // TODO: bring back suggestions (https://trello.com/c/89C9hFwj)
                                     }}
                                 />
                                 <Form.Text className={`form-hint ${isMouseOverSubmit && errors.tags ? '' : 'invisible'}`}>

@@ -111,14 +111,14 @@ export class UserService {
     }
 
     public async getUserLikes(username: string): Promise<any> {
-        // TODO: implement
+        // TODO: implement (https://trello.com/c/RZCsyDOq)
     }
 
     public async likePost(user: User, postId: string): Promise<void> {
-        // TODO: implement
+        // TODO: implement (https://trello.com/c/RZCsyDOq)
     }
 
     public async unlikePost(user: User, postId: string): Promise<void> {
-        // TODO: implement
+        // TODO: implement (https://trello.com/c/RZCsyDOq)
     }
 }

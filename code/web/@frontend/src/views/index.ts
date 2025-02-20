@@ -5,3 +5,4 @@ export * from './PostForTag/PostForTag';
 export * from './CreatePost/CreatePost';
 export * from './Chat/Chat';
 export * from './UserProfile/UserProfile';
+export * from './UserFriends/UserFriends';

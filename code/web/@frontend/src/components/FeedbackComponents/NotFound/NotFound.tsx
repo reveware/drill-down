@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
 import { SearchEngineSVG } from 'src/assets/svg';
 import './NotFound.scss';
 

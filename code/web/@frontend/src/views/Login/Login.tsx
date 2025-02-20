@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
 import { AppRoutes } from '../../Routes';
 import { LoginAttempt } from '@drill-down/interfaces';
 import { selectLoggedInUser, useAppSelector, useAppDispatch, logIn } from '../../store';
@@ -15,7 +14,7 @@ export const Login = () => {
     const navigate = useNavigate();
     const loggedInUser = useAppSelector(selectLoggedInUser);
 
-    // TODO: handle  error
+    // TODO: handle  error (https://trello.com/c/YZby4Xz9)
     let [loginAttempt, { isLoading }] = useLoginAttemptMutation();
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { AuthApi, UsersApi, PostsApi } from 'src/services';
+import { AuthApi, UsersApi, PostsApi, FriendsApi } from 'src/services';
 
 export const { useLoginAttemptMutation } = AuthApi;
 
@@ -12,3 +12,15 @@ export const {
     useCreateCommentMutation,
     useDeletePostMutation,
 } = PostsApi;
+
+
+export const { 
+    useGetPendingFriendsQuery,
+    useGetUserFriendsQuery, 
+    useAddFriendRequestMutation,
+    useApproveFriendRequestMutation, 
+    useRejectFriendRequestMutation,
+    useRemoveFriendMutation,
+    
+} = FriendsApi;
+

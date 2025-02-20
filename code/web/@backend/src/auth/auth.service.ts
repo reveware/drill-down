@@ -5,6 +5,7 @@ import { UserService } from '../user/user.service';
 
 import { Configuration } from '../configuration';
 import { JwtPayload, LoginAttempt, UserOverview } from '@drill-down/interfaces';
+import { LogPerformance } from 'src/shared/decorators/LogPerformance';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
 
     constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
+    @LogPerformance()
     public async validateUserByPassword(loginAttempt: LoginAttempt.Request): Promise<LoginAttempt.Response> {
         const user = await this.userService.validateUserByPassword(loginAttempt.email, loginAttempt.password);
 
@@ -24,6 +26,7 @@ export class AuthService {
         return { data: { is_authorized: false, message: 'Wrong email or password', token: null } };
     }
 
+    @LogPerformance()
     public async validateUserByJwt(payload: JwtPayload): Promise<UserOverview> {
         const { email } = payload.user;
         const user = await this.userService.findUserByEmail(email);

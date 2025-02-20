@@ -56,7 +56,7 @@ export class Configuration {
         };
     };
 
-    // TODO: How to validate DTOs before uploading (files upload even if validation fails afterwards)
+    // TODO: How to validate DTOs before uploading, files upload even if validation fails afterwards (https://trello.com/c/ulc4CAww)
     public static getMulterConfig = (folder: string, fileTypes: string[]) => {
         const s3 = new AWS.S3(this.getAWSClientConfig());
         const usersBucketName = process.env.AWS_BUCKET_NAME;
@@ -73,7 +73,7 @@ export class Configuration {
 
                 const username =  user?.username || body.username;
                 
-                const isAllowedToPost = !_.isNil(username) // TODO: validate auth token
+                const isAllowedToPost = !_.isNil(username) // TODO: validate auth token (https://trello.com/c/ulc4CAww)
 
                 if (!isAllowedToPost) {
                     return cb(new UnauthorizedException('Valid user is required to upload files'));

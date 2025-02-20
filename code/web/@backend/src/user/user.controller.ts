@@ -44,7 +44,7 @@ export class UserController {
         })
     )
     async createUser(@Response() res: express.Response, @UploadedFile() avatar: Express.MulterS3.File, @Body() user: CreateUserDTO) {
-        // TODO: FileUploads are not validated in the Pipe
+        // TODO: FileUploads are not validated in the Pipe (https://trello.com/c/ulc4CAww)
         const avatarS3Location = _.get(avatar, 'location');
         if (_.isNil(avatar) || _.isNil(avatarS3Location)) {
             throw new BadRequestException(['avatar photo is required'], 'Validation Failed');

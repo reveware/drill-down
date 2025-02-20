@@ -3,7 +3,8 @@
 		"_postman_id": "6cab7daf-4966-40a5-a60a-1c7fc6de063c",
 		"name": "Drill Down",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25123273"
+		"_exporter_id": "25123273",
+		"_collection_link": "https://reveware.postman.co/workspace/Team-Workspace~300ff71a-0f38-479f-8c46-b6f115069386/collection/25123273-6cab7daf-4966-40a5-a60a-1c7fc6de063c?action=share&source=collection_link&creator=25123273"
 	},
 	"item": [
 		{
@@ -17,12 +18,14 @@
 							"script": {
 								"exec": [
 									"pm.test('set auth_token', ()=> {",
-									"    const jsonData = JSON.parse(responseBody);",
-									"    console.log('jsonData')",
-									"    pm.collectionVariables.set(\"AUTH_TOKEN\", jsonData.token);",
+									"    const response = pm.response.json();",
+									"    console.log('response', response);",
+									"    const token = response.data.token;",
+									"    pm.collectionVariables.set(\"AUTH_TOKEN\", token);",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -34,7 +37,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"riki@reveware.com\",\n    \"password\": \"123456789\"\n}",
+							"raw": "{\n    \"email\": \"spidey@reveware.com\",\n    \"password\": \"drilltfdown\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -68,7 +71,7 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "rrriki",
+									"value": "riki",
 									"type": "text"
 								},
 								{
@@ -88,12 +91,12 @@
 								},
 								{
 									"key": "password",
-									"value": "123456789",
+									"value": "drilltfdown",
 									"type": "text"
 								},
 								{
 									"key": "date_of_birth",
-									"value": "2022-01-11T19:13:00.775Z",
+									"value": "1989-09-25T19:13:00.777Z",
 									"type": "text"
 								},
 								{
@@ -103,13 +106,13 @@
 								},
 								{
 									"key": "role",
-									"value": "USER",
+									"value": "ADMIN",
 									"type": "text"
 								},
 								{
 									"key": "avatar",
 									"type": "file",
-									"src": "/home/riki/Pictures/Reveware/nasa.jpg"
+									"src": "/C:/Users/ricar/Pictures/GoPro/3D180C707CAD1AA92B95FB480C1DCEBE.jpg"
 								}
 							]
 						},
@@ -126,7 +129,7 @@
 					"response": []
 				},
 				{
-					"name": "Get User",
+					"name": "Get User Details",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -142,7 +145,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "rrriki"
+									"value": "thelmo"
 								}
 							]
 						}
@@ -254,7 +257,7 @@
 								{
 									"key": "photos",
 									"type": "file",
-									"src": "/home/riki/Pictures/Reveware/cuidateeldulce.jpeg"
+									"src": "/C:/Users/ricar/Pictures/Wallpapers/background.jpg"
 								},
 								{
 									"key": "description",
@@ -262,12 +265,12 @@
 									"type": "text"
 								},
 								{
-									"key": "tags",
+									"key": "tags[]",
 									"value": "star wars",
 									"type": "text"
 								},
 								{
-									"key": "tags",
+									"key": "tags[]",
 									"value": "star trek",
 									"type": "text"
 								}
@@ -281,6 +284,57 @@
 							"path": [
 								"posts",
 								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Quote Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": null,\n    \"quote\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/posts/quote",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"posts",
+								"quote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/posts/:id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -326,36 +380,103 @@
 			"name": "Friends",
 			"item": [
 				{
+					"name": "Get Pending Friend Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/pending",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								"pending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Friend Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/pending/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								"pending",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "riki"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Friend Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "thelmo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Friend Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/friends/pending/:username",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"friends",
+								"pending",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "riki"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Friends",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/users/:username/friends",
-							"host": [
-								"{{API_URL}}"
-							],
-							"path": [
-								"users",
-								":username",
-								"friends"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "rrriki"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Friend",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
 							"raw": "{{API_URL}}/friends/:username",
 							"host": [
 								"{{API_URL}}"
@@ -367,31 +488,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "rrriki"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Approve Friend",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{API_URL}}/friends/:username",
-							"host": [
-								"{{API_URL}}"
-							],
-							"path": [
-								"friends",
-								":username"
-							],
-							"variable": [
-								{
-									"key": "username",
-									"value": "yane"
+									"value": "riki"
 								}
 							]
 						}
@@ -415,10 +512,31 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "yane"
+									"value": "riki"
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tumblr",
+			"item": [
+				{
+					"name": "Get Posts",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}

@@ -18,7 +18,7 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
     const [isOpen, setIsOpen] = useState<boolean>(true);
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
     
-    // TODO: handle loading, errors
+    // TODO: handle loading, errors (https://trello.com/c/YZby4Xz9)
     const [createComment] = useCreateCommentMutation();
     const [deletePost] = useDeletePostMutation();
 
@@ -32,12 +32,12 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
         createComment({ post: post.id, comment: comment });
     };
 
-    const handlePostStarred = () => {
-        alert('post liked');
+    const handlePostLiked = () => {
+        // TODO: create like flow // https://trello.com/c/YZby4Xz9 (https://trello.com/c/tenhlYA7)
     };
 
     const handleEdit = () => {
-        // TODO:
+        // TODO: create a edit flow (https://trello.com/c/YZby4Xz9) (https://trello.com/c/bFDcv4DM) 
     };
 
     const handleDelete = () => {
@@ -74,7 +74,7 @@ export const PostCardDetailModal: React.FC<PostCardDetailModalProps> = (props) =
                 post={post}
                 onFlipPostCard={togglePostCardFlip}
                 onCreateComment={handleCommentCreated}
-                onStarPost={handlePostStarred}
+                onStarPost={handlePostLiked}
             />
         </div>
 </Modal>     

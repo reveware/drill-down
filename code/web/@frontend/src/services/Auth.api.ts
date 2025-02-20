@@ -19,6 +19,6 @@ export const AuthApi = createApi({
         }),
 
         /** Refresh Toke */
-        // TODO: Implement refresh_token
+        // TODO: Implement refresh_token (https://trello.com/c/BHh0u2NN)
     }),
 });

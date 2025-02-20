@@ -115,12 +115,12 @@ model Like {
 model Comment {
   id         Int       @id @default(autoincrement())
   author_id  Int
-  author     User      @relation(fields: [author_id], references: [id])
+  author     User      @relation(fields: [author_id], references: [id], onDelete: Cascade)
   post_id    Int
-  post       Post      @relation(fields: [post_id], references: [id])
+  post       Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
   message    String
   reply_to   Int?
-  parent     Comment?  @relation("replies", fields: [reply_to], references: [id])
+  parent     Comment?  @relation("replies", fields: [reply_to], references: [id], onDelete: Cascade)
   replies    Comment[] @relation("replies")
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt

@@ -36,7 +36,7 @@ export const UserOverviewCard: React.FC<UserOverviewCardProps> = (props) => {
     return (
         <Card className={`user-overview-card ${className || ''}`}>
             <div className="overview-avatar">
-                <Avatar type="circle" source={user.avatar} />
+                <Avatar type="circle" source={user.avatar} border />
             </div>
 
             <div className="user-profile-details">

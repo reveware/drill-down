@@ -16,17 +16,11 @@ export const Home = () => {
         return <NoContent />;
     }
 
-    const reversed = posts.slice(0).reverse();
     return (
         <div className="home-view">
             <div className='posts-column'>
-             <PostCardGrid title="Latest Posts" className="neon-border" posts={posts} postSize="md" />
+             <PostCardGrid className="neon-border" posts={posts} postSize="md" />
             </div>
-
-            <div className='posts-column'>
-            <PostCardGrid title="Reversed Posts" className="neon-border" posts={reversed} postSize="sm" />
-            </div>
-
         </div>
     );
 };

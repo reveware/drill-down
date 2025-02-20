@@ -1,0 +1,32 @@
+.no-friends-found {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 16px;
+
+    .camping {
+        width: 100%;
+        height: 100%;
+    }
+
+    div {
+        align-self: flex-end;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        flex: 1;
+        margin-right: 10%;
+        
+        :nth-child(1) {
+            font-weight: bolder;
+            padding-right: 32px;
+        }
+
+        :nth-child(2) {
+            font-weight: lighter;
+        }
+    }
+}

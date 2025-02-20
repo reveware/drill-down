@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, RouteProps, Routes as ReactRoutes } from 'react-router-dom';
 import { selectLoggedInUser } from './store';
-import { Home, Login, Register, PostForTag, CreatePost, Chat, UserProfile } from './views';
+import { Home, Login, Register, PostForTag, CreatePost, Chat, UserProfile, UserFriends } from './views';
 
 export enum AppRoutes {
     REGISTER = '/register',
@@ -11,6 +11,7 @@ export enum AppRoutes {
     HOME = '/home',
     POSTS_FOR_TAG = '/tags/:tag',
     USER_PROFILE = '/user/:username',
+    USER_FRIENDS = '/user/:username/friends',
     CHAT = '/chat',
 }
 
@@ -25,6 +26,7 @@ const routes: AppRouteProps[] = [
     { path: AppRoutes.POSTS_FOR_TAG, isProtected: true, element: <PostForTag /> },
     { path: AppRoutes.CREATE_POST, isProtected: true, element: <CreatePost /> },
     { path: AppRoutes.USER_PROFILE, isProtected: true, element: <UserProfile /> },
+    { path: AppRoutes.USER_FRIENDS, isProtected: true, element: <UserFriends /> },
     { path: AppRoutes.CHAT, isProtected: true, element: <Chat /> },
     { path: '*', isProtected: true, element: <Home /> },
 ];

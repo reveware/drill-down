@@ -1,4 +1,5 @@
 @import "../../../styles/colors";
+@import "../../../styles/media-queries";
 
 .userlist {
     display: flex;
@@ -8,17 +9,16 @@
     width: 100%;
 
     .userlist-item {
+        border: 1px solid $light-grey;
+        padding: 4px;
+        border-radius: 4px 4px;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        flex-wrap: wrap;
         margin-bottom: 4px;
-        border: 1px solid $light-grey;
-        border-radius: 4px 4px;
-        padding: 4px;
 
         .user-info {
             flex-grow: 1;
-
             display: flex;
             flex-direction: row;
 
@@ -26,7 +26,6 @@
                 height: 60px;
                 width: 60px;
                 margin-right: 8px;
-
             }
 
             .user-details {
@@ -40,29 +39,41 @@
                 .user-tagline {
                     font-size: smaller;
                     color: $gold;
-     
                     letter-spacing: 1px;
-
                 }
             }
         }
 
         .user-actions {
-            flex-grow: 1;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-end;
-       
-            .icon-label {
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-right: 16px;
+
+            .action-label {
+                min-width: max-content;
                 font-size: small;
+                cursor: pointer;
             }
+    
             .action-icon {
                 margin-right: 8px;
                 color: $dark-blue;
-     
             }
         }
- 
     }
+
+    @include media(mobile, table) {
+        .userlist-item {            
+            .user-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                margin-right: 0;
+            }
+        }
+    }
+
 }
