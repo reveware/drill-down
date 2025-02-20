@@ -21,7 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
 import { UserService } from './user.service';
-import { CreateUserDTO } from '../dto';
+import { CreateUserDTO } from '../shared/dto';
 import { Configuration } from 'src/configuration';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtUser } from 'src/shared/decorators';

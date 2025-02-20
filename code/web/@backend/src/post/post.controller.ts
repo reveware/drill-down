@@ -21,7 +21,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import * as multerS3 from 'multer-s3';
 import * as _ from 'lodash';
 import express from 'express';
-import { GetPostsFiltersDTO, CreatePhotoPostDTO, CreateCommentDTO, CreateQuotePostDTO } from '../dto';
+import { GetPostsFiltersDTO, CreatePhotoPostDTO, CreateCommentDTO, CreateQuotePostDTO } from '../shared/dto';
 import { PostService } from './post.service';
 import { JwtUser } from 'src/shared/decorators';
 

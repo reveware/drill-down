@@ -5,7 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from '@nestjs/swagger';
 import { JwtUser } from 'src/shared/decorators';
 import { FriendService } from './friend.service';
-import { PaginateDTO } from 'src/dto';
+import { PaginateDTO } from 'src/shared/dto';
 import { userInfo } from 'os';
 
 @Controller('friends')
