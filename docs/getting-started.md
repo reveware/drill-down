@@ -24,15 +24,6 @@ Node >= v16.20.2
 NPM >= 9.6.2
 Yarn >= 1.22.21
 ```
-  
-
-**Render Pipeline**
-
-```
-Python >= 3.10.12
-Blender >= 3.5.0
-```
-
 
 
 ## Web
@@ -147,19 +138,3 @@ or you can also run them both on each subfolder with:
   
 You should be able to visit localhost at ports (300 and 8080 by default) to use visit the website and use those services.
 
-  
-
-
-## Render
-
-You can also test the "Render Pipeline" POC to print mockfiles, using a python script for Blender. As for now, it's just a hardcoded script that will be used to describe the project scene.
-
-  
-
-``` bash
-
-blender  --background  --python  myscript.py
-
-python3  /code/render/@blender/make.py
-
-```
