@@ -49,15 +49,15 @@ After that, you'll need to set up the environment variables.
 
   
 
-You can see the `.template` files in each package to see the variables need, or ask a maintainer.
+You can see the `.env.template` files for reference, or ask a maintainer if you find issues.
 
   
 ### Infra
 
-Use docker-compose to start the required containers (postgres, redis, etc) 
+Use docker-compose to start the required containers (postgres, redis, etc). Make sure to include the necessary env variables as well.
 
 ```bash
-cd  code/web/@backend
+cd  infra
 docker-compose up 
 ``` 
 
