@@ -1,7 +1,6 @@
 import express from 'express';
 import * as AWS from 'aws-sdk';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
-import { MongooseModuleOptions } from '@nestjs/mongoose';
 import * as path from 'path';
 import { User } from '@prisma/client';
 import * as _ from 'lodash';
@@ -16,23 +15,6 @@ export class Configuration {
             jwt_expiration_seconds: 36000,
         };
     };
-
-    public static getMongoDBConfig(): { uri: string; options: MongooseModuleOptions } {
-        const { MONGO_HOST, MONGO_PORT, MONGO_USERNAME, MONGO_PASSWORD, MONGO_INITDB_DATABASE } = process.env;
-        const uri = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_INITDB_DATABASE}`;
-
-        return {
-            uri,
-            options: {
-                useNewUrlParser: true,
-                useCreateIndex: true,
-                useFindAndModify: false,
-                useUnifiedTopology: true,
-                replicaSet: 'replicaSet',
-                readPreference: 'primary',
-            },
-        };
-    }
 
     public static getRedisConfig() {
         const { REDIS_URI: redis_url, REDIS_SECRET: redis_secret } = process.env;
