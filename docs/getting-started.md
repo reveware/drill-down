@@ -9,17 +9,17 @@ This page describes how to set up the projects for both the web app and the rend
 This project has only been tested in Unix environments.
 
 To run it you will need to have the following apps and versions:
-
   
 
 **Infra**
+```bash
 Docker >= v.24.0.2
+Terraform >=  v1.7.5
 Localstack >= 3.2.0
-
+```
 
 **Social Web**
-
-```
+```bash
 Node >= v16.20.2
 NPM >= 9.6.2
 Yarn >= 1.22.21
@@ -52,12 +52,12 @@ After that, you'll need to set up the environment variables.
 You can see the `.env.template` files for reference, or ask a maintainer if you find issues.
 
   
-### Infra
+## Infra
 
-Use docker-compose to start the required containers (postgres, redis, etc). Make sure to include the necessary env variables as well.
+For local development you can use docker-compose to start most of the required infrastructure (postgres, redis). Make sure to include the necessary .env variables as well.
 
 ```bash
-cd  infra
+cd  infra/docker
 docker-compose up 
 ``` 
 
@@ -69,11 +69,13 @@ npx  prisma  migrate  dev
 npx  prisma  generate
 ```
 
-#### Terraform & LocalStack 
+### Terraform & LocalStack 
 
-To create AWS resources like the S3 buckets for media storage you can use [terraform](https://developer.hashicorp.com/terraform) from the `infra` folder, just make sure to update the tf_vars in the `./infra/env_vars` folder and make sure they match your `~/aws/credentials` file with the account(s) you want to use. 
+To create AWS resources, you can use [terraform](https://developer.hashicorp.com/terraform) along with the `settings.tfvars` from the `infra` folder.
 
-Optionally you can use [localstack](https://docs.localstack.cloud) & [terraform-local](https://github.com/localstack/terraform-local) to create the required infra in your local machine instead. 
+> Make sure you have the right credentials at ~/.aws/credentials  
+
+Optionally you could use [localstack](https://docs.localstack.cloud) & [terraform-local](https://github.com/localstack/terraform-local) to create the required infra in your local machine instead. 
 
 For this, you would have to configure `tflocal` using pyton and pip, and then simply use it as you would the `terraform` CLI.
   
@@ -82,24 +84,19 @@ Initialize terraform
 terraform init
 ```
 
-create a workspace for development:
-```bash
-terraform workspace new development
-```
-
 Verify the changes:
 
 ```bash
-terraform plan -var-file=env_vars/development.tfvars
+terraform plan -var-file=settings.tfvars
 # Or, for local development
-tflocal plan -var-file=env_vars/development.tfvars
+tflocal plan -var-file=settings.tfvars
 ```
-then use those variables to to create the resources on AWS:
+Create the resources on AWS:
 
 ```bash
-terraform apply  -var-file=env_vars/development.tfvars
+terraform apply  -var-file=settings.tfvars
 # Or, for local development
-tflocal apply  -var-file=env_vars/development.tfvars
+tflocal apply  -var-file=settings.tfvars
 ```
 
 You can see the list of created resources with:
@@ -112,7 +109,7 @@ terraform state list
 And delete them with:
 
 ```bash
-terraform destroy -var-file=env_vars/development.tfvars
+terraform destroy -var-file=settings.tfvars
 ```
 
 If everything is set up, you should be able to start the apps from the root folder (you will need at least two terminals):
@@ -136,5 +133,5 @@ or you can also run them both on each subfolder with:
 -  `yarn run start` at the root of the `/web/@frontend` folder
 
   
-You should be able to visit localhost at ports (300 and 8080 by default) to use visit the website and use those services.
+You should be able to visit localhost at ports (3000 and 8080 by default) to use visit the website and use those services.
 

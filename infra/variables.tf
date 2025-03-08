@@ -1,16 +1,11 @@
 
-variable "aws_profile" {
-    type = string
-    default = "default"
+variable "project_name" {
+  type        = string
+  default     = "drill-down"
 }
 
 variable "aws_region" {
     type = string
-}
-
-variable "project_name" {
-  type        = string
-  default     = "drill-down"
 }
 
 variable "environment" {

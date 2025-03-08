@@ -1,6 +1,5 @@
-aws_profile = "default"
 aws_region = "us-east-1"
-environment = "development"
+environment = "production"
 
 image_data_extractor_lambda_settings = {
     image_tag = "latest"
