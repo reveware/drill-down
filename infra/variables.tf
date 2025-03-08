@@ -1,18 +1,22 @@
-locals {
-    project_name = "drill-down"
-    environment = terraform.workspace
 
-    tags = {
-        Project = local.project_name
-        Environment = local.environment
-    }
-}
-
-variable "aws_profile" {
-    type = string
-    default = "default"
+variable "project_name" {
+  type        = string
+  default     = "drill-down"
 }
 
 variable "aws_region" {
     type = string
+}
+
+variable "environment" {
+  type        = string
+
+}
+
+variable "image_data_extractor_lambda_settings" {
+    description ="Settings for the image data extractor lambda"
+    type        = object({
+    image_tag       = string
+    environment   = map(string)
+  })
 }
