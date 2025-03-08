@@ -10,7 +10,6 @@ variable "aws_region" {
 
 variable "environment" {
   type        = string
-
 }
 
 variable "image_data_extractor_lambda_settings" {
