@@ -1,18 +1,25 @@
 # Drill Down
 
-This project looks to emulate the typical interactions from a social network: you can create users, who can add friends, create, tag and comment on posts, as well as interact with others via messaging. It also adds new interesting functionalities, such as `Time Bombs`*
+A personalized social platform combining introspection, AI-driven insights, and time-locked interactions.
 
-It consists of a Web App that should eventually serve as a framework to drive a render pipepline, to reward the user with a personalized content. 
+## Overview
 
-you can find more information about the idea and concept in the [Docs](./docs/), as well as a postman collection and technical details to get started.
+This project expands on traditional social media by introducing TimeBombs —posts that unlock at a future date— allowing users to create nostalgic and time-based interactions.
+
+By tagging content, users can explore evolving interests, track personal trends over time, and gain AI-driven insights into their posting habits.
+
+The platform provides a generative pipeline to reward user engagement with personalized content, turning participation into a meaningful, value-driven experience.
+
+
+## Documentation
+
+For detailed information about the idea and concepts, as well as setup instructions and usage, please refer to the [Docs](./docs/)
 
 ## Contributing
 
 Ideas and suggestions are welcome.
 
-You can request access to the [Trello board](https://trello.com/b/mnqhXlP6) where we keep track of the work.
-
-You can submit a pull request on [GitHub](https://github.com/reveware/drill-down), or if you're thinking about a major changes, you can open an issue first to discuss it.
+You can submit a pull request, or open an issue for further discussions.
 
   
 ## License

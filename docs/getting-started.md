@@ -3,6 +3,7 @@
 
 This page describes how to set up the projects for both the web app and the render pipeline. As well as setting up the required infrastructure either locally with LocalStack or in AWS through terraform.
   
+A [postman collection](./postman.json) is made available to faciliitate 
 
 ## Requirements
 

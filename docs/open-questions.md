@@ -1,57 +1,36 @@
 
 # Open Questions
 
-### What is drill-down?
-Is a web application, that bridges between a social media app (posting & hash-tagging) to a personalized 3D world.
+### What is Drill Down
+
+Drill Down is a personalized social platform that combines introspection, AI-driven insights, and time-locked interactions to drive a generative asset rewards.
 
 
-### How does drill-down work?
+### How does Drill Down work?
 
-**Post, tagging & world building**
-Users can create post in order to build their blog-like profile. By doing so, the system generates unique `Assets` for them, by extracting information from the posts ( via tags, image recognition, post-publishing surveys).
+Users create posts, tag content to explore their interests, and interact through TimeBombs—posts that unlock in the future. The system aggregates their activity to generate personalized digital rewards, such as unique images and creative assets.
 
-Extracted information builds a theme for the user, and is mapped to either existing 3D assets, or to outsourcing tasks to produce them, 
+In order to obtain enough context about a user to be able to generate assets, an AI chatbot might perform `SURVEYS` to know more of their preferences and taste.
 
-The assets and theme are used to populate `ROOM` in online POV FPS servers, filled with personalized objects.
-
-Users will be able to visit another user's room (based on privacy preferences), by visiting their profile the room is also available for "time-travelling"
-
-Generated Assets are available for review by each user in an "inventory" action, where users might be able to trade them.
-
-**Chatbot companion**
-In order to obtain enough context about the user to be able to generate assets for them, `SURVEYS` will have to be made to them, in order to know their preferences and tastes. This will be done through a ChatBot companion, which is in-charge of populating JSON objects that describe the scene in the room.
- 
-These surveys can be made at different times, such as after registration,  after posting (if no relevant information was extracted from the post), or even at at random times. 
   
-### What's drill-down for?
+### What's Drill Down for?
 
-For record keeping memories. Users can use tag-threading to backtrack their own posts, as well as their friends.
-  
-They also will get unique personalized collectibles (Assets) as incentive for interacting in the network, and they will be able to explore them in a POV world.
+Drill Down is designed for introspection, record keeping nostalgic memories, and creative self-expression.
+Unlike traditional social media, it rewards engagement by generating personalized content based on user's interests.
 
+### Who uses Drill Down?
+Anyone seeking a more meaningful way to engage with social media or a diary-like platform for recording memories and digital souvenirs. 
 
-### Who uses drill-down?
-Anyone who enjoys maintaining an online souvenir-like history.
+Drill Down appeals to creatives, introspective users, and AI enthusiasts exploring generative content.
   
 
-### What features does drill-down have?
+### What features does Drill Down have?
 
-With drill-down you can:
+Expanding from the standard features of a social media network:
 
-- Upload Photo posts and tag them.
-
-- Upload Quote posts and tag them.
-
-- Adding friends and interacting with them. (likes, favorites, chat)
-
-- Send time-locked messages to users. (Time Bombs)
-
-- Rendering image sequences. (as assets)
-
-- Rendering webgl interactive (but pre-made) FPS mini-games.
-
-- Managing and trading assets.
-
-- Rendering canvas interactive mini-games.
-  
+- TimeBombs: Posts that unlock at a future date.
+- Tagging System: Organize and explore content by themes.
+- Insights: Track interests and receive thematic analysis.
+- Generative Rewards: Personalized images, illustrations, or 3D assets.
+- Marketplace: Exchange generated rewards.
 
