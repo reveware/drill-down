@@ -29,8 +29,13 @@ jobs:
         with:
           terraform_version: latest
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Terraform Init with S3 Backend
+        run: |
+          terraform init \
+            -backend-config="bucket=drill-down-terraform-state" \
+            -backend-config="key=terraform.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="encrypt=true" \
         working-directory: infra
 
       - name: Terraform Plan
