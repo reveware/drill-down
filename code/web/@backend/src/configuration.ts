@@ -69,10 +69,6 @@ export class Configuration {
 
                 if (isMimeValid && isExtValid) {
                     let key = `/${username}/${folder}/${Date.now()}-${file.originalname}`;
-                    
-                    if(this.useLocalStack()) {
-                        key = `${usersBucketName}${key}`
-                    }
 
                     return cb(null, key);
                 }
@@ -82,10 +78,6 @@ export class Configuration {
             },
         };
     };
-
-    public static useLocalStack(): boolean {
-        return process.env.USE_LOCAL_STACK == 'TRUE';
-    }
 
     private static getAWSCredentials() {
         const { AWS_KEY: accessKeyId, AWS_SECRET: secretAccessKey } = process.env;
@@ -99,19 +91,11 @@ export class Configuration {
     }
 
     private static getAWSClientConfig() {
-        const {AWS_REGION: region, USE_LOCAL_STACK: useLocalStack } = process.env;
+        const {AWS_REGION: region } = process.env;
         const config = {
             region,
             credentials: this.getAWSCredentials() 
-        }
-        if (useLocalStack === 'TRUE') {
-            return {
-                ...config,
-                endpoint: 'http://localhost:4566',
-                s3BucketEndpoint: true
-                
-            }
-        }
+        };
 
         return config;
     }

@@ -1,7 +1,7 @@
 
 # Getting Started
 
-This page provides instructions for setting up and running the Web app, along with its infrastructure. You can run the required services locally using Docker and LocalStack, or provision them in AWS using Terraform.
+This page provides instructions for setting up and running the Web app, along with its infrastructure. You can run some required services locally using Docker, or provision them in AWS using Terraform.
   
 A [postman collection](./postman.json) is available to help with API testing.
 
@@ -17,8 +17,6 @@ To run it you will need to have the following apps and versions:
 | Yarn | >= 4.7.0 |
 | Docker | >= 24.0.2 |
 | Terraform | >= 1.7.5 |
-| LocalStack | >= 3.2.0 |
-
 
 ## Web App Set up
 
@@ -42,7 +40,7 @@ You can reference the provided `.env.template` files, or ask a maintainer for re
   
 ## Infrastructure Set up
 
-For local development you can use docker-compose to start most of the required infrastructure, like Postgres, Redis and Localstack.
+For local development you can use docker-compose to start most of the required infrastructure, like Postgres and Redis.
 
 
 ```bash
@@ -70,16 +68,14 @@ npx  prisma  migrate  dev
 npx  prisma  generate
 ```
 
-## Cloud Infrastructure (Terraform + AWS/LocalStack) 
+## Cloud Infrastructure (Terraform + AWS) 
 
 To deploy AWS resources, use [terraform](https://developer.hashicorp.com/terraform).
 
-To use create resources locally, use [localstack](https://docs.localstack.cloud) & [terraform-local](https://github.com/localstack/terraform-local).
-
 > Note: Make sure you have the right credentials at ~/.aws/credentials  
-
   
 Initialize terraform
+
 ```bash
 cd infra
 terraform init
@@ -89,15 +85,11 @@ Verify the changes:
 
 ```bash
 terraform plan -var-file=settings.tfvars
-# Or, for local development
-tflocal plan -var-file=settings.tfvars
 ```
 Create the resources on AWS:
 
 ```bash
 terraform apply  -var-file=settings.tfvars
-# Or, for local development
-tflocal apply  -var-file=settings.tfvars
 ```
 
 You can see the list of created resources with:
@@ -111,8 +103,6 @@ And delete them with:
 
 ```bash
 terraform destroy -var-file=settings.tfvars
-# Or, for local development
-tflocal destroy  -var-file=settings.tfvars
 ```
 
 ## Running the Web App
