@@ -1,5 +1,20 @@
-version: '3.7'
 services:    
+    backend:
+        profiles:
+            - backend 
+        build:
+            context: ../../code/web
+            dockerfile: "@backend/Dockerfile"
+        container_name: backend
+        restart: always
+        depends_on:
+            - postgres
+            - redis
+        env_file:
+            - .env
+        ports:
+            - "8080:8080"
+
     postgres:
         hostname: postgres 
         container_name: postgres
@@ -16,7 +31,6 @@ services:
             - $PWD/postgres/postgres-init.sh:/docker-entrypoint-initdb.d/postgres-init.sh
 
     redis:
-
         hostname: redis
         container_name: redis
         image: redis:alpine

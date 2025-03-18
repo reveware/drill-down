@@ -8,6 +8,7 @@
     "scripts": {
         "prebuild": "rimraf build",
         "build": "nest build",
+        "postinstall": "prisma generate",
         "start": "ts-node -r tsconfig-paths/register -r dotenv/config src/server.ts",
         "start:dev": "ts-node -r tsconfig-paths/register -r dotenv/config src/server.ts",
         "start:debug": "nest start --debug --watch",
@@ -21,8 +22,8 @@
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.199.0",
-        "@drill-down/interfaces": "1.0.0",
         "@drill-down/constants": "1.0.0",
+        "@drill-down/interfaces": "1.0.0",
         "@nestjs/common": "7.0.0",
         "@nestjs/core": "7.0.0",
         "@nestjs/jwt": "7.0.0",
@@ -56,7 +57,6 @@
         "@types/express": "^4.17.14",
         "@types/express-session": "^1.17.7",
         "@types/jest": "25.1.4",
-        
         "@types/multer-s3": "^3.0.0",
         "@types/node": "13.9.1",
         "@types/passport-jwt": "^3.0.7",

@@ -6,8 +6,9 @@
   "author": "Ricardo Rincon <ricardo_rm25@hotmail.com>",
   "license": "MPL-2.0",
   "private": true,
+  "packageManager": "yarn@4.7.0",
   "scripts": {
-    "preinstall": "yarn --cwd ./@common/interfaces build && yarn --cwd ./@common/constants build",
+    "postinstall": "yarn --cwd ./@common/interfaces build && yarn --cwd ./@common/constants build",
     "start:backend": "yarn --cwd ./@backend start:dev",
     "start:frontend": "yarn --cwd ./@frontend start:dev",
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
@@ -20,21 +21,13 @@
       "@common/constants",
       "@backend",
       "@frontend"
-    ],
-    "nohoist": [
-      "**/webpack-dev-server",
-      "**/babel*",
-      "**/eslint**",
-      "**/jest",
-      "**/*react*",
-      "**/*redux*"
     ]
   },
   "dependencies": {
-    "typescript": "4.8.4",
     "axios": "0.21.0",
     "lodash": "4.17.20",
-    "moment": "2.27.0"
+    "moment": "2.27.0",
+    "typescript": "4.8.4"
   },
   "devDependencies": {
     "@types/babel__core": "^7.20.0",
