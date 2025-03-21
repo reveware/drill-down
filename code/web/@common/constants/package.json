@@ -6,10 +6,10 @@
     "types": "build/index.d.ts",
     "license": "MPL-2.0",
     "scripts": {
-      "build": "tsc && rm tsconfig.tsbuildinfo",
-      "prepare": "yarn build"
+        "build": "yarn run -T tsc && rm tsconfig.tsbuildinfo",
+        "prepare": "yarn build"
     },
     "dependencies": {
-      "@drill-down/interfaces": "1.0.0"
+        "@drill-down/interfaces": "1.0.0"
     }
-  }
+}

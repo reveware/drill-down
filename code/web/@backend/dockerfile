@@ -1,21 +1,26 @@
-## This is meant to be built from ~/code
-## docker build -f backend/dockerfile --progress plain --no-cache  -t drilldown .
+# This is meant to be built from ~/code/web
 
-FROM node:18
+FROM node:18-bullseye AS backend
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Copy necessary source code
-COPY ./package.json ./
-COPY ./yarn.lock ./
-COPY ./tsconfig.json ./
-ADD ./backend ./backend/
-ADD ./interfaces ./interfaces/
+RUN corepack enable && corepack prepare yarn@4.7.0 --activate
 
-RUN ls -a 
+COPY .yarnrc.yml ./
+COPY package.json yarn.lock ./
+COPY tsconfig.json ./
 
-# Install app dependencies
+COPY @common ./@common
+COPY @backend ./@backend
+
 RUN yarn install
 
-CMD ["yarn", "start:backend"]
+WORKDIR /usr/src/app/@backend
+
+RUN yarn build
+
+EXPOSE 3000
+
+ENV NODE_ENV=production
+
+CMD ["node", "build/src/server.js"]
