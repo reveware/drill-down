@@ -41,14 +41,14 @@ export class Configuration {
     // TODO: How to validate DTOs before uploading, files upload even if validation fails afterwards (https://trello.com/c/ulc4CAww)
     public static getMulterConfig = (folder: string, fileTypes: string[]) => {
         const s3 = new AWS.S3(this.getAWSClientConfig());
-        const usersBucketName = process.env.AWS_BUCKET_NAME;
+        const usersBucket = process.env.AWS_S3_BUCKET_USERS;
 
-        if (!usersBucketName) {
+        if (!usersBucket) {
             throw new Error("missing user's bucket");
         }
         return {
             s3: s3 as any,
-            bucket: usersBucketName,
+            bucket: usersBucket,
             serverSideEncryption: 'AES256',
             key: (req: express.Request & { user?: User }, file: Express.Multer.File, cb: (e: any, key?: string) => void) => {
                 const { user, body } = req;
@@ -79,22 +79,11 @@ export class Configuration {
         };
     };
 
-    private static getAWSCredentials() {
-        const { AWS_KEY: accessKeyId, AWS_SECRET: secretAccessKey } = process.env;
-        if (!accessKeyId || !secretAccessKey) {
-            throw new Error("invalid aws credentials");
-        }
-        return {
-            accessKeyId,
-            secretAccessKey,
-        }
-    }
-
     private static getAWSClientConfig() {
-        const {AWS_REGION: region } = process.env;
+        const {AWS_PROFILE: profile, AWS_REGION: region } = process.env;
         const config = {
             region,
-            credentials: this.getAWSCredentials() 
+            credentials: profile ? new AWS.SharedIniFileCredentials({ profile }) : undefined,
         };
 
         return config;
