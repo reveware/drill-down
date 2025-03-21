@@ -44,7 +44,7 @@ For local development you can use docker-compose to start most of the required i
 
 
 ```bash
-cd  infra/docker
+cd  infra/local
 docker-compose up 
 ``` 
 
@@ -77,7 +77,7 @@ To deploy AWS resources, use [terraform](https://developer.hashicorp.com/terrafo
 Initialize terraform
 
 ```bash
-cd infra
+cd infra/env/prod
 terraform init
 ```
 
