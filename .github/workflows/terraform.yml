@@ -13,9 +13,10 @@ permissions:
   contents: read
 
 jobs:
-  terraform:
+  terraform-plan:
     runs-on: ubuntu-latest
-
+    outputs:
+      plan_exit_code: ${{ steps.plan.outcome }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,9 +43,37 @@ jobs:
         working-directory: infra
 
       - name: Terraform Plan
-        run: terraform plan -var-file=settings.tfvars
+        id: plan
+        run: terraform plan -var-file=settings.tfvars -out=tfplan
         working-directory: infra
 
+      - name: Upload Terraform Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: infra/tfplan
+
+  terraform-apply:
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHubActionsTerraform
+          aws-region: us-east-1
+
+      - name: Download Terraform Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+          path: infra/
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var-file=settings.tfvars
+        run: terraform apply -auto-approve infra/tfplan
         working-directory: infra
